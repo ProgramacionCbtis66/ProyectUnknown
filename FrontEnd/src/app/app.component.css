@@ -12,7 +12,7 @@ a{
 }
 
 body{
-    font-family: 'ubuntu', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     background-color: #ffffff;
 }
 
@@ -20,11 +20,12 @@ header nav{
     background: #ffffff;
     filter: blur();
     padding-left: 20px;
+    padding-top: 8px;
 }
 
 .ADAE-logo-header{
     font-size: 1.5rem;
-    font-weight: 400;
+    font-weight: 500;
     display: flex;
     align-items: center;
 }
