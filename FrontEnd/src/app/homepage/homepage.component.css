@@ -13,7 +13,7 @@ a{
 
 body{
     font-family: 'Ubuntu', sans-serif;
-    background-color: #ffffff;
+    background-color: rgba(251,251,253,.5);
 }
 .midpage{
     padding-top: 150px;
@@ -55,11 +55,85 @@ body{
     font-weight: 500;
 }
 
+.box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin: 4rem auto;
+    gap: 60px;
+}
+
+.box-1{
+    border: none;
+    border-radius: 5%;
+    box-shadow: 17px 20px 40px rgba(0,0,0,.21);
+    display: flex;
+    height: 500px;
+    width: 650px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    padding: 2.5rem;
+}
+
+.box-2{
+    border: none;
+    border-radius: 5%;
+    box-shadow: 17px 20px 40px rgba(0,0,0,.21);
+    display: flex;
+    height: 500px;
+    width: 400px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    padding: 2.5rem;
+}
+#box-1-heading{
+    margin: auto;
+    font-size: 2vw;
+}
+
+.box-1-txt{
+    font-size: 1.2vw;
+    text-align: justify;
+    margin: auto;
+}
+
+.box-2-heading{
+    font-size: 2vw;
+    margin: auto;
+}
+
+.box-2-txt{
+    font-size: 1.2vw;
+    text-align: justify;
+    margin: auto;
+}
 @media (max-width: 768px) { 
+
+    .box {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .box-1,
+    .box-2 {
+        width: 100%;
+        height: auto;
+    }
+
+    #box-1-heading,
+    .box-1-txt,
+    .box-2-heading,
+    .box-2-txt {
+        font-size: 6vw;
+        letter-spacing: -0.02em;
+    }
 
     .heading h1{
         font-size: 24.5vw;
-        
+        padding-left: 10px;
     }
     #intro-text {
         font-size: 8vw;
