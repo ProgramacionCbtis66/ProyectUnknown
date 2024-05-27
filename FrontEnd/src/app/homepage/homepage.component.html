@@ -14,8 +14,8 @@
         </div>
 
         <div class="sign-in center-1" center-1>
-          <button id="sign-in-btn">
-            <a href="homepage/homepage.component.html">Iniciar sesión</a>
+          <button [routerLink] = "['/acceso']" id="sign-in-btn">
+            <a>Iniciar sesión</a>
           </button>
         </div>
 
@@ -41,6 +41,10 @@
           </div>
         </div>
       </main>
+    </div>
+
+    <div class="mt-5">
+      <router-outlet></router-outlet>
     </div>
   </body>
 </html>
