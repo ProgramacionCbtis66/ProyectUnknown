@@ -11,20 +11,95 @@ body{
     background-color: rgba(251,251,253,.5);
 }
 
-
-.container {
+#main{
+    width: 100vw;
+    height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    
+    justify-content: center;
 }
 
-.box {
+#sign-in{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;
+    border-radius: 5%;
     border: none;
-    border-radius: 34px;
-    box-shadow: 0 11px 34px 0 rgba(0,0,0,.2);
-    width: 690px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, .1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+    width: 600px;
     height: 600px;
-    padding: 2.5rem;
-    background-color: rgb(255, 255, 255);
+}
+
+#sign-in p{
+    font-size: 3.5vw;
+    font-weight: 500;
+    user-select: none;
+
+}
+
+.input-container{
+    position: relative;
+}
+
+.bx-right-arrow-circle{
+    position: absolute;
+    top: 39%;
+    right: 3%;
+    font-size: 1.5rem;
+    color: black;
+}
+
+#sign-in #email-phone{
+    padding: 1rem .9rem;
+    font-size: 1rem;
+    width: 450px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#email-phone:focus{
+    border: 1px solid skyblue;
+    outline: 0;
+}
+
+#sign-in #password{
+    padding: 1rem .9rem;
+    font-size: 1rem;
+    width: 450px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 31px;
+}
+label{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#check{
+    height: 16px;
+    width: 16px;
+    margin-right: 10px;
+    background-color: rgb(0, 0, 0);
+}
+
+#sign-in #email-phone{
+    font-size: 1rem;
+}
+
+.links{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.links a{
+    color: rgb(0, 128, 255);
 }
