@@ -103,3 +103,25 @@ label{
 .links a{
     color: rgb(0, 128, 255);
 }
+
+@media only screen and (max-width: 600px) {
+    #sign-in {
+        width: 400px;
+        height: 450px;
+    }
+    
+    #sign-in p {
+      font-size: 8vw; 
+    }
+    
+    #sign-in #email-phone,
+    #sign-in #password {
+      width: 100%; 
+      max-width: 300px; 
+    }
+    
+    .bx-right-arrow-circle {
+      top: 38.1%; 
+      right: 5%; 
+    }
+  }
