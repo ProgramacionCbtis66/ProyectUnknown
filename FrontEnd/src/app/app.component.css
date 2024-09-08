@@ -42,19 +42,19 @@ footer{
     justify-content: space-evenly;
     align-items: center;
     background-color: #f2f2f7;
-    padding: 2rem;
+    padding: 1.5rem;
 }
 
 .footer-div{
     display: flex;
-    font-size: .7rem;
+    font-size: .6rem;
     color: gray;
     align-items: center;
 }
 
 .sep{
     background-color: gray;
-    height: 10px;
+    height: 8px;
     width: 1px;
     margin: 0 10px;
 }

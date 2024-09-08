@@ -110,6 +110,7 @@ body{
     text-align: justify;
     margin: auto;
 }
+
 @media (max-width: 768px) { 
 
     .box {

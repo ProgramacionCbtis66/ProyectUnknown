@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
-</head>
-<body>
-    
+  </head>
+  <body>
     <main id="main">
-        <form id="sign-in">
-            <p>Inicio de sesion</p>
-            <div class="input-container">
-                <a href="#"><i class='bx bx-right-arrow-circle'></i></a>
-                <input type="numer, email" id="email-phone" placeholder="correo institucional">
-                <input type="password" id="password" placeholder="contraseña">
-                <label> <input type="checkbox" id="check">Recordar inicio</label>
-                <div class="links"> <a href="#">Olvido la contraseña?</a>
-                <a href="#">Crear nueva cuenta</a>
-            </div>
-            </div>
-        </form>
+      <form id="sign-in">
+        <p>Inicio de sesion</p>
+        <div class="input-container">
+          <a href="#"><i class="bx bx-right-arrow-circle"></i></a>
+          <input type="email" id="email" placeholder="correo institucional" />
+          <input type="password" id="password" placeholder="contraseña" />
+          <label> <input type="checkbox" id="check" />Recordar inicio</label>
+
+          <div class="links">
+            <a [routerLink]="['/QRPage']">Iniciar sesion por QR</a>
+          </div>
+        </div>
+      </form>
     </main>
 
     <div class="mt-5">
-        <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
     </div>
-</body>
+  </body>
 </html>
