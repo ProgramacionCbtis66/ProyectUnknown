@@ -15,7 +15,6 @@ body {
     font-family: 'Ubuntu', sans-serif;
     background-color: rgba(251, 251, 253, 0.5);
     margin: 0; 
-    padding-top: 5rem;
 }
 
 header {
@@ -30,11 +29,10 @@ header {
 }
 
 .ADAE-logo-header {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 500;
     display: flex;
     align-items: center;
-    
 }
 
 footer{
@@ -43,7 +41,6 @@ footer{
     align-items: center;
     background-color: #f2f2f7;
     padding: 1.5rem;
-    
 }
 
 .footer-div{

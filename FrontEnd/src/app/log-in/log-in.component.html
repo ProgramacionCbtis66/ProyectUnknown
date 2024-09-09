@@ -14,7 +14,12 @@
       <form id="sign-in">
         <p>Inicio de sesion</p>
         <div class="input-container">
-          <a href="#"><i class="bx bx-right-arrow-circle"></i></a>
+          <div class="login">
+            <a [routerLink]="['/Main_Dashboard']"
+              ><i class="bx bx-right-arrow-circle"></i
+            ></a>
+          </div>
+
           <input type="email" id="email" placeholder="correo institucional" />
           <input type="password" id="password" placeholder="contraseña" />
           <label> <input type="checkbox" id="check" />Recordar inicio</label>
