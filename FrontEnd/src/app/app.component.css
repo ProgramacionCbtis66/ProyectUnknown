@@ -56,3 +56,9 @@ footer{
     width: 1px;
     margin: 0 10px;
 }
+
+@media only screen and (max-width: 600px) {
+    .fotter.div{
+        font-size: .9rem;
+    }
+}

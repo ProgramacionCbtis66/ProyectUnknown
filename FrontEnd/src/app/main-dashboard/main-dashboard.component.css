@@ -1,10 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
 body {
+    font-family: 'Ubuntu', sans-serif;
     display: flex;
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
-    width: 100vw;  /* Ocupa toda la anchura de la pantalla */
+    height: 100vh;
+    width: 100vw;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #202225;
+    background-color: #3f4041;
     color: #333;
     opacity: 0; 
     animation: fadeIn 1.5s ease forwards;
@@ -21,8 +25,9 @@ body {
 }
 .sidebar {
     width: 70px;
-    background-color: #202225;
+    background-color: #e8e8e8;
     height: 100vh; /* Ajuste a la altura completa de la pantalla */
+    width: 250px;
     padding: 10px 0;
     display: flex;
     flex-direction: column;
@@ -36,11 +41,39 @@ body {
     align-items: center;
     justify-content: center;
     gap: 20px;
-    border-radius: 28px; /* Bordes redondeados */
-    width: 1630px; /* Ancho del contenedor */
-    height: 800px; /* Alto del contenedor */
-    background-color: #f2f2f7; /* Color de fondo */
-    margin: 10px auto; /* Centrando horizontalmente el contenedor */
-    padding: 20px; /* Espacio interno */
+    width: 1300px; /* Ancho del contenedor */
+    height: 620px; /* Alto del contenedor */
+    background-color: #d0d0d0; /* Color de fondo */
     color: #333;
 }
+
+.sub_container_1 {
+    display: flex;
+    flex-direction: column;
+    width: 1100px;
+    height: 100px;
+    background-color: #f2f2f7;
+    margin-bottom: 48%;
+    color: #333;
+    overflow: hidden; /* Evita que el contenido afecte el tamaño del contenedor */
+}
+
+#user_name_dashboard{
+    font-size: 2vw;
+    font-weight: 700;
+    user-select: none;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+#rol_user_dashboard{
+    font-size: 1vw;
+    font-weight: 200;
+    user-select: none;
+    padding-left: 20px;
+
+}
+
+
+
+
