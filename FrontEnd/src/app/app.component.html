@@ -8,14 +8,32 @@
       rel="stylesheet"
     />
     <title>Project</title>
-    <link rel="style" href="app.component.css" />
-    <title>ADAE</title>
+    <link rel="stylesheet" href="app.component.css" />
   </head>
 
   <body>
     <header>
-      <nav>
+      <nav class="navbar">
         <a [routerLink]="['/main']" class="ADAE-logo-header">ADAE</a>
+        <div class="user-icon" (click)="toggleMenu()">
+          <i class="bx bxs-user-circle"></i>
+          <div class="profile-menu" [ngClass]="{ show: menuOpen }">
+            <div class="profile-header">
+              <p>Joshefs Agustin Rubio Carrillo</p>
+            </div>
+            <div class="profile-options">
+              <a [routerLink]="['profile_user']">
+                <i class="bx bx-user"></i> Ver mi perfil
+              </a>
+              <a href="#"> <i class="bx bx-shield"></i> Gestionar cuenta </a>
+            </div>
+            <div class="profile-logout">
+              <a href="#" class="logout-btn">
+                <i class="bx bx-x-circle"></i> Cerrar sesión
+              </a>
+            </div>
+          </div>
+        </div>
       </nav>
     </header>
 
@@ -26,20 +44,22 @@
     <footer>
       <div class="footer-div">
         <nav>
-          <a href="" class="privacy-policy">Politica de privacidad</a>
+          <a href="#" class="privacy-policy">Política de privacidad</a>
         </nav>
         <div class="sep"></div>
         <nav>
-          <a href="" class="terms-and-condition">Terminos y condiciones</a>
+          <a href="#" class="terms-and-condition">Términos y condiciones</a>
         </nav>
         <div class="sep"></div>
         <nav>
-          <a href="" class="terms-and-condition">Sobre nosotros</a>
+          <a href="#" class="terms-and-condition">Sobre nosotros</a>
         </nav>
       </div>
       <div class="footer-div">
         Copyright © 2024 ADAE. Todos los derechos reservados.
       </div>
     </footer>
+
+    <script src="app.component.js"></script>
   </body>
 </html>
