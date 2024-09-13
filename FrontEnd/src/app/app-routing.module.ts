@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: "login", component: LogInComponent},
   { path: "QRPage", component: LoginQRGeneratorComponent},
   { path: "Main_Dashboard", component: MainDashboardComponent},
-  { path: "profile_user", component: MyProfileUserComponent}
+  { path: "Profile_User", component: MyProfileUserComponent}
 ];
 
 @NgModule({
