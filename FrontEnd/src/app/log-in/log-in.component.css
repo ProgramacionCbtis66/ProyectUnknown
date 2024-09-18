@@ -17,6 +17,25 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 #sign-in{
@@ -30,6 +49,11 @@ body{
     box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, .1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
     width: 600px;
     height: 600px;
+    margin: 0;
+    padding: 0;
+    
+    opacity: 0;
+    animation: fadeIn 1.7s ease forwards;
 }
 
 #sign-in p{
@@ -45,13 +69,13 @@ body{
 
 .bx-right-arrow-circle{
     position: absolute;
-    top: 39%;
+    top: 44%;
     right: 3%;
     font-size: 1.5rem;
     color: black;
 }
 
-#sign-in #email-phone{
+#sign-in #email {
     padding: 1rem .9rem;
     font-size: 1rem;
     width: 450px;
@@ -61,6 +85,7 @@ body{
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
+    background-color: #E0E9F5
 }
 
 #email-phone:focus{
@@ -114,14 +139,36 @@ label{
       font-size: 8vw; 
     }
     
-    #sign-in #email-phone,
+    #sign-in #email,
     #sign-in #password {
       width: 100%; 
       max-width: 300px; 
     }
     
     .bx-right-arrow-circle {
-      top: 38.1%; 
+      top: 44%; 
       right: 5%; 
+    }
+  }
+
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+    #sign-in {
+        width: 500px;
+        height: 550px;
+    }
+    
+    #sign-in p {
+      font-size: 5vw; 
+    }
+    
+    #sign-in #email,
+    #sign-in #password {
+      width: 100%; 
+      max-width: 350px; 
+    }
+    
+    .bx-right-arrow-circle {
+      top: 44%; 
+      right: 4%; 
     }
   }

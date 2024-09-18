@@ -9,13 +9,31 @@
     />
     <title>Project</title>
     <link rel="style" href="app.component.css" />
-    <title>ADAE</title>
   </head>
 
   <body>
     <header>
-      <nav>
-        <a [routerLink] = "['/main']" class="ADAE-logo-header">ADAE</a>
+      <nav class="navbar">
+        <a [routerLink]="['/main']" class="ADAE-logo-header">ADAE</a>
+        <div class="user-icon" (click)="toggleMenu()">
+          <i class="bx bxs-user-circle"></i>
+          <div class="profile-menu" [ngClass]="{ show: menuOpen }">
+            <div class="profile-header">
+              <p>Joshefs Agustin Rubio Carrillo</p>
+            </div>
+            <div class="profile-options">
+              <a [routerLink]="['/Profile_User']">
+                <i class="bx bx-user"></i> Ver mi perfil
+              </a>
+              <a href="#"> <i class="bx bx-shield"></i> Gestionar cuenta </a>
+            </div>
+            <div class="profile-logout">
+              <a href="#" class="logout-btn">
+                <i class="bx bx-x-circle"></i> Cerrar sesión
+              </a>
+            </div>
+          </div>
+        </div>
       </nav>
     </header>
 
@@ -41,5 +59,7 @@
         Copyright © 2024 ADAE. Todos los derechos reservados.
       </div>
     </footer>
+
+    <script src="app.component.js"></script>
   </body>
 </html>

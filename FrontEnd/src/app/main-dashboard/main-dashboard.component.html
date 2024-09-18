@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Layout</title>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="sidebar_header">
+        <img src="../../assets/images/logo.png" alt="logo" />
+      </div>
+      <div class="sidebar_menu">
+        <ul>
+          <li>
+            <a routerLink="/dashboard" routerLinkActive="active">Home</a>
+          </li>
+          <li>
+            <a routerLink="/users" routerLinkActive="active">Clases</a>
+          </li>
+          <li>
+            <a routerLink="/products" routerLinkActive="active">Biblioteca</a>
+          </li>
+          <li>
+            <a routerLink="/orders" routerLinkActive="active">Horario</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="main_container">
+      <div class="sub_container_1">
+        <h3 id="user_name_dashboard">Hello, Josh</h3>
+        <p id="rol_user_dashboard">administrador</p>
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <router-outlet></router-outlet>
+    </div>
+  </body>
+</html>
