@@ -1,5 +1,6 @@
 import cnx from './conexion.js';
-
+import jwt from 'jsonwebtoken';
+import env from '../../enviroment/enviroment.js';
 
 
 const login = async(req, res) => {
@@ -17,9 +18,10 @@ const login = async(req, res) => {
     }
 
     if (registro.length > 0) {
-        res.json({
-            respuesta: registro[0].nombre
-        });
+        var user = JSON.stringify(registro[0]);
+        var usr = JSON.parse(user);
+        const token = jwt.sign(usr, env.key, { expiresIn: env.exp });
+        res.json({ token });
     } else {
         res.json({
             respuesta: 'usuario y contraseña incorrectos'
@@ -40,4 +42,4 @@ const listaUsuario = async(req,res)=>{
 
 }
 
-export default {login};
+export default {login,listaUsuario};
