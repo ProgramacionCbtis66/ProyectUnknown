@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;900&display=swap');
 
 * {
   margin: 0;
@@ -12,7 +12,8 @@ a {
 }
 
 body {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500; /* Poppins Medium */
   background-color: rgba(251, 251, 253, 0.5);
   margin: 0;
 }
@@ -135,6 +136,12 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+
+/* Tipografía en encabezados */
+header h1, header h2, header h3, header h4, header h5, header h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900; /* Poppins Black */
 }
 
 footer {
