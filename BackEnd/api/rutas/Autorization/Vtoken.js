@@ -11,14 +11,12 @@ const vtoken = (req, res, next) => {
     }
 
     verify(token, env.key, { ignoreExpiration: true }, (err, user) => {
-        if (err) {
-            console.log("Error al verificar el token:", err);
-            return res.sendStatus(403);
-        }
-
-        req.user = user; // Almacena el usuario en el objeto req para usarlo más adelante.
-        next(); // Pasa al siguiente middleware o ruta
-    });
+        if (err) return res.sendStatus(403);
+        req.tokenUser = user;
+        const currentTime = Date.now() / 1000;
+        if (env.exp < currentTime) return res.sendStatus(401);
+        next();
+      });
 };
 
 export default vtoken;
