@@ -6,7 +6,7 @@ import env from '../../enviroment/enviroment.js';
 const login = async(req, res) => {
     const {usuario, password} = req.body;
     console.log(usuario, password);
-    const sql = `select nombre from usuarios where usuario_id = '${usuario}' and password = '${password}'`;
+    const sql = `select nombre,usuario_id id,rol from usuarios where usuario_id = '${usuario}' and password = '${password}'`;
     const conexion = await cnx();
     var registro;
     try {
@@ -16,6 +16,7 @@ const login = async(req, res) => {
     } catch (error) {
         console.log(error);
     }
+console.log(registro);
 
     if (registro.length > 0) {
         var user = JSON.stringify(registro[0]);
