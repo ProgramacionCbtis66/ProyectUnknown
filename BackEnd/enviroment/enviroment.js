@@ -10,7 +10,8 @@ const env = {
     database: process.env.db_database,
     portServer: process.env.portServer,
     key: process.env.jwt_key,
-    exp: process.env.jwt_expiration
+    exp: process.env.jwt_expiration,
+    dir: process.env.direccion
 
 }
 

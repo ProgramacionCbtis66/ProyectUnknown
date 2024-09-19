@@ -31,7 +31,8 @@ app.use((req, res, next) => {
 });
 
 import UserApi from './api/rutas/usuario.js';
+import prueba from './api/rutas/pruebas.js';
 
-app.use('/apiAdae', [UserApi]);
+app.use('/apiAdae', [UserApi,prueba]);
 
 export default app;
