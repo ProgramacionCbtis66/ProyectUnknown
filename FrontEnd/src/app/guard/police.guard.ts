@@ -1,13 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '../service/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PoliceGuard implements CanActivate {
-  constructor(router: Router) { }
-    
+  constructor(private router: Router, private autentificacion: AuthService) { }
+    canActivate(
+      route: ActivatedRouteSnapshot): boolean | UrlTree {
+        const activetedRoute = route.routeConfig.path;
+        if(this.autentificacion.isAuth()){
+          
+          if(this.autentificacion.decodifica().rol === 'alumno'){
+            if(activetedRoute === )
    
   
 }
