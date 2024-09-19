@@ -8,6 +8,7 @@ import { LogInComponent } from './log-in/log-in.component';
 import { LoginQRGeneratorComponent } from './login-qr-generator/login-qr-generator.component';
 import { MainDashboardComponent } from './main-dashboard/main-dashboard.component';
 import { MyProfileUserComponent } from './my-profile-user/my-profile-user.component';
+import { UserSegurityComponent } from './user-segurity/user-segurity.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { MyProfileUserComponent } from './my-profile-user/my-profile-user.compon
     LoginQRGeneratorComponent,
     MainDashboardComponent,
     MyProfileUserComponent,
+    UserSegurityComponent,
   ],
   imports: [
     BrowserModule,
