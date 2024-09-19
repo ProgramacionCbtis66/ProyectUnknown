@@ -1,5 +1,7 @@
 import cnx from './conexion.js';
 
+
+
 const login = async(req, res) => {
     const {usuario, password} = req.body;
     console.log(usuario, password);
@@ -23,6 +25,19 @@ const login = async(req, res) => {
             respuesta: 'usuario y contraseña incorrectos'
         })
     }
+}
+
+const listaUsuario = async(req,res)=>{
+    const sql = `select * from usuarios`
+    const conexion = await cnx();   
+    var registro;
+    try {
+        [registro] = await conexion.execute(sql);
+        res.json(registro);
+        } catch (error) {
+            console.log(error);
+        }
+
 }
 
 export default {login};

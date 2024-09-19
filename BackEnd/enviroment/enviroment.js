@@ -8,7 +8,10 @@ const env = {
     user: process.env.db_user,
     password: process.env.db_password,
     database: process.env.db_database,
-    portServer: process.env.portServer
+    portServer: process.env.portServer,
+    key: process.env.jwt_key,
+    exp: process.env.jwt_expiration
+
 }
 
 export default env;
