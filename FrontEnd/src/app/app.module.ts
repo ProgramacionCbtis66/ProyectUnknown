@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';  
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';  
 import { JwtModule } from '@auth0/angular-jwt';          
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -33,47 +33,40 @@ export function tokenGetter() {
   return localStorage.getItem("adae");
 }
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomepageComponent,
-    LogInComponent,
-    LoginQRGeneratorComponent,
-    MainDashboardComponent,
-    MyProfileUserComponent,
-    UserSegurityComponent,
-    ClasesComponent,
-    BibliotecaComponent,
-    AlumnoComponent,
-    DocenteComponent,
-    ListaComponent,
-    ConstanciasComponent,
-    JustificantesFaltasComponent,
-    InscripcionesComponent,
-    ReInscripcionesComponent,
-    SeguroSocialComponent,
-    CertificadosComponent,
-    TitulacionComponent,
-    ServiciosEscolaresComponent,
-    AdministrativosComponent,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot()
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,  
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:4000"],
-        disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
-      }
-    })  
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        HomepageComponent,
+        LogInComponent,
+        LoginQRGeneratorComponent,
+        MainDashboardComponent,
+        MyProfileUserComponent,
+        UserSegurityComponent,
+        ClasesComponent,
+        BibliotecaComponent,
+        AlumnoComponent,
+        DocenteComponent,
+        ListaComponent,
+        ConstanciasComponent,
+        JustificantesFaltasComponent,
+        InscripcionesComponent,
+        ReInscripcionesComponent,
+        SeguroSocialComponent,
+        CertificadosComponent,
+        TitulacionComponent,
+        ServiciosEscolaresComponent,
+        AdministrativosComponent,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot()
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                allowedDomains: ["localhost:4000"],
+                disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
+            }
+        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
