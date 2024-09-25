@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';  
+import { JwtModule } from '@auth0/angular-jwt';          
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +28,11 @@ import { TitulacionComponent } from './dashboard/servicios_escolares/titulacion/
 import { ServiciosEscolaresComponent } from './dashboard/servicios-escolares/servicios-escolares.component';
 import { AdministrativosComponent } from './dashboard/administrativos/administrativos.component';
 
+// Función para obtener el token desde el localStorage
+export function tokenGetter() {
+  return localStorage.getItem("adae");
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,10 +56,22 @@ import { AdministrativosComponent } from './dashboard/administrativos/administra
     TitulacionComponent,
     ServiciosEscolaresComponent,
     AdministrativosComponent,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,  
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:4000"],
+        disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
+      }
+    })  
   ],
   providers: [],
   bootstrap: [AppComponent]
