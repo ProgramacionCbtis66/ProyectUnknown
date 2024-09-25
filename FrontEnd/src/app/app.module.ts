@@ -33,40 +33,44 @@ export function tokenGetter() {
   return localStorage.getItem("adae");
 }
 
-@NgModule({ declarations: [
-        AppComponent,
-        HomepageComponent,
-        LogInComponent,
-        LoginQRGeneratorComponent,
-        MainDashboardComponent,
-        MyProfileUserComponent,
-        UserSegurityComponent,
-        ClasesComponent,
-        BibliotecaComponent,
-        AlumnoComponent,
-        DocenteComponent,
-        ListaComponent,
-        ConstanciasComponent,
-        JustificantesFaltasComponent,
-        InscripcionesComponent,
-        ReInscripcionesComponent,
-        SeguroSocialComponent,
-        CertificadosComponent,
-        TitulacionComponent,
-        ServiciosEscolaresComponent,
-        AdministrativosComponent,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot()
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule,
-        JwtModule.forRoot({
-            config: {
-                tokenGetter: tokenGetter,
-                allowedDomains: ["localhost:4000"],
-                disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
-            }
-        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomepageComponent,
+    LogInComponent,
+    LoginQRGeneratorComponent,
+    MainDashboardComponent,
+    MyProfileUserComponent,
+    UserSegurityComponent,
+    ClasesComponent,
+    BibliotecaComponent,
+    AlumnoComponent,
+    DocenteComponent,
+    ListaComponent,
+    ConstanciasComponent,
+    JustificantesFaltasComponent,
+    InscripcionesComponent,
+    ReInscripcionesComponent,
+    SeguroSocialComponent,
+    CertificadosComponent,
+    TitulacionComponent,
+    ServiciosEscolaresComponent,
+    AdministrativosComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(), // Módulo importado aquí
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:4000"],
+        disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
+      }
+    }),
+  ],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
+  bootstrap: [AppComponent]
+})
 export class AppModule { }

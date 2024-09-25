@@ -25,12 +25,13 @@
     "jwt-decode": "^3.1.2",
     "ngx-toastr": "^19.0.0",
     "notiflix": "^3.2.7",
+    "rollup": "^4.22.4",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.2.5",
+    "@angular-devkit/build-angular": "^18.0.7",
     "@angular/cli": "^18.2.5",
     "@angular/compiler-cli": "^18.2.5",
     "@types/jasmine": "~4.0.0",
@@ -40,6 +41,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~5.4.5"
+    "typescript": "^5.5.4"
   }
 }
