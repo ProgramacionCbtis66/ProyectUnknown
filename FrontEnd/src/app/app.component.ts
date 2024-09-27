@@ -1,5 +1,5 @@
-// app.component.ts
 import { Component, HostListener } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +7,13 @@ import { Component, HostListener } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'FrontEnd';
+  title = 'ADAE';
   menuOpen = false;
+
+  constructor(private titleService: Title) {
+    // Cambiar el título de la página
+    this.titleService.setTitle(this.title);
+  }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

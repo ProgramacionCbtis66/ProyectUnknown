@@ -7,12 +7,12 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomepageComponent } from './homepage/homepage.component';
-import { LogInComponent } from './log-in/log-in.component';
-import { LoginQRGeneratorComponent } from './login-qr-generator/login-qr-generator.component';
+import { HomepageComponent } from './authentication_Page/homepage/homepage.component';
+import { LogInComponent } from './authentication_Page/log-in/log-in.component';
+import { LoginQRGeneratorComponent } from './authentication_Page/login-qr-generator/login-qr-generator.component';
 import { MainDashboardComponent } from './main-dashboard/main-dashboard.component';
-import { MyProfileUserComponent } from './my-profile-user/my-profile-user.component';
-import { UserSegurityComponent } from './user-segurity/user-segurity.component';
+import { MyProfileUserComponent } from './user-settings_Page/my-profile-user/my-profile-user.component';
+import { UserSegurityComponent } from './user-settings_Page/user-segurity/user-segurity.component';
 import { ClasesComponent } from './dashboard/alumno/clases/clases.component';
 import { BibliotecaComponent } from './dashboard/alumno/biblioteca/biblioteca.component';
 import { AlumnoComponent } from './dashboard/alumno/alumno.component';

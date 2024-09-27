@@ -14,8 +14,8 @@ a {
 body {
   font-family: 'Poppins', sans-serif;
   font-weight: 500; /* Poppins Medium */
-  background-color: rgba(251, 251, 253, 0.5);
   margin: 0;
+  background-color: #fbfbfd;
 }
 
 header {
@@ -24,8 +24,8 @@ header {
   z-index: 1000;
   top: 0;
   backdrop-filter: blur(14px);
-  padding: 8px 20px;
-  background-color: rgba(251, 251, 253, 0.5);
+  padding: 12px 20px;
+  background-color: rgba(251, 251, 253, .5);
   border-bottom: 1px solid rgba(251, 251, 253, 0.5);
 }
 
@@ -42,6 +42,7 @@ header {
   align-items: center;
 }
 
+/* Estilo del menú de usuario */
 .user-icon {
   width: 40px;
   height: 40px;
@@ -49,6 +50,8 @@ header {
   cursor: pointer;
   position: relative;
 }
+
+
 
 /* Estilo del menú */
 .profile-menu {
@@ -144,18 +147,20 @@ header h1, header h2, header h3, header h4, header h5, header h6 {
   font-weight: 900; /* Poppins Black */
 }
 
+
+/* footer */
 footer {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  background-color: #f2f2f7;
+  background-color: #eeeef3;
   padding: 1.5rem;
 }
 
 .footer-div {
   display: flex;
-  font-size: 0.6rem;
-  color: gray;
+  font-size: 0.5rem;
+  color: rgba(0, 0, 0, .56);
   align-items: center;
 }
 
