@@ -109,6 +109,54 @@ body {
     font-weight: 200;
 }
 
+.profile-pic {
+    width: 150px; /* Tamaño fijo para la imagen de perfil */
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    background-color: #ccc; /* Color de fondo para cuando no haya imagen */
+    object-fit: cover; /* Mantendrá la proporción de la imagen cuando se agregue */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efecto de transición suave */
+}
+
+
+/* Efecto hover para cuando haya una imagen */
+.card:hover .profile-pic {
+    transform: scale(1.05); /* Escala la imagen al pasar el cursor */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+/* Efecto de acercar el contenedor y agregar sombra al pasar el cursor */
+.card {
+    transition: transform 0.5s ease, box-shadow 0.5s ease; /* Añade una transición suave */
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra básica */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Escala el contenedor al pasar el cursor */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al pasar el cursor */
+}
+
+/* Para asegurar que los contenedores sean responsivos */
+.container {
+    max-width: 100%;
+    padding: 0 15px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.col-md-3, .col-md-5, .col-md-8 {
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-bottom: 20px;
+}
+
 /* Estilos para tabletas y dispositivos móviles */
 @media (max-width: 768px) {
     .sidebar {
@@ -133,5 +181,12 @@ body {
     100% {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .profile-pic {
+        max-width: 120px; /* Ajusta el tamaño máximo en iPad */
+        max-height: 120px;
     }
 }

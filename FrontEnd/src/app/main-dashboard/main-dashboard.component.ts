@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Importa el Router
 
 @Component({
   selector: 'app-main-dashboard',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainDashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { } // Inyecta el Router en el constructor
 
   ngOnInit(): void {
   }
 
+  // Método para navegar al perfil
+  navigateToProfile(): void {
+    this.router.navigate(['/Profile_User']); // Asegúrate de que '/profile' sea la ruta correcta
+  }
 }
