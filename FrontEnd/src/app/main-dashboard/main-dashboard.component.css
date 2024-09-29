@@ -1,28 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-
+/* Ocultar solo la barra deslizadora horizontal */
 body {
     font-family: 'Ubuntu', sans-serif;
     display: flex;
     height: 100vh;
-    width: 100vw;
     margin: 0;
     background-color: #fbfbfd;
     color: #333;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(20px); 
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    overflow-x: hidden; /* Oculta solo el scroll horizontal */
 }
 
 .sidebar {
-    width: 250px;
+    width: 250px; /* El sidebar tendrá un ancho fijo */
     background-color: #353535;
     height: 100vh;
     padding: 20px 0;
@@ -30,6 +18,7 @@ body {
     flex-direction: column;
     align-items: center;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* Evita que el sidebar se reduzca */
 }
 
 .sidebar_header {
@@ -50,12 +39,12 @@ body {
 .sidebar_menu li {
     width: 100%;
     margin-bottom: 15px;
-    position: relative; /* Necesario para posicionar el span */
+    position: relative;
 }
 
 .sidebar_menu a {
-    display: flex; /* Cambiar a flex para alinear el texto y la barra */
-    align-items: center; /* Centrar verticalmente el contenido */
+    display: flex;
+    align-items: center;
     text-decoration: none;
     color: #ffffff;
     font-size: 1rem;
@@ -65,20 +54,19 @@ body {
 }
 
 .highlight {
-    content: '';
     position: absolute;
-    left: 0; /* Alinear a la izquierda */
-    top: 50%; /* Centrar verticalmente */
-    transform: translateY(-50%); /* Ajustar el centrado */
-    width: 5px; /* Ancho de la barra */
-    height: 75%; /* Alto de la barra */
-    background-color: #ffffff; /* Color de la barra */
-    opacity: 0; /* Inicialmente invisible */
-    transition: opacity 0.8s ease; /* Transición suave */
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 75%;
+    background-color: #ffffff;
+    opacity: 0;
+    transition: opacity 0.8s ease;
 }
 
 .sidebar_menu a:hover .highlight {
-    opacity: 1; /* Hacer visible la barra al pasar el cursor */
+    opacity: 1;
 }
 
 .sidebar_menu a:hover {
@@ -86,33 +74,64 @@ body {
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* main_container ocupa el espacio restante, sin mover */
 .main_container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     background-color: #fbfbfd;
     color: #333;
-    opacity: 0; 
     animation: fadeIn 1.5s ease forwards;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
 }
 
+/* sub_container_1 ocupa toda la parte superior sin mover el sidebar */
 .sub_container_1 {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    width: 100%; /* Ancho completo del contenedor principal */
     height: 100px;
     background-color: #f2f2f7;
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    display: flex; /* Cambia a flex para alinear elementos */
+    flex-direction: column; /* Apila los elementos verticalmente */
+    justify-content: center; /* Centra verticalmente los elementos */
 }
 
+/* Estilos para PC */
 #user_name_dashboard {
-    font-size: 2vw;
+    padding-top: 30px;
+    font-size: calc(1.5vw + 0.7vh); /* Tamaño para PC */
     font-weight: 700;
 }
 
 #rol_user_dashboard {
-    font-size: 1vw;
+    font-size: calc(0.8vw + 0.7vh); /* Tamaño para PC */
     font-weight: 200;
+}
+
+/* Estilos para tabletas y dispositivos móviles */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; /* Oculta el sidebar */
+    }
+
+    #user_name_dashboard {
+        font-size: calc(2vw + 3vh); /* Tamaño para tabletas y móviles */
+    }
+
+    #rol_user_dashboard {
+        font-size: calc(1.5vw + 2vh); /* Tamaño para tabletas y móviles */
+    }
+}
+
+/* Animaciones y otros estilos */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px); 
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -9,7 +9,8 @@ import { Title } from '@angular/platform-browser';
 export class AppComponent {
   title = 'ADAE';
   menuOpen = false;
-
+  isSwipeEnabled = false;
+  
   constructor(private titleService: Title) {
     // Cambiar el título de la página
     this.titleService.setTitle(this.title);
