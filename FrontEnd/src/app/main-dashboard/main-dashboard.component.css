@@ -83,6 +83,7 @@ body {
     color: #333;
     animation: fadeIn 1.5s ease forwards;
     overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 /* sub_container_1 ocupa toda la parte superior sin mover el sidebar */

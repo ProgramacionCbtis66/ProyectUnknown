@@ -1,1 +1,51 @@
-<p>user-segurity works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <ul>
+        <li routerLink="/Profile_User" routerLinkActive="active">
+          <span class="icon">📄</span> mi perfil
+        </li>
+        <li routerLink="/segurity_user" routerLinkActive="active">
+          <span class="icon">🔒</span> seguridad
+        </li>
+        <li routerLink="/notifications_user" routerLinkActive="active">
+          <span class="icon">🔔</span> notificaciones
+        </li>
+        <li routerLink="/connected_devices_user" routerLinkActive="active">
+          <span class="icon">💻</span> dispositivos conectados
+        </li>
+        <li class="logout"><span class="icon">❌</span> Cerrar sesión</li>
+      </ul>
+    </aside>
+
+    <section class="main-content">
+      <div class="header">
+        <h2>Perfil</h2>
+        <div class="streak"></div>
+      </div>
+      <div class="profile">
+        <img src="profile-pic.jpg" alt="" class="profile-pic" />
+        <h3>Joshefs Agustin Rubio Carrillo</h3>
+        <div class="info">
+          <p><strong>Especialidad:</strong> <a href="#">Programación</a></p>
+          <p><strong>Grado:</strong> 5</p>
+          <p><strong>Grupo:</strong> "H"</p>
+          <p>
+            <strong>Número de Control:</strong> <a href="#">223300506604004</a>
+            <span class="icon">📋</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="mt-5">
+      <router-outlet></router-outlet>
+    </div>
+  </body>
+</html>

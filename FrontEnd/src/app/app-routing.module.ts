@@ -6,6 +6,9 @@ import { LoginQRGeneratorComponent } from './authentication_Page/login-qr-genera
 import { MainDashboardComponent } from './main-dashboard/main-dashboard.component';
 import { MyProfileUserComponent } from './user-settings_Page/my-profile-user/my-profile-user.component';
 import { PoliceGuard } from './Core/guard/police.guard';
+import { UserSegurityComponent } from './user-settings_Page/user-segurity/user-segurity.component';
+import { UserNotificationsPageComponent } from './user-settings_Page/user-notifications-page/user-notifications-page.component';
+import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-devices-page/connected-devices-page.component';
 
 const routes: Routes = [
   { path: "", component: HomepageComponent},
@@ -13,7 +16,11 @@ const routes: Routes = [
   { path: "login", component: LogInComponent},
   { path: "QRPage", component: LoginQRGeneratorComponent, canActivate: [PoliceGuard]},
   { path: "Main_Dashboard", component: MainDashboardComponent},
-  { path: "Profile_User", component: MyProfileUserComponent}
+  { path: "Profile_User", component: MyProfileUserComponent},
+  { path: "segurity_user", component: UserSegurityComponent},
+  { path: "notifications_user", component: UserNotificationsPageComponent},
+  { path: "connected_devices_user", component: ConnectedDevicesPageComponent},
+
 ];
 
 @NgModule({

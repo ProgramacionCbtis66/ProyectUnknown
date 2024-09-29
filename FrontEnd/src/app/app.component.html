@@ -51,15 +51,23 @@
     <footer>
       <div class="footer-div">
         <nav>
-          <a href="" class="privacy-policy">Politica de privacidad</a>
+          <a [routerLink]="['/privacy-policy']" class="privacy-policy"
+            >Política de privacidad</a
+          >
         </nav>
         <div class="sep"></div>
         <nav>
-          <a href="" class="terms-and-condition">Terminos y condiciones</a>
+          <a
+            [routerLink]="['/terms-and-conditions']"
+            class="terms-and-condition"
+            >Términos y condiciones</a
+          >
         </nav>
         <div class="sep"></div>
         <nav>
-          <a href="" class="terms-and-condition">Sobre nosotros</a>
+          <a [routerLink]="['/about-us']" class="terms-and-condition"
+            >Sobre nosotros</a
+          >
         </nav>
       </div>
       <div class="footer-div2">

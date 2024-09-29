@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router'; // Asegúrate de importar RouterModule
 
 @Component({
   selector: 'app-user-notifications-page',
   standalone: true,
-  imports: [],
+  imports: [RouterModule], // Importa RouterModule aquí
   templateUrl: './user-notifications-page.component.html',
-  styleUrl: './user-notifications-page.component.css'
+  styleUrls: ['./user-notifications-page.component.css'] // Corrige styleUrl a styleUrls
 })
 export class UserNotificationsPageComponent {
+  constructor() { }
 
+  ngOnInit(): void {
+  }
 }
