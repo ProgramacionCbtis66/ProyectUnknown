@@ -37,6 +37,13 @@
       </nav>
     </header>
 
+    <!-- Superposición para el desenfoque -->
+    <div
+      class="overlay"
+      [ngClass]="{ active: menuOpen }"
+      (click)="closeMenu()"
+    ></div>
+
     <div class="mt-5">
       <router-outlet></router-outlet>
     </div>

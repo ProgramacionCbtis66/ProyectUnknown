@@ -17,14 +17,23 @@ export class AppComponent {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
+    document.body.classList.toggle('no-scroll', this.menuOpen); // Deshabilitar scroll
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+    document.body.classList.remove('no-scroll'); // Habilita el scroll cuando se cierra el menú
   }
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: Event) {
     const target = event.target as HTMLElement;
     const menu = document.querySelector('.user-icon') as HTMLElement;
-    if (menu && !menu.contains(target)) {
-      this.menuOpen = false;
+    const profileMenu = document.querySelector('.profile-menu') as HTMLElement;
+
+    // Cierra el menú si se hace clic fuera de él y del icono de usuario
+    if (menu && profileMenu && !menu.contains(target) && !profileMenu.contains(target)) {
+      this.closeMenu();
     }
   }
 }
