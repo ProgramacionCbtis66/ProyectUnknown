@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -25,7 +25,9 @@
               <a [routerLink]="['/Profile_User']">
                 <i class="bx bx-user"></i> Ver mi perfil
               </a>
-              <a href="#"> <i class="bx bx-shield"></i> Gestionar cuenta </a>
+              <a [routerLink]="['/segurity_user']">
+                <i class="bx bx-shield"></i> Gestionar cuenta
+              </a>
             </div>
             <div class="profile-logout">
               <a href="#" class="logout-btn">
