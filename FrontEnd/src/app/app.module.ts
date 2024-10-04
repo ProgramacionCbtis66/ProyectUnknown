@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';  
-import { JwtModule } from '@auth0/angular-jwt';          
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms'; // Importa FormsModule
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -69,6 +70,7 @@ export function tokenGetter() {
         disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
       }
     }),
+    FormsModule // Agrega FormsModule aquí
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]

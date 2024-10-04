@@ -4,28 +4,27 @@ const app = express();
 import bodyparse from 'body-parser';
 import cors from 'cors';
 
-
-
-
 app.use(bodyparse.urlencoded({ extended: false }));
 app.use(bodyparse.json());
 
-const cleintesPermitidos = ['http://localhost:4200'];
+const clientesPermitidos = ['http://localhost:4200'];
 
-/* app.use(cors({
+app.use(cors({
     origin: (origin, callback) => {
         if (!origin || clientesPermitidos.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
-            callback(new Error('Este dominio no esta permitido'));
-        })); */
+            callback(new Error('Este dominio no está permitido'));
+        }
+    }
+}));
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'),
-        res.header('Access-Control-Allow-Headers', 'origin, X-Requestd-with, content-type,accept , authorization');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     if (req.method === 'OPTIONS') {
-        res.header('Acces-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH');
-        return rest.status(200).json({ok: 'ok'});
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
+        return res.status(200).json({ ok: 'ok' }); // Cambié 'rest' por 'res'
     }
     next();
 });
@@ -33,6 +32,6 @@ app.use((req, res, next) => {
 import UserApi from './api/rutas/usuario.js';
 import prueba from './api/rutas/pruebas.js';
 
-app.use('/apiAdae', [UserApi,prueba]);
+app.use('/apiAdae', [UserApi, prueba]);
 
 export default app;
