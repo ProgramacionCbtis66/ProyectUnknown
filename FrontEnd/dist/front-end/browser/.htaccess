@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
-  RewriteEngine On RewriteBase / # Si el archivo o directorio no existe,
-  redirige a index.html RewriteCond %{REQUEST_FILENAME} !-f RewriteCond
-  %{REQUEST_FILENAME} !-d # Redirige todo a index.html RewriteRule ^.*$
-  /index.html [L,QSA]
+  RewriteEngine On RewriteBase / # Si el archivo o directorio existe, dejar que
+  Apache maneje la solicitud. RewriteCond %{REQUEST_FILENAME} !-f RewriteCond
+  %{REQUEST_FILENAME} !-d # Redirige todas las demás solicitudes a index.html
+  para que Angular maneje las rutas. RewriteRule ^.*$ /index.html [L]
 </IfModule>
