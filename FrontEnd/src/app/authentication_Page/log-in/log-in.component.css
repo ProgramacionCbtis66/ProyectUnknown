@@ -1,18 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     font-family: 'Ubuntu', sans-serif;
-    background-color: rgba(251,251,253,.5);
+    background-color: rgba(251, 251, 253, .5);
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#main{
+#main {
     width: 100vw;
     height: 87vh;
     display: flex;
@@ -22,24 +23,27 @@ body{
     padding: 0;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
 }
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
         transform: translateY(20px);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-#sign-in{
+#sign-in {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,81 +56,73 @@ html, body {
     height: 600px;
     margin: 0;
     padding: 0;
-    
     opacity: 0;
     animation: fadeIn 1.7s ease forwards;
+    transition: background-color 0.3s ease;
 }
 
-#sign-in p{
+#sign-in p {
     font-size: 3.5vw;
     font-weight: 500;
-    user-select: none;
+    border:none;
 
+    user-select: none;
 }
 
-.input-container{
+.input-container {
     position: relative;
 }
 
-.bx-right-arrow-circle{
+.bx-right-arrow-circle {
     position: absolute;
-    top: 44%;
+    top: 46%;
     right: 3%;
     font-size: 1.5rem;
     color: black;
 }
 
-#sign-in #email {
+#sign-in #email,
+#sign-in #password {
     padding: 1rem .9rem;
     font-size: 1rem;
     width: 450px;
     border: 1px solid black;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     margin-bottom: 20px;
-    background-color: #E0E9F5
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#email-phone:focus{
+#email-phone:focus {
     border: 1px solid skyblue;
     outline: 0;
 }
 
-#sign-in #password{
-    padding: 1rem .9rem;
-    font-size: 1rem;
-    width: 450px;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin-bottom: 31px;
-}
-label{
+label {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-#check{
+#check {
     height: 16px;
     width: 16px;
     margin-right: 10px;
-    background-color: rgb(0, 0, 0);
 }
 
-#sign-in #email-phone{
+#sign-in #email-phone {
     font-size: 1rem;
 }
 
-.links{
+.links {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
-.links a{
+.links a {
     color: rgb(0, 128, 255);
 }
 
@@ -135,41 +131,65 @@ label{
         width: 400px;
         height: 450px;
     }
-    
+
     #sign-in p {
-      font-size: 8vw; 
+        font-size: 8vw;
     }
-    
+
     #sign-in #email,
     #sign-in #password {
-      width: 100%; 
-      max-width: 300px; 
+        width: 100%;
+        max-width: 300px;
     }
-    
+
     .bx-right-arrow-circle {
-      top: 44%; 
-      right: 5%; 
+        top: 46%;
+        right: 5%;
     }
-  }
+}
 
 @media only screen and (min-width: 600px) and (max-width: 1024px) {
     #sign-in {
         width: 500px;
         height: 550px;
     }
-    
+
     #sign-in p {
-      font-size: 5vw; 
+        font-size: 5vw;
     }
-    
+
     #sign-in #email,
     #sign-in #password {
-      width: 100%; 
-      max-width: 350px; 
+        width: 100%;
+        max-width: 350px;
     }
-    
+
     .bx-right-arrow-circle {
-      top: 44%; 
-      right: 4%; 
+        top: 44%;
+        right: 4%;
     }
-  }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: rgb(30, 30, 30);
+        color: #e0e0e0;
+    }
+
+    #sign-in {
+        background-color: #333;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 0px, rgba(0, 0, 0, 0.3) 0px 8px 24px, rgba(0, 0, 0, 0.4) 0px 16px 48px;
+    }
+
+    #sign-in p,
+    .bx-right-arrow-circle,
+    #sign-in #email,
+    #sign-in #password {
+        color: #e0e0e0;
+    }
+
+    .links a {
+        color: rgb(100, 150, 255);
+    }
+}

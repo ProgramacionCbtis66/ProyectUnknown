@@ -19,7 +19,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private jwt: JwtHelperService,
-    private toastr: ToastrService 
+    private toastr: ToastrService
   ) { }
 
   // Manejo de errores para las solicitudes HTTP
@@ -42,7 +42,7 @@ export class AuthService {
     if (token && !this.jwt.isTokenExpired(token)) {
       return true;
     } else {
-      this.toastr.error('Su sesión ha expirado...', 'Error'); 
+      this.toastr.error('Su sesión ha expirado...', 'Error');
       return false;
     }
   }
