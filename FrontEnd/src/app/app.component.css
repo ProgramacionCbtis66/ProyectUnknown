@@ -249,10 +249,16 @@ footer {
 
   .profile-header {
     background-color: #333; /* Fondo del encabezado del menú */
+    color: #f5f5f5;
+  }
+  
+  .profile-header p {
+    color: #f5f5f5;
   }
 
   .profile-options a {
     color: #f5f5f5; /* Color de texto de las opciones del menú */
+    background-color: #333;
   }
 
   .profile-options a:hover {
@@ -261,6 +267,11 @@ footer {
 
   .logout-btn {
     color: #ff6b6b; /* Color de texto de la opción de cerrar sesión */
+    
+  }
+
+  .profile-logout{
+    background-color: #333;
   }
 
   footer {
