@@ -11,17 +11,18 @@ import { UserNotificationsPageComponent } from './user-settings_Page/user-notifi
 import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-devices-page/connected-devices-page.component';
 
 const routes: Routes = [
-  { path: "", component: HomepageComponent},
-  { path: "main", component: HomepageComponent},
-  { path: "login", component: LogInComponent},
-  { path: "QRPage", component: LoginQRGeneratorComponent, canActivate: [PoliceGuard]},
-  { path: "Main_Dashboard", component: MainDashboardComponent},
-  { path: "Profile_User", component: MyProfileUserComponent},
-  { path: "segurity_user", component: UserSegurityComponent},
-  { path: "notifications_user", component: UserNotificationsPageComponent},
-  { path: "connected_devices_user", component: ConnectedDevicesPageComponent},
-
+  { path: "", component: HomepageComponent },
+  { path: "main", component: HomepageComponent },
+  { path: "login", component: LogInComponent },
+  { path: "QRPage", component: LoginQRGeneratorComponent, canActivate: [PoliceGuard] },
+  { path: "Main_Dashboard", component: MainDashboardComponent },
+  { path: "Profile_User", component: MyProfileUserComponent },
+  { path: "segurity_user", component: UserSegurityComponent },
+  { path: "notifications_user", component: UserNotificationsPageComponent },
+  { path: "connected_devices_user", component: ConnectedDevicesPageComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full' } // Ruta por defecto
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
