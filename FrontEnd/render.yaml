@@ -1,0 +1,13 @@
+services:
+  - type: static_site
+    name: FrontEnd
+    env: static
+    buildCommand: npx ng build --configuration production
+    publishDirectory: FrontEnd/dist/[front-end]
+    redirect:
+      - from: /
+        to: /
+        status: 200
+      - from: /*
+        to: /
+        status: 200
