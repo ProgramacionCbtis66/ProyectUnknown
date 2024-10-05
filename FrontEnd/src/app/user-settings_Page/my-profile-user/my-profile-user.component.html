@@ -3,31 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <title>Document</title>
   </head>
   <body>
-    <aside class="sidebar">
+    <aside class="sidebar" [ngClass]="{ active: sidebarActive }">
       <ul>
-        <li routerLink="/Profile_User" routerLinkActive="active">
+        <li
+          routerLink="/Profile_User"
+          routerLinkActive="active"
+          (click)="setActiveMenu('perfil')"
+        >
           <span class="icon">📄</span> mi perfil
         </li>
-        <li routerLink="/segurity_user" routerLinkActive="active">
+        <li
+          routerLink="/segurity_user"
+          routerLinkActive="active"
+          (click)="setActiveMenu('seguridad')"
+        >
           <span class="icon">🔒</span> seguridad
         </li>
-        <li routerLink="/notifications_user" routerLinkActive="active">
+        <li
+          routerLink="/notifications_user"
+          routerLinkActive="active"
+          (click)="setActiveMenu('notificaciones')"
+        >
           <span class="icon">🔔</span> notificaciones
         </li>
-        <li routerLink="/connected_devices_user" routerLinkActive="active">
+        <li
+          routerLink="/connected_devices_user"
+          routerLinkActive="active"
+          (click)="setActiveMenu('dispositivos')"
+        >
           <span class="icon">💻</span> dispositivos conectados
         </li>
-        <li class="logout"><span class="icon">❌</span> Cerrar sesión</li>
+        <li class="logout" (click)="setActiveMenu('logout')">
+          <span class="icon">❌</span> Cerrar sesión
+        </li>
       </ul>
     </aside>
 
-    <section class="main-content">
+    <section class="main-content" [ngClass]="{ blurred: sidebarActive }">
       <div class="header">
         <h2>Perfil</h2>
         <div class="streak"></div>
+        <div id="menuBtn" (click)="toggleSidebar()">
+          <i class="bx bx-menu"></i>
+          <!-- Icono de tres rayas -->
+        </div>
       </div>
       <div class="profile">
         <img src="profile-pic.jpg" alt="" class="profile-pic" />

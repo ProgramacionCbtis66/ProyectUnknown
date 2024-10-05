@@ -1,13 +1,14 @@
 html, body {
     margin: 0;
     padding: 0;
-    height: 50%;
+    height: 100%;
     width: 100%;
     font-family: Arial, sans-serif;
     background-color: #fbfbfd;
     display: flex;
 }
 
+/* Animaciones */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -21,24 +22,36 @@ html, body {
 
 @keyframes slideFadeIn {
     0% {
-        width: 0; /* Comienza con 0 de ancho */
-        opacity: 0; /* Comienza completamente transparente */
+        width: 0; 
+        opacity: 0; 
     }
     100% {
-        width: 5px; /* Ancho final de la barra */
-        opacity: 1; /* Totalmente visible */
+        width: 5px; 
+        opacity: 1; 
     }
 }
 
-/* Sidebar ocupa una parte fija del ancho de la pantalla */
+/* Sidebar */
 .sidebar {
     width: 250px;
     background-color: #f0f0f0;
     padding: 20px;
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    height: 100vh; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    left: -250px; /* Ocultar el sidebar por defecto */
+    transition: left 0.3s ease; /* Animación para mostrar/ocultar */
+}
+
+.sidebar.active {
+    left: 0; /* Mostrar el sidebar */
+}
+
+/* Difuminar contenido principal */
+.main-content.blurred {
+    filter: blur(5px); /* Difuminar el contenido */
+    transition: filter 0.3s ease; /* Animación de difuminado */
 }
 
 /* Menú lateral */
@@ -52,27 +65,24 @@ html, body {
     font-size: 16px;
     color: #333;
     cursor: pointer;
-    position: relative; /* Necesario para el pseudo-elemento */
+    position: relative; 
 }
 
-/* Barra negra al lado izquierdo del ícono activo */
 .sidebar ul li.active::before {
     content: '';
     position: absolute;
-    right: 215px; /* Ajusta para que esté al lado del ícono */
-    top: 50%; /* Centramos verticalmente */
-    height: 70%; /* Ajustamos la altura de la barra */
+    right: 215px; 
+    top: 50%; 
+    height: 70%; 
     background-color: black;
-    transform: translateY(-50%); /* Centro vertical */
-    animation: slideFadeIn 0.6s ease forwards; /* Animación de deslizamiento y desvanecimiento */
+    transform: translateY(-50%); 
+    animation: slideFadeIn 0.6s ease forwards; 
 }
 
-/* Modificar el padding de los iconos */
 .sidebar ul li span.icon {
-    margin-right: 10px; /* Espacio entre icono y texto */
+    margin-right: 10px; 
 }
 
-/* Estilo del elemento de cierre de sesión */
 .sidebar ul li.logout {
     padding-top: 380px;
     color: red;
@@ -80,12 +90,11 @@ html, body {
 
 /* Contenido principal */
 .main-content {
-    flex: 1; /* Ocupa el resto del espacio de la pantalla */
+    flex: 1; 
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    opacity: 0; 
     animation: fadeIn 1.5s ease forwards;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -141,3 +150,40 @@ html, body {
 .info a:hover {
     text-decoration: underline;
 }
+
+/* Estilos para el botón de menú */
+#menuBtn {
+    display: none; /* Ocultar el botón de menú en pantallas grandes */
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .sidebar {
+        z-index: 1000;
+        position: fixed; /* Mantener el sidebar en una posición fija */
+    }
+
+    #menuBtn {
+        display: block; /* Mostrar el botón de menú en pantallas pequeñas */
+        cursor: pointer;
+    }
+
+    .sidebar.active {
+        left: 0; /* Mostrar el sidebar */
+    }
+}
+
+@media (min-width: 774px){
+    .main-content.blurred {
+        filter: blur(0px);
+    }
+
+    #menuBtn {
+        display: none !important; /* Ocultar el botón de menú en pantallas grandes */
+    }
+}
+
+#menuBtn {
+    display: block; /* Mostrar el botón de menú en móviles */
+    cursor: pointer;
+  }
