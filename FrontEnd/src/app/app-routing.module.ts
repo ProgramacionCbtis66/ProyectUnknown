@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: "", component: HomepageComponent },
   { path: "main", component: HomepageComponent },
   { path: "login", component: LogInComponent },
-  { path: "QRPage", component: LoginQRGeneratorComponent, canActivate: [PoliceGuard] },
+  { path: "QRPage", component: LoginQRGeneratorComponent,},
   { path: "Main_Dashboard", component: MainDashboardComponent },
   { path: "Profile_User", component: MyProfileUserComponent },
   { path: "segurity_user", component: UserSegurityComponent },
