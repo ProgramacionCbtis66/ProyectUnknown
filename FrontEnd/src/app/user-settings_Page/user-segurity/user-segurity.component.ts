@@ -6,7 +6,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
   styleUrls: ['./user-segurity.component.css']
 })
 export class UserSegurityComponent implements OnInit {
-  activeMenu: string = 'perfil'; // Elemento activo por defecto
+   activeMenu: string = 'perfil'; // Elemento activo por defecto
   sidebarActive: boolean = true; // Mostrar el sidebar por defecto en modo PC
 
   constructor() {}
