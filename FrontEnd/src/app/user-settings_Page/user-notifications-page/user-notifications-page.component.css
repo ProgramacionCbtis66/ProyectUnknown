@@ -166,6 +166,7 @@ html, body {
     }
 
     #menuBtn {
+        transform: scale(1.4);
         display: block; /* Mostrar el botón de menú en pantallas pequeñas */
         cursor: pointer;
     }
@@ -186,6 +187,7 @@ html, body {
 }
 
 #menuBtn {
+    transform: scale(1.4);
     display: block; /* Mostrar el botón de menú en móviles */
     cursor: pointer;
   }
