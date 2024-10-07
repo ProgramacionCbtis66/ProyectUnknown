@@ -228,6 +228,7 @@ input:checked + .slider:before {
 }
 /* Estilos para el botón de menú */
 #menuBtn {
+    transform: scale(1.4);
     display: none; /* Ocultar el botón de menú en pantallas grandes */
 }
 
