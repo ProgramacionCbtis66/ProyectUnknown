@@ -5,6 +5,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { CommonModule } from '@angular/common'; // Importa CommonModule
+import { RouterModule } from '@angular/router'; // Importa RouterModule
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +30,8 @@ import { CertificadosComponent } from './dashboard/servicios_escolares/certifica
 import { TitulacionComponent } from './dashboard/servicios_escolares/titulacion/titulacion.component';
 import { ServiciosEscolaresComponent } from './dashboard/servicios-escolares/servicios-escolares.component';
 import { AdministrativosComponent } from './dashboard/administrativos/administrativos.component';
+import { UserNotificationsPageComponent } from './user-settings_Page/user-notifications-page/user-notifications-page.component';
+import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-devices-page/connected-devices-page.component';
 
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
@@ -43,6 +47,8 @@ export function tokenGetter() {
     MainDashboardComponent,
     MyProfileUserComponent,
     UserSegurityComponent,
+    UserNotificationsPageComponent,
+    ConnectedDevicesPageComponent,
     ClasesComponent,
     BibliotecaComponent,
     AlumnoComponent,
@@ -70,7 +76,9 @@ export function tokenGetter() {
         disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
       }
     }),
-    FormsModule // Agrega FormsModule aquí
+    FormsModule, // Agrega FormsModule aquí
+    CommonModule, // Asegúrate de añadir CommonModule
+    RouterModule, // Asegúrate de añadir RouterModule
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]

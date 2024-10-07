@@ -1,17 +1,53 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router'; // Asegúrate de importar RouterModule si usas navegación
+import { Component, OnInit, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-connected-devices-page',
-  standalone: true,
-  imports: [RouterModule], // Agrega RouterModule aquí si necesitas navegación
   templateUrl: './connected-devices-page.component.html',
   styleUrls: ['./connected-devices-page.component.css'] // Corrige styleUrl a styleUrls
 })
 export class ConnectedDevicesPageComponent {
-  constructor() { }
+  activeMenu: string = 'perfil'; // Elemento activo por defecto
+  sidebarActive: boolean = true; // Mostrar el sidebar por defecto en modo PC
+
+  constructor() {}
 
   ngOnInit(): void {
-    // Lógica de inicialización si es necesario
+    // Corregido con bind para mantener el contexto de this
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize(); // Asegurarse de que el sidebar está gestionado según el tamaño de la pantalla
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
+
+  setActiveMenu(menu: string): void {
+    this.activeMenu = menu;
+  }
+
+  toggleSidebar(): void {
+    if (window.innerWidth <= 768) {
+      this.sidebarActive = !this.sidebarActive; // Alternar el sidebar en móviles
+    }
+  }
+
+  handleResize(): void {
+    if (window.innerWidth > 768) {
+      this.sidebarActive = true; // Mostrar sidebar en pantallas grandes
+    } else {
+      this.sidebarActive = false; // Ocultar sidebar en pantallas pequeñas
+    }
+  }
+
+  // Detectar clics fuera del sidebar en móviles
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    const clickedElement = event.target as HTMLElement;
+    const isClickInsideSidebar = clickedElement.closest('.sidebar');
+    const isMenuBtn = clickedElement.closest('#menuBtn');
+    
+    if (!isClickInsideSidebar && !isMenuBtn && window.innerWidth <= 768) {
+      this.sidebarActive = false; // Ocultar el sidebar
+    }
   }
 }

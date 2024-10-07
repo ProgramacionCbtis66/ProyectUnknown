@@ -6,28 +6,51 @@
     <title>Document</title>
   </head>
   <body>
-    <aside class="sidebar">
+    <aside class="sidebar" [ngClass]="{ active: sidebarActive }">
       <ul>
-        <li routerLink="/Profile_User" routerLinkActive="active">
-          <span class="icon">📄</span> mi perfil
+        <li
+          routerLink="/Profile_User"
+          routerLinkActive="active"
+          (click)="setActiveMenu('perfil')"
+        >
+          <span class="icon"><i class="bx bxs-user"></i></span> mi perfil
         </li>
-        <li routerLink="/segurity_user" routerLinkActive="active">
-          <span class="icon">🔒</span> seguridad
+        <li
+          routerLink="/segurity_user"
+          routerLinkActive="active"
+          (click)="setActiveMenu('seguridad')"
+        >
+          <span class="icon"><i class="bx bxs-shield"></i></span> seguridad
         </li>
-        <li routerLink="/notifications_user" routerLinkActive="active">
-          <span class="icon">🔔</span> notificaciones
+        <li
+          routerLink="/notifications_user"
+          routerLinkActive="active"
+          (click)="setActiveMenu('notificaciones')"
+        >
+          <span class="icon"><i class="bx bxs-bell"></i></span> notificaciones
         </li>
-        <li routerLink="/connected_devices_user" routerLinkActive="active">
-          <span class="icon">💻</span> dispositivos conectados
+        <li
+          routerLink="/connected_devices_user"
+          routerLinkActive="active"
+          (click)="setActiveMenu('dispositivos')"
+        >
+          <span class="icon"><i class="bx bx-laptop"></i></span> dispositivos
+          conectados
         </li>
-        <li class="logout"><span class="icon">❌</span> Cerrar sesión</li>
+        <li class="logout" (click)="setActiveMenu('logout')">
+          <span class="icon">❌</span> Cerrar sesión
+        </li>
       </ul>
     </aside>
 
-    <section class="main-content">
+    <section class="main-content" [ngClass]="{ blurred: sidebarActive }">
       <div class="header">
         <h2>Perfil</h2>
         <div class="streak"></div>
+        <div id="menuBtn" (click)="toggleSidebar()">
+          <i class="bx bx-menu"></i>
+          <!-- Icono de tres rayas -->
+        </div>
       </div>
       <div class="profile">
         <img src="profile-pic.jpg" alt="" class="profile-pic" />
@@ -47,5 +70,7 @@
     <div class="mt-5">
       <router-outlet></router-outlet>
     </div>
+
+    <script src="connected-devices-page.component.ts"></script>
   </body>
 </html>

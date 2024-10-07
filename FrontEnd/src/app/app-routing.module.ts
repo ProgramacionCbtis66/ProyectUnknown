@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: "Main_Dashboard", component: MainDashboardComponent },
   { path: "Profile_User", component: MyProfileUserComponent },
   { path: "segurity_user", component: UserSegurityComponent },
-  { path: "notifications_user", component: UserNotificationsPageComponent },
+  { path: 'notifications_user', component: UserNotificationsPageComponent },
   { path: "connected_devices_user", component: ConnectedDevicesPageComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' } // Ruta por defecto
 ];
