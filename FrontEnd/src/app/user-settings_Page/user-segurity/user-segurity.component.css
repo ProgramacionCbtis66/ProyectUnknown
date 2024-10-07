@@ -255,7 +255,7 @@ input:checked + .slider:before {
     }
 
     #menuBtn {
-        transform: scale(1.4);
+        transform: scale(1.6);
         display: none !important; /* Ocultar el botón de menú en pantallas grandes */
     }
 
@@ -281,7 +281,7 @@ input:checked + .slider:before {
 }
 
 #menuBtn {
-    transform: scale(1.4);
+    transform: scale(1.6);
     display: block; /* Mostrar el botón de menú en móviles */
     cursor: pointer;
   }

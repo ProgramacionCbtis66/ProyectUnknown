@@ -154,7 +154,7 @@ html, body {
 
 /* Estilos para el botón de menú */
 #menuBtn {
-    transform: scale(1.4);
+    transform: scale(1.6);
     display: none; /* Ocultar el botón de menú en pantallas grandes */
 }
 
@@ -166,7 +166,7 @@ html, body {
     }
 
     #menuBtn {
-        transform: scale(1.4);
+        transform: scale(1.6);
         display: block; /* Mostrar el botón de menú en pantallas pequeñas */
         cursor: pointer;
     }
@@ -189,5 +189,5 @@ html, body {
 #menuBtn {
     display: block; /* Mostrar el botón de menú en móviles */
     cursor: pointer;
-    transform: scale(1.4);
+    transform: scale(1.6);
   }
