@@ -110,13 +110,18 @@ body {
     font-weight: 200;
 }
 
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 400px;
+}
 .profile-pic {
-    width: 150px; /* Tamaño fijo para la imagen de perfil */
+    width: 150px;
     height: 150px;
     border-radius: 50%;
     margin-bottom: 20px;
-    background-color: #ccc; /* Color de fondo para cuando no haya imagen */
-    object-fit: cover; /* Mantendrá la proporción de la imagen cuando se agregue */
+    background-color: #ccc;
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efecto de transición suave */
 }
 
