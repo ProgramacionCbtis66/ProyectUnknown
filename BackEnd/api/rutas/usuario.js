@@ -8,4 +8,6 @@ usr.get('/usr/listUsr',vtoken,usuario.listaUsuario);
 
 usr.post('/usr/login', usuario.login)
 
+usr.post('/usr/RegistrarAlumno', usuario.registrarAlumno);
+
 export default usr;
