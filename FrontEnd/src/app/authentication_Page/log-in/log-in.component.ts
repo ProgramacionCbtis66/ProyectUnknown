@@ -20,6 +20,10 @@ export class LogInComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  navigateToQR(): void {
+    this.router.navigate(['/QRPage']); // Asegúrate de que '/profile' sea la ruta correcta
+  }
+
   onLogin(): void {
     this.isLoading = true; // Iniciar carga
     const userData = { correo_institucional: this.username, password: this.password };
