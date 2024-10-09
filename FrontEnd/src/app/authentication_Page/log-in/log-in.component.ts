@@ -10,33 +10,59 @@ import { Router } from '@angular/router'; // Importa el servicio de Router
 export class LogInComponent implements OnInit {
   username: string = '';
   password: string = '';
+  errorMessage: string = '';
+  isLoading: boolean = false; // Nueva propiedad para el estado de carga
 
   constructor(
     private authService: AuthService,
-    private router: Router // Inyecta el Router para hacer la redirección
+    private router: Router
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onLogin(): void {
-    const userData = { usuario: this.username, password: this.password };
-    
-    // Llamada al servicio de autenticación
+    this.isLoading = true; // Iniciar carga
+    const userData = { correo_institucional: this.username, password: this.password };
+
     this.authService.login(userData).subscribe(
       response => {
         console.log('Login exitoso:', response);
-
-        // Guarda el token en localStorage si el login es exitoso
         localStorage.setItem("adae", response.token);
+        const decodedToken = this.authService.decodifica();
+        console.log('Rol del usuario:', decodedToken.rol);
 
-        // Redirigir a la ruta Main_Dashboard
-        this.router.navigate(['/Main_Dashboard']);
+        switch (decodedToken.rol) {
+          case 'Administrador':
+            this.router.navigate(['/Administrativos_Dashboard']);
+            break;
+          case 'Alumno':
+            this.router.navigate(['/Alumnos_Dashboard']);
+            break;
+          case 'Profesor':
+            this.router.navigate(['/Profesores_Dashboard']);
+            break;
+          default:
+            this.router.navigate(['/Main_Dashboard']);
+            break;
+        }
       },
       error => {
         console.error('Error de inicio de sesión:', error);
-        // Aquí podrías mostrar un mensaje de error al usuario
-        alert('Usuario o contraseña incorrectos');
+        this.handleError(error);
+      },
+      () => {
+        this.isLoading = false; // Finalizar carga
       }
     );
+  }
+
+  private handleError(error: any): void {
+    if (error.status === 404) {
+      this.errorMessage = 'Correo no encontrado';
+    } else if (error.status === 401) {
+      this.errorMessage = 'Contraseña incorrecta';
+    } else {
+      this.errorMessage = 'Error al iniciar sesión. Intente de nuevo.';
+    }
   }
 }

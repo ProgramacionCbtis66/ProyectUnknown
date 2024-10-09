@@ -9,20 +9,29 @@ import { PoliceGuard } from './Core/guard/police.guard';
 import { UserSegurityComponent } from './user-settings_Page/user-segurity/user-segurity.component';
 import { UserNotificationsPageComponent } from './user-settings_Page/user-notifications-page/user-notifications-page.component';
 import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-devices-page/connected-devices-page.component';
+import { AdministrativosComponent } from './dashboard/administrativos/administrativos.component';
+import { AlumnoComponent } from './dashboard/alumno/alumno.component';
+import { DocenteComponent } from './dashboard/docente/docente.component';
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
   { path: "main", component: HomepageComponent },
   { path: "login", component: LogInComponent },
-  { path: "QRPage", component: LoginQRGeneratorComponent,},
-  { path: "Main_Dashboard", component: MainDashboardComponent },
-  { path: "Profile_User", component: MyProfileUserComponent },
-  { path: "segurity_user", component: UserSegurityComponent },
-  { path: 'notifications_user', component: UserNotificationsPageComponent },
-  { path: "connected_devices_user", component: ConnectedDevicesPageComponent },
+  { path: "QRPage", component: LoginQRGeneratorComponent },
+  
+  // Rutas protegidas
+  { path: "Main_Dashboard", component: MainDashboardComponent, canActivate: [PoliceGuard] },
+  { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard] },
+  { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
+  { path: 'notifications_user', component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
+  { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
+  { path: "Administrativos_Dashboard", component: AdministrativosComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
+  { path: "Alumnos_Dashboard", component: AlumnoComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
+  { path: "Profesores_Dashboard", component: DocenteComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
+
+  
   { path: '**', redirectTo: '', pathMatch: 'full' } // Ruta por defecto
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

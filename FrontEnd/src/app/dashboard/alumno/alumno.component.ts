@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Importa el Router
+
 
 @Component({
   selector: 'app-alumno',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlumnoComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { } // Mantén el Router en el constructor
 
   ngOnInit(): void {
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Importa el Router
 
 @Component({
   selector: 'app-administrativos',
@@ -7,9 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdministrativosComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { } // Mantén el Router en el constructor
 
   ngOnInit(): void {
-  }
 
+  }
 }
