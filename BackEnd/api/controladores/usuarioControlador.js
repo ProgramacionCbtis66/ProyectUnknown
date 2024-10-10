@@ -93,7 +93,17 @@ const listaUsuario = async (req, res) => {
     let registro;
     try {
         [registro] = await conexion.execute(sql);
-        res.json(registro);
+        if (!registro || registro.length === 0) {
+            return res.status(404).json({ error: 'No hay registros' });
+        }
+        else {
+            for (var i = 0; i < registro.length; i++ ){
+                if (registro[i].foto !=  null ){
+                    registro[i].foto = registro[i].foto.toString('utf8');
+                }
+            }
+            res.json(registro);
+        }
     } catch (error) {
         console.log(error);
     }
