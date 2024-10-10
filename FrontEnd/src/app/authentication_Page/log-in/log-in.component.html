@@ -42,9 +42,15 @@
           <input type="checkbox" class="form-check-input" id="check">
           <label class="form-check-label" for="check">Recordar inicio</label>
         </div>
-
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        <div class="d-flex justify-content-center">
+           
+            <button type="submit" class="btn btn-primary me-4">Iniciar sesión</button>
+          
+           
+            <button class="btn btn-success" [routerLink] = "['/register']" id="">
+              <a>Pre-registro</a>
+            </button>
+           
         </div>
 
         <div class="text-center mt-3">

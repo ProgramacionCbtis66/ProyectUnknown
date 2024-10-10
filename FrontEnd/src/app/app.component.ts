@@ -1,5 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { SesionService } from './Core/service/sesion.service';
+
+
 
 @Component({
   selector: 'app-root',
@@ -11,7 +14,7 @@ export class AppComponent {
   menuOpen = false;
   isSwipeEnabled = false;
   
-  constructor(private titleService: Title) {
+  constructor(private titleService: Title, protected sesion: SesionService) { 
     // Cambiar el título de la página
     this.titleService.setTitle(this.title);
   }

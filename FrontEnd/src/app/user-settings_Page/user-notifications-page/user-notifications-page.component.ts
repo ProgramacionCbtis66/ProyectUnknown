@@ -5,6 +5,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
   templateUrl: './user-notifications-page.component.html',
   styleUrls: ['./user-notifications-page.component.css']
 })
+
 export class UserNotificationsPageComponent implements OnInit {
   activeMenu: string = 'perfil'; // Elemento activo por defecto
   sidebarActive: boolean = true; // Mostrar el sidebar por defecto en modo PC

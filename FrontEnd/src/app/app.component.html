@@ -15,11 +15,11 @@
     <header>
       <nav class="navbar">
         <a [routerLink]="['/main']" class="ADAE-logo-header">ADAE</a>
-        <div class="user-icon" (click)="toggleMenu()">
+        <div class="user-icon" (click)="toggleMenu()" *ngIf=" sesion._usuario !== 'Sin Usuario Actual'">
           <i class="bx bxs-user-circle"></i>
           <div class="profile-menu" [ngClass]="{ show: menuOpen }">
             <div class="profile-header">
-              <p>Joshefs Agustin <br> Rubio Carrillo</p>
+              <p>{{sesion._usuario}}<br> </p>
             </div>
             <div class="profile-options">
               <a [routerLink]="['/Profile_User']">

@@ -12,12 +12,14 @@ import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-de
 import { AdministrativosComponent } from './dashboard/administrativos/administrativos.component';
 import { AlumnoComponent } from './dashboard/alumno/alumno.component';
 import { DocenteComponent } from './dashboard/docente/docente.component';
+import { UserRegisterComponent } from './user-settings_Page/user-register/user-register.component';
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
   { path: "main", component: HomepageComponent },
   { path: "login", component: LogInComponent },
   { path: "QRPage", component: LoginQRGeneratorComponent },
+  { path: "register", component: UserRegisterComponent },
   
   // Rutas protegidas
   { path: "Main_Dashboard", component: MainDashboardComponent, canActivate: [PoliceGuard] },

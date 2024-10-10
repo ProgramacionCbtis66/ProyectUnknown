@@ -4,7 +4,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule
+
+
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { RouterModule } from '@angular/router'; // Importa RouterModule
 
@@ -29,7 +30,11 @@ import { CertificadosComponent } from './dashboard/servicios_escolares/certifica
 import { TitulacionComponent } from './dashboard/servicios_escolares/titulacion/titulacion.component';
 import { AdministrativosComponent } from './dashboard/administrativos/administrativos.component';
 import { UserNotificationsPageComponent } from './user-settings_Page/user-notifications-page/user-notifications-page.component';
+
 import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-devices-page/connected-devices-page.component';
+import Notiflix from 'notiflix';
+import { FormsModule } from '@angular/forms';
+import { UserRegisterComponent } from './user-settings_Page/user-register/user-register.component';
 
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
@@ -59,24 +64,36 @@ export function tokenGetter() {
     CertificadosComponent,
     TitulacionComponent,
     AdministrativosComponent,
+    UserRegisterComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+   
     ToastrModule.forRoot(), // Módulo importado aquí
     JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:4000"],
-        disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
-      }
+       config: {
+         tokenGetter: tokenGetter,
+         allowedDomains: ["localhost:4000"],
+         disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
+       }
     }),
-    FormsModule, // Agrega FormsModule aquí
     CommonModule, // Asegúrate de añadir CommonModule
     RouterModule, // Asegúrate de añadir RouterModule
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() { 
+    Notiflix.Notify.init({
+      position: 'center-top', // Cambia la posición a la esquina superior izquierda
+      distance:'15px',
+      fontSize:'15px',
+      width:'380px',
+      timeout: 1700,
+    });
+  }
+ }
