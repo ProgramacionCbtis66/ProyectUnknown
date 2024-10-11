@@ -25,7 +25,7 @@ export class LogInComponent implements OnInit {
   ngOnInit(): void { }
 
   navigateToQR(): void {
-    this.router.navigate(['/QRPage']); // Asegúrate de que '/profile' sea la ruta correcta
+    this.router.navigate(['/QRPage']); // ruta para el iniciar sesion con
   }
 
   async onLogin(): Promise<void> {
