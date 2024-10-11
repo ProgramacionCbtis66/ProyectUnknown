@@ -23,7 +23,7 @@ const routes: Routes = [
   
   // Rutas protegidas
   { path: "Main_Dashboard", component: MainDashboardComponent},
-  { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard] },
+  { path: "Profile_User", component: MyProfileUserComponent },
   { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
   { path: 'notifications_user', component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
   { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
