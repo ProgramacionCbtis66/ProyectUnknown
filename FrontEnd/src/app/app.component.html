@@ -14,7 +14,7 @@
   <body>
     <header>
       <nav class="navbar">
-        <a [routerLink]="['/main']" class="ADAE-logo-header">ADAE</a>
+        <a (click)="redirigirAlDashboard()"  class="ADAE-logo-header"  >ADAE</a>
         <div
           class="user-icon"
           (click)="toggleMenu()"
@@ -34,10 +34,11 @@
               </a>
             </div>
             <div class="profile-logout">
-              <a href="#" class="logout-btn">
+              <a href="#" class="logout-btn" (click)="cerrarSesion()">
                 <i class="bx bx-x-circle"></i> Cerrar sesión
               </a>
             </div>
+            
           </div>
         </div>
       </nav>

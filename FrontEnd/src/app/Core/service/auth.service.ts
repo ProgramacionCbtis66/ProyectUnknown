@@ -22,6 +22,13 @@ export class AuthService {
     private toastr: ToastrService
   ) { }
 
+  // Cierra la sesion del usuario
+  public cerrarSesion(): void {
+    localStorage.removeItem("adae"); // Elimina el token del almacenamiento local
+    this.estatus = false; // Cambia el estado de autenticación
+    this.toastr.info('Sesión cerrada con éxito', 'Info');
+  }  
+
   // Manejo de errores para las solicitudes HTTP
   private handleError(error: HttpErrorResponse) {
     console.error('Error: ', error);

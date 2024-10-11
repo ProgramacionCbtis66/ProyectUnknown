@@ -1,6 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { SesionService } from './Core/service/sesion.service';
+import { Router } from '@angular/router'; // Importa el servicio de Router
+import { AuthService } from '../app/Core/service/auth.service';
 
 
 
@@ -13,10 +15,16 @@ export class AppComponent {
   title = 'ADAE';
   menuOpen = false;
   isSwipeEnabled = false;
-  
-  constructor(private titleService: Title, protected sesion: SesionService) { 
+
+  constructor(private titleService: Title, protected sesion: SesionService, private router: Router, private authService: AuthService) {
     // Cambiar el título de la página
     this.titleService.setTitle(this.title);
+
+  }
+
+  cerrarSesion() {
+    this.authService.cerrarSesion();
+    this.router.navigate(['/login']); // Redirige al login después de cerrar la sesión
   }
 
   toggleMenu() {
@@ -28,6 +36,25 @@ export class AppComponent {
     this.menuOpen = false;
     document.body.classList.remove('no-scroll'); // Habilita el scroll cuando se cierra el menú
   }
+
+  // Método para redirigir al dashboard correspondiente
+  redirigirAlDashboard() {
+    if (this.sesion._rol !== 'Sin Rol Actual') {
+      const user = this.sesion._rol;
+
+      if (user === 'Alumno') {
+        this.router.navigate(['/Alumnos_Dashboard']);
+      } else if (user === 'Profesor') {
+        this.router.navigate(['/Profesores_Dashboard']);
+      } else if (user === 'Administrador') {
+        this.router.navigate(['/Administrativos_Dashboard']);
+      }
+
+    } else {
+      this.router.navigate(['/main']); // Si no hay sesión, redirigir a /main
+    }
+  }
+
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: Event) {

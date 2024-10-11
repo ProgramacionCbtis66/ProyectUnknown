@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import env from '../../enviroment/enviroment.js';
 
 const login = async (req, res) => {
-    const { correo_institucional, password } = req.body; // Cambia 'usuario' por 'correo_institucional'
+    const { correo_institucional, password } = req.body;
     console.log(correo_institucional, password);
 
     const sqlUserExists = `SELECT id_usuario AS id, nombre, rol, foto FROM usuarios WHERE correo_institucional = ?`; // Consulta para verificar si el usuario existe
@@ -46,6 +46,8 @@ const login = async (req, res) => {
     // Si el usuario existe y la contraseña es correcta, generar el token
     const user = registro[0];
     const token = jwt.sign(user, env.key, { expiresIn: env.exp });
+    console.log('Datos del usuario antes de enviar respuesta:', user);
+
 
     res.json({ token: token, foto: foto });
 }
@@ -91,7 +93,6 @@ const registrarAlumno = async (req, res) => {
         return res.status(500).json({ error: 'Error en la base de datos' });
     }
 }
-
 
 const listaUsuario = async (req, res) => {
     const sql = `SELECT * FROM usuarios`;

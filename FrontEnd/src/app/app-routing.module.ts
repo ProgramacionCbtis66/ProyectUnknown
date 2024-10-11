@@ -23,11 +23,11 @@ const routes: Routes = [
   
   // Rutas protegidas
   { path: "Main_Dashboard", component: MainDashboardComponent},
-  { path: "Profile_User", component: MyProfileUserComponent },
+  { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard]},
   { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
   { path: 'notifications_user', component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
   { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
-  { path: "Administrativos_Dashboard", component: AdministrativosComponent}, // Ruta para el Dashboard de los Administrativos
+  { path: "Administrativos_Dashboard", component: AdministrativosComponent, canActivate: [PoliceGuard]}, // Ruta para el Dashboard de los Administrativos
   { path: "Alumnos_Dashboard", component: AlumnoComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
   { path: "Profesores_Dashboard", component: DocenteComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
 

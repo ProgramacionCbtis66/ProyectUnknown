@@ -36,17 +36,23 @@ export class LogInComponent implements OnInit {
       localStorage.setItem("adae", response.token);
       this.sesion._foto = response.foto;
       const decodedToken = this.authService.decodifica();
+      this.sesion._usuario = decodedToken.nombre;
+      this.sesion._rol = decodedToken.rol;
       switch (decodedToken.rol) {
         case 'Administrador':
-          this.sesion._usuario = decodedToken.nombre;
+          console.error('Nombre del Usuario:', this.sesion._usuario);
           Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
           this.router.navigate(['/Administrativos_Dashboard']);
 
           break;
         case 'Alumno':
+          console.error('Nombre del Usuario:', this.sesion._usuario);
+          Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
           this.router.navigate(['/Alumnos_Dashboard']);
           break;
         case 'Profesor':
+          console.error('Nombre del Usuario:', this.sesion._usuario);
+          Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
           this.router.navigate(['/Profesores_Dashboard']);
           break;
         default:
