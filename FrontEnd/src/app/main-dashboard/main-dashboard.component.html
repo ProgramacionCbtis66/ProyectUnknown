@@ -30,5 +30,46 @@
         </ul>
       </div>
     </div>
+
+    <div class="main_container">
+      <div class="sub_container_1">
+        <h3 id="user_name_dashboard">Hello, Josh</h3>
+        <p id="rol_user_dashboard">Administrador</p>
+      </div>
+
+      <!-- Agregar nuevos contenedores de perfil estilo Bootstrap -->
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="card" (click)="navigateToProfile()">
+              <div class="card-body text-center">
+                <img src="" alt="" class="profile-pic" />
+                <h5 class="card-title">Joshefs Agustin</h5>
+                <p class="card-text">Rubio Carrillo</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-5 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Clases</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Horario</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin de los nuevos contenedores -->
+    </div>
   </body>
 </html>

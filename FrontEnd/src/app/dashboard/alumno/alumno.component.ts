@@ -14,4 +14,8 @@ export class AlumnoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Método para navegar al perfil
+  navigateToProfile(): void {
+    this.router.navigate(['/Profile_User']); // Asegúrate de que '/profile' sea la ruta correcta
+  }
 }
