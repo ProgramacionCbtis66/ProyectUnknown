@@ -1,62 +1,69 @@
-<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
-  <div class="card">
-    <div class="card-body">
-      <h2 class="text-center mb-4">Inicio de sesión</h2>
-      
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main id="main">
       <form id="sign-in" (ngSubmit)="onLogin()" #loginForm="ngForm">
-        <div class="form-group">
-          <label for="email">Correo institucional</label>
-          <input 
-            type="email" 
-            class="form-control" 
-            id="email" 
-            [(ngModel)]="username" 
-            name="email" 
-            placeholder="correo institucional" 
-            required>
+        <p>Inicio de sesión</p>
+        <div class="input-container">
+          <!-- Campo de correo -->
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="username"
+            name="email"
+            placeholder="correo institucional"
+            required
+            class="form-control"
+          />
           <div *ngIf="errorMessage && !username" class="text-danger">
             El correo institucional es obligatorio.
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="password">Contraseña</label>
-          <input 
-            type="password" 
-            class="form-control" 
-            id="password" 
-            [(ngModel)]="password" 
-            name="password" 
-            placeholder="contraseña" 
-            required>
-          <div *ngIf="errorMessage && !password" class="text-danger">
-            La contraseña es obligatoria.
+          <!-- Campo de contraseña -->
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="contraseña"
+            required
+            class="form-control"
+          />
+
+          <!-- Checkbox de "Recordar inicio" -->
+          <label> <input type="checkbox" id="check" /> Recordar inicio </label>
+
+          <!-- Enlace para iniciar sesión por QR -->
+          <div class="links">
+            <a [routerLink]="['/QRPage']">Iniciar sesión por QR</a>
+          </div>
+
+          <!-- Botón de acción (ícono de flecha) -->
+          <div class="login d-flex justify-content-center mt-4">
+            <a (click)="onLogin()">
+              <i
+                class="bx bx-right-arrow-circle"
+                [ngClass]="{ 'cursor-pointer': password.length > 0 }"
+                style="font-size: 2rem"
+              ></i>
+            </a>
           </div>
         </div>
-
-        <div *ngIf="errorMessage" class="error-message text-danger mb-3">
-          {{ errorMessage }}
-        </div>
-
-        <div class="form-check mb-4">
-          <input type="checkbox" class="form-check-input" id="check">
-          <label class="form-check-label" for="check">Recordar inicio</label>
-        </div>
-        <div class="d-flex justify-content-center">
-           
-            <button type="submit" class="btn btn-primary me-4">Iniciar sesión</button>
-          
-           
-            <button class="btn btn-success" [routerLink] = "['/register']" id="">
-              <a>Pre-registro</a>
-            </button>
-           
-        </div>
-
-        <div class="text-center mt-3">
-          <a routerLink="/QRPage" class="text-muted">Iniciar sesión por QR</a>
-        </div>
       </form>
+    </main>
+
+    <!-- Espacio para el contenido dinámico del router -->
+    <div class="mt-5">
+      <router-outlet></router-outlet>
     </div>
-  </div>
-</div>
+  </body>
+</html>

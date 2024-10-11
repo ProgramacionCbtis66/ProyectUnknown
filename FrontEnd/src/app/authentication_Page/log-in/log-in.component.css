@@ -1,21 +1,183 @@
-.container {
-    background-color: #f8f9fa;
-    /* Fondo claro */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.card {
-    border-radius: 25px;
-    width: 30%; /* Ancho por defecto */
-    max-width: 400px; /* Ancho máximo */
-    min-width: 400px; /* Ancho mínimo para mantener la tarjeta en un tamaño razonable */
-    height: auto; /* Permite que la altura se ajuste automáticamente */
+body {
+    font-family: 'Ubuntu', sans-serif;
+    background-color: rgba(251, 251, 253, .5);
+    overflow-x: hidden;
 }
 
-/* Asegúrate de que la tarjeta no se ajuste a tamaños más pequeños */
-@media (max-width: 768px) {
-    .card {
-        width: 80%; /* O el porcentaje que prefieras para pantallas más pequeñas */
-        max-width: 400px; /* Ancho máximo */
-    min-width: 300px; /* Ancho mínimo para mantener la tarjeta en un tamaño razonable */
+#main {
+    width: 100vw;
+    height: 87vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#sign-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;
+    border-radius: 5%;
+    border: none;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px,
+                rgba(17, 17, 26, .1) 0px 8px 24px,
+                rgba(17, 17, 26, 0.1) 0px 16px 48px;
+    width: 600px;
+    height: 600px;
+    margin: 0;
+    padding: 0;
+    
+    opacity: 0;
+    animation: fadeIn 1.7s ease forwards;
+}
+
+#sign-in p {
+    font-size: 3.5vw;
+    font-weight: 500;
+    user-select: none;
+}
+
+.input-container {
+    position: relative;
+}
+
+.bx-right-arrow-circle {
+    position: absolute;
+    top: 39%;
+    right: 2%;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.cursor-pointer {
+    cursor: pointer; /* Cambia el cursor a puntero */
+}
+
+#sign-in #email {
+    padding: 1rem .9rem;
+    font-size: 1rem;
+    width: 450px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #E0E9F5;
+}
+
+#email-phone:focus {
+    border: 1px solid skyblue;
+    outline: 0;
+}
+
+#sign-in #password {
+    padding: 1rem .9rem;
+    font-size: 1rem;
+    width: 450px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 31px;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#check {
+    height: 16px;
+    width: 16px;
+    margin-right: 10px;
+    background-color: rgb(0, 0, 0);
+}
+
+#sign-in #email-phone {
+    font-size: 1rem;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.links a {
+    color: rgb(0, 128, 255);
+}
+
+@media only screen and (max-width: 600px) {
+    #sign-in {
+        width: 400px;
+        height: 450px;
+    }
+    
+    #sign-in p {
+        font-size: 8vw; 
+    }
+    
+    #sign-in #email,
+    #sign-in #password {
+        width: 100%; 
+        max-width: 300px; 
+    }
+    
+    .bx-right-arrow-circle {
+        top: 38%; 
+        right: 2%; 
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+    #sign-in {
+        width: 500px;
+        height: 550px;
+    }
+    
+    #sign-in p {
+        font-size: 5vw; 
+    }
+    
+    #sign-in #email,
+    #sign-in #password {
+        width: 100%; 
+        max-width: 350px; 
+    }
+    
+    .bx-right-arrow-circle {
+        top: 39%; 
+        right: 4%; 
     }
 }
