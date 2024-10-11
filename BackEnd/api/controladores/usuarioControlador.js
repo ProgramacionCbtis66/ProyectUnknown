@@ -6,10 +6,11 @@ const login = async (req, res) => {
     const { correo_institucional, password } = req.body; // Cambia 'usuario' por 'correo_institucional'
     console.log(correo_institucional, password);
 
-    const sqlUserExists = `SELECT id_usuario AS id, nombre, rol FROM usuarios WHERE correo_institucional = ?`; // Consulta para verificar si el usuario existe
-    const sqlPasswordMatch = `SELECT id_usuario AS id, nombre, rol FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`; // Consulta para verificar la contraseña
+    const sqlUserExists = `SELECT id_usuario AS id, nombre, rol, foto FROM usuarios WHERE correo_institucional = ?`; // Consulta para verificar si el usuario existe
+    const sqlPasswordMatch = `SELECT id_usuario AS id, nombre, rol, foto FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`; // Consulta para verificar la contraseña
     const conexion = await cnx();
     let registro;
+    let foto;
 
     try {
         // Primero, verifica si el usuario existe
@@ -36,12 +37,17 @@ const login = async (req, res) => {
     if (!registro || registro.length === 0) {
         return res.status(401).json({ respuesta: 'Contraseña incorrecta' });
     }
-
+    else {
+        if (registro[0].foto !=  null ){
+            foto = registro[0].foto.toString('utf8');
+            registro[0].foto = null;
+        }
+    }
     // Si el usuario existe y la contraseña es correcta, generar el token
     const user = registro[0];
     const token = jwt.sign(user, env.key, { expiresIn: env.exp });
 
-    res.json({ token });
+    res.json({ token: token, foto: foto });
 }
 
 const registrarAlumno = async (req, res) => {

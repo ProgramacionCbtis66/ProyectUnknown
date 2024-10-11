@@ -34,6 +34,7 @@ export class LogInComponent implements OnInit {
     try {
       const response = await firstValueFrom(this.authService.login(userData));
       localStorage.setItem("adae", response.token);
+      this.sesion._foto = response.foto;
       const decodedToken = this.authService.decodifica();
       switch (decodedToken.rol) {
         case 'Administrador':

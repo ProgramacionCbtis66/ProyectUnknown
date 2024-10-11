@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -15,11 +15,15 @@
     <header>
       <nav class="navbar">
         <a [routerLink]="['/main']" class="ADAE-logo-header">ADAE</a>
-        <div class="user-icon" (click)="toggleMenu()" *ngIf=" sesion._usuario !== 'Sin Usuario Actual'">
-          <i class="bx bxs-user-circle"></i>
+        <div
+          class="user-icon"
+          (click)="toggleMenu()"
+          *ngIf="sesion._usuario !== 'Sin Usuario Actual'"
+        >
+          <img [src]="sesion._foto" width="30" height="30" />
           <div class="profile-menu" [ngClass]="{ show: menuOpen }">
             <div class="profile-header">
-              <p>{{sesion._usuario}}<br> </p>
+              <p>{{ sesion._usuario }}<br /></p>
             </div>
             <div class="profile-options">
               <a [routerLink]="['/Profile_User']">

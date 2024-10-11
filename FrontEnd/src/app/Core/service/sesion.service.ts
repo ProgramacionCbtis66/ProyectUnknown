@@ -13,9 +13,13 @@ export class SesionService {
   ) { }
 
   private usuario = new BehaviorSubject<string>("Sin Usuario Actual"); // Usuario actual
+  private foto = new BehaviorSubject<string>("Sin Foto Actual"); // Foto actual
 
   get _usuario():string { return this.usuario.value; }
   set _usuario(value:string) { this.usuario.next(value); }
+  
+  get _foto():string { return this.foto.value; }
+  set _foto(value:string) { this.foto.next(value); }
 
 
   extraerBase64 = async (foto: any) => new Promise((resolve, reject) => {
