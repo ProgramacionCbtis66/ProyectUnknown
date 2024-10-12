@@ -94,7 +94,6 @@ html, body {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     animation: fadeIn 1.5s ease forwards;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -120,8 +119,80 @@ html, body {
 #menuBtn {
     transform: scale(1.6);
     display: none; /* Ocultar el botón de menú en pantallas grandes */
+    
 }
-
+  .notification-item {
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    width: 65%;
+  }
+  
+  .method-header {
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+  }
+  
+  .method-header h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .method-header p {
+    font-size: 14px;
+    color: #666;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #7d9ec4;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+  
 /* Estilos responsivos */
 @media (max-width: 768px) {
     .sidebar {
@@ -137,6 +208,32 @@ html, body {
 
     .sidebar.active {
         left: 0; /* Mostrar el sidebar */
+    }
+
+    .notification-item {
+        width: 100%; /* Full width on mobile */
+    }
+
+    .method-header {
+        height: auto; /* Make height dynamic */
+        padding: 8px; /* Adjust padding */
+    }
+
+    .method-header h3 {
+        font-size: 14px; /* Smaller font size */
+    }
+
+    .method-header p {
+        font-size: 12px; /* Smaller font size */
+    }
+
+    /* Make streak display more compact */
+    .streak {
+        font-size: 14px;
+    }
+
+    .streak span {
+        font-size: 18px;
     }
 }
 
