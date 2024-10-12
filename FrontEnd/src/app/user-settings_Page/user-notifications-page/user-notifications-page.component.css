@@ -116,42 +116,6 @@ html, body {
     margin-right: 10px;
 }
 
-/* Estilo del perfil */
-.profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 400px;
-}
-
-
-.profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    background-color: #ccc;
-}
-
-.info {
-    text-align: center;
-}
-
-.info p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: #333;
-}
-
-.info a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.info a:hover {
-    text-decoration: underline;
-}
-
 /* Estilos para el botón de menú */
 #menuBtn {
     transform: scale(1.6);

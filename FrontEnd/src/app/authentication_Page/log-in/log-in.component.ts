@@ -22,7 +22,9 @@ export class LogInComponent implements OnInit {
     protected sesion: SesionService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    window.scrollTo(0, 0);
+   }
 
   navigateToQR(): void {
     this.router.navigate(['/QRPage']); // ruta para el iniciar sesion con

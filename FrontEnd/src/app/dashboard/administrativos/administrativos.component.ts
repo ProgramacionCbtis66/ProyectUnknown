@@ -11,7 +11,7 @@ export class AdministrativosComponent implements OnInit {
   constructor(private router: Router) { } // Mantén el Router en el constructor
 
   ngOnInit(): void {
-
+    window.scrollTo(0, 0);
   }
 
   // Método para navegar al perfil

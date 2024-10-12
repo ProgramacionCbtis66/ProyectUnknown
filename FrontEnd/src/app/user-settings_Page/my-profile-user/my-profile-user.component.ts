@@ -12,6 +12,7 @@ export class MyProfileUserComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize();
   }

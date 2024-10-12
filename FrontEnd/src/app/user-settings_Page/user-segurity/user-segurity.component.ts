@@ -14,6 +14,7 @@ export class UserSegurityComponent implements OnInit {
   ngOnInit(): void {
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize();
+    window.scrollTo(0, 0);
   }
 
   ngOnDestroy(): void {

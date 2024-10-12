@@ -13,6 +13,7 @@ export class UserNotificationsPageComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     // Corregido con bind para mantener el contexto de this
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize(); // Asegurarse de que el sidebar está gestionado según el tamaño de la pantalla
