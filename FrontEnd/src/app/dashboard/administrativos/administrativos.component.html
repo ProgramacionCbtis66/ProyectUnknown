@@ -18,13 +18,13 @@
             >
           </li>
           <li>
-            <a routerLink="/insights" routerLinkActive="active"
-              ><span class="highlight"></span>Clases</a
+            <a routerLink="/alumnos-listado" routerLinkActive="active"
+              ><span class="highlight"></span>Alumnos</a
             >
           </li>
           <li>
-            <a routerLink="/reports" routerLinkActive="active"
-              ><span class="highlight"></span>Horario</a
+            <a routerLink="/servicios-menu" routerLinkActive="active"
+              ><span class="highlight"></span>Servicios</a
             >
           </li>
         </ul>
@@ -51,17 +51,18 @@
           </div>
           <div class="col-md-8">
             <div class="row">
-              <div class="col-md-5 mb-4">
+              <div class="col-md-5 mb-4" (click)="goToAlumnos()">
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title">Alumnos</h5>
                   </div>
                 </div>
               </div>
-              <div class="col-md-5 mb-4">
+
+              <div class="col-md-5 mb-4" (click)="goToServicios()">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Servicios Escolares</h5>
+                    <h5 class="card-title">Servicios escolares</h5>
                   </div>
                 </div>
               </div>

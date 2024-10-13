@@ -30,7 +30,8 @@ import { CertificadosComponent } from './dashboard/servicios_escolares/certifica
 import { TitulacionComponent } from './dashboard/servicios_escolares/titulacion/titulacion.component';
 import { AdministrativosComponent } from './dashboard/administrativos/administrativos.component';
 import { UserNotificationsPageComponent } from './user-settings_Page/user-notifications-page/user-notifications-page.component';
-
+import { AlumnosListadoComponent } from './dashboard/servicios_escolares/alumnos-listado/alumnos-listado.component';
+import { ServiciosMenuComponent } from './dashboard/servicios_escolares/servicios-menu/servicios-menu.component';
 import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-devices-page/connected-devices-page.component';
 import Notiflix from 'notiflix';
 import { FormsModule } from '@angular/forms';
@@ -65,6 +66,8 @@ export function tokenGetter() {
     TitulacionComponent,
     AdministrativosComponent,
     UserRegisterComponent,
+    AlumnosListadoComponent,
+    ServiciosMenuComponent
   ],
   imports: [
     FormsModule,
