@@ -13,7 +13,10 @@
       <div class="sidebar_menu">
         <ul>
           <li>
-            <a routerLink="/Administrativos_Dashboard" routerLinkActive="active"
+            <a
+              *ngIf="sesion._rol === 'Administrador'"
+              routerLink="/Administrativos_Dashboard"
+              routerLinkActive="active"
               ><span class="highlight"></span>Home</a
             >
           </li>
@@ -33,8 +36,8 @@
 
     <div class="main_container">
       <div class="sub_container_1">
-        <h3 id="user_name_dashboard">Hello, Josh</h3>
-        <p id="rol_user_dashboard">Administrador</p>
+        <h3 id="user_name_dashboard">Hello, {{ sesion._usuario }}</h3>
+        <p id="rol_user_dashboard">{{ sesion._rol }}</p>
       </div>
 
       <!-- Agregar nuevos contenedores de perfil estilo Bootstrap -->
@@ -43,9 +46,9 @@
           <div class="col-md-3">
             <div class="card" (click)="navigateToProfile()">
               <div class="card-body text-center">
-                <img src="" alt="" class="profile-pic" />
-                <h5 class="card-title">Joshefs Agustin</h5>
-                <p class="card-text">Rubio Carrillo</p>
+                <img [src]="sesion._foto" width="150" height="150" />
+                <h5 class="card-title">{{ sesion._usuario }}</h5>
+                <p class="card-text">{{ sesion._usuario }}</p>
               </div>
             </div>
           </div>

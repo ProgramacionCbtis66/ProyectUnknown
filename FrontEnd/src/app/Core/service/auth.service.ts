@@ -6,6 +6,8 @@ import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import decode from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
+import { SesionService } from 'src/app/Core/service/sesion.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +21,37 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private jwt: JwtHelperService,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    protected sesion: SesionService
+
+  ) { 
+    this.restaurarSesion(); // Restauramos la sesión al cargar el servicio
+  }
 
   // Cierra la sesion del usuario
   public cerrarSesion(): void {
-    localStorage.removeItem("adae"); // Elimina el token del almacenamiento local
-    this.estatus = false; // Cambia el estado de autenticación
+    localStorage.removeItem("adae"); // Elimina el token
+    this.limpiarSesion(); // Limpia los datos de la sesión en memoria
     this.toastr.info('Sesión cerrada con éxito', 'Info');
-  }  
+  }
+  x
+
+  restaurarSesion(): void {
+    const token = localStorage.getItem('adae');
+    if (token && !this.jwt.isTokenExpired(token)) {
+      const decodedToken = this.decodifica();
+      this.sesion._usuario = decodedToken.nombre;
+      this.sesion._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
+      this.sesion._rol = decodedToken.rol;
+    }
+  }
+
+  // Método para limpiar la sesión al cerrar sesión
+  limpiarSesion(): void {
+    this.sesion._usuario = "Sin Usuario Actual";
+    this.sesion._rol = "Sin Rol Actual";
+    this.sesion._foto = "Sin Foto Actual";
+  }
 
   // Manejo de errores para las solicitudes HTTP
   private handleError(error: HttpErrorResponse) {
