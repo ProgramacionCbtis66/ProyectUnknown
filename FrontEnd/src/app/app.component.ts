@@ -43,11 +43,11 @@ export class AppComponent {
       const user = this.sesion._rol;
 
       if (user === 'Alumno') {
-        this.router.navigate(['/Alumnos_Dashboard']);
+        this.router.navigate(['/Main_Dashboard']);
       } else if (user === 'Profesor') {
-        this.router.navigate(['/Profesores_Dashboard']);
+        this.router.navigate(['/Main_Dashboard']);
       } else if (user === 'Administrador') {
-        this.router.navigate(['/Administrativos_Dashboard']);
+        this.router.navigate(['/Main_Dashboard']);
       }
 
     } else {

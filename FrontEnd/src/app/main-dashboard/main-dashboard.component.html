@@ -11,22 +11,58 @@
         <h5>ADAE</h5>
       </div>
       <div class="sidebar_menu">
+        <!-- Administradores-->
         <ul>
           <li>
             <a
               *ngIf="sesion._rol === 'Administrador'"
-              routerLink="/Administrativos_Dashboard"
+              routerLink="/Main_Dashboard"
               routerLinkActive="active"
               ><span class="highlight"></span>Home</a
             >
           </li>
           <li>
-            <a routerLink="/insights" routerLinkActive="active"
+            <a
+              *ngIf="sesion._rol === 'Administrador'"
+              routerLink="/alumnos-listado"
+              routerLinkActive="active"
+              ><span class="highlight"></span>Alumnos</a
+            >
+          </li>
+          <li>
+            <a
+              *ngIf="sesion._rol === 'Administrador'"
+              routerLink="/servicios-menu"
+              routerLinkActive="active"
+              ><span class="highlight"></span>Servicios</a
+            >
+          </li>
+        </ul>
+        <!-- Docentes-->
+
+        <!-- Alumnos-->
+        <ul>
+          <li>
+            <a
+              *ngIf="sesion._rol === 'Alumno'"
+              routerLink="/Main_Dashboard"
+              routerLinkActive="active"
+              ><span class="highlight"></span>Home</a
+            >
+          </li>
+          <li>
+            <a
+              *ngIf="sesion._rol === 'Alumno'"
+              routerLink="/Main_Dashboard"
+              routerLinkActive="active"
               ><span class="highlight"></span>Clases</a
             >
           </li>
           <li>
-            <a routerLink="/reports" routerLinkActive="active"
+            <a
+              *ngIf="sesion._rol === 'Alumno'"
+              routerLink="/Main_Dashboard"
+              routerLinkActive="active"
               ><span class="highlight"></span>Horario</a
             >
           </li>
@@ -40,19 +76,49 @@
         <p id="rol_user_dashboard">{{ sesion._rol }}</p>
       </div>
 
-      <!-- Agregar nuevos contenedores de perfil estilo Bootstrap -->
       <div class="container mt-4">
         <div class="row">
+          <!-- Agregar nuevos contenedores de perfil estilo Bootstrap -->
+
+          <!-- Contenedores Globales-->
           <div class="col-md-3">
             <div class="card" (click)="navigateToProfile()">
               <div class="card-body text-center">
-                <img [src]="sesion._foto" width="150" height="150" />
+                <img
+                  [src]="sesion._foto"
+                  width="150"
+                  height="150"
+                  class="profile-pic"
+                />
                 <h5 class="card-title">{{ sesion._usuario }}</h5>
-                <p class="card-text">{{ sesion._usuario }}</p>
+                <p class="card-text">{{ sesion._rol }}</p>
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+
+          <!-- Contenedores Administradores-->
+          <div class="col-md-8" *ngIf="sesion._rol === 'Administrador'">
+            <div class="row">
+              <div class="col-md-5 mb-4" (click)="goToAlumnos()">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Alumnos</h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-5 mb-4" (click)="goToServicios()">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Servicios escolares</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contenedores Alumnos-->
+          <div class="col-md-8" *ngIf="sesion._rol === 'Alumno'">
             <div class="row">
               <div class="col-md-5 mb-4">
                 <div class="card">
@@ -61,6 +127,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-md-5 mb-4">
                 <div class="card">
                   <div class="card-body">

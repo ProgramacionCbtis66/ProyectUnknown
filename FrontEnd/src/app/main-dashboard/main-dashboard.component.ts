@@ -13,6 +13,15 @@ export class MainDashboardComponent implements OnInit {
   constructor(private router: Router, protected sesion: SesionService) { } // Inyecta el Router en el constructor
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
+  }
+
+  goToAlumnos() {
+    this.router.navigate(['/alumnos-listado']);
+  }
+
+  goToServicios() {
+    this.router.navigate(['/servicios-menu']);
   }
 
   // Método para navegar al perfil
