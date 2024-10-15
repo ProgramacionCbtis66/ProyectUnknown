@@ -17,3 +17,18 @@
 #sign-in-btn:hover{
     background-color: rgb(46, 46, 46);
 }
+
+/* Ocultar barra de desplazamiento en navegadores basados en WebKit */
+body::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento */
+}
+
+/* Ocultar barra de desplazamiento en Firefox */
+body {
+    scrollbar-width: none; /* Oculta la barra de desplazamiento */
+}
+
+/* Asegura que el contenido siga siendo desplazable */
+body {
+    overflow-y: scroll; /* Mantiene el desplazamiento vertical */
+}
