@@ -13,6 +13,8 @@ import { AdministrativosComponent } from './dashboard/administrativos/administra
 import { AlumnoComponent } from './dashboard/alumno/alumno.component';
 import { DocenteComponent } from './dashboard/docente/docente.component';
 import { UserRegisterComponent } from './user-settings_Page/user-register/user-register.component';
+import { AlumnosListadoComponent } from './dashboard/servicios_escolares/alumnos-listado/alumnos-listado.component';
+import { ServiciosMenuComponent } from './dashboard/servicios_escolares/servicios-menu/servicios-menu.component';
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
@@ -30,8 +32,8 @@ const routes: Routes = [
   { path: "Administrativos_Dashboard", component: AdministrativosComponent, canActivate: [PoliceGuard]}, // Ruta para el Dashboard de los Administrativos
   { path: "Alumnos_Dashboard", component: AlumnoComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
   { path: "Profesores_Dashboard", component: DocenteComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
-
-  
+  { path: "alumnos-listado", component: AlumnosListadoComponent},
+  { path: "servicios-menu", component: ServiciosMenuComponent},
   { path: '**', redirectTo: '', pathMatch: 'full' } // Ruta por defecto
 ];
 

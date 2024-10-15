@@ -16,7 +16,10 @@ export class UserRegisterComponent {
     protected Base64 : SesionService,
   ) { }
 
-
+  ngOnInit(): void {
+    window.scrollTo(0, 0); // Desplaza la página hacia la parte superior cuando se carga
+  }
+  
   cargarFoto(event: any): void {
     const archivo = event.target.files[0];
     this.Base64.extraerBase64(archivo).then((imagenBase64: any) => {

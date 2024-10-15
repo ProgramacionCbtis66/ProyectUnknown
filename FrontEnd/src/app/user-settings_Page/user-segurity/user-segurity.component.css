@@ -92,7 +92,6 @@ html, body {
 .main-content {
     flex: 1; 
     padding: 20px;
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
     animation: fadeIn 1.5s ease forwards;

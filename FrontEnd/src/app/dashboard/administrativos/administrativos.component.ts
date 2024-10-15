@@ -11,11 +11,20 @@ export class AdministrativosComponent implements OnInit {
   constructor(private router: Router) { } // Mantén el Router en el constructor
 
   ngOnInit(): void {
-
+    window.scrollTo(0, 0);
   }
 
+  goToAlumnos() {
+    this.router.navigate(['/alumnos-listado']);
+  }
+
+  goToServicios() {
+    this.router.navigate(['/servicios-menu']);
+  }
   // Método para navegar al perfil
   navigateToProfile(): void {
     this.router.navigate(['/Profile_User']); // Asegúrate de que '/profile' sea la ruta correcta
   }
+
+  
 }
