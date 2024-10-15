@@ -19,7 +19,7 @@ export class AppComponent {
   constructor(private titleService: Title, protected sesion: SesionService, private router: Router, private authService: AuthService) {
     // Cambiar el título de la página
     this.titleService.setTitle(this.title);
-
+    this.authService.restaurarSesion(); // Restaurar la sesión al cargar la app
   }
 
   cerrarSesion() {

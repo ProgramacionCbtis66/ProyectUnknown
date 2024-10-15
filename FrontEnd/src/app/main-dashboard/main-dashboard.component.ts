@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'; // Importa el Router
+import { SesionService } from '../Core/service/sesion.service';
+
 
 @Component({
   selector: 'app-main-dashboard',
@@ -8,7 +10,7 @@ import { Router } from '@angular/router'; // Importa el Router
 })
 export class MainDashboardComponent implements OnInit {
 
-  constructor(private router: Router) { } // Inyecta el Router en el constructor
+  constructor(private router: Router, protected sesion: SesionService) { } // Inyecta el Router en el constructor
 
   ngOnInit(): void {
   }

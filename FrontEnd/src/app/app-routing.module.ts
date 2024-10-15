@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: "register", component: UserRegisterComponent },
   
   // Rutas protegidas
-  { path: "Main_Dashboard", component: MainDashboardComponent},
+  { path: "Main_Dashboard", component: MainDashboardComponent, canActivate: [PoliceGuard]},
   { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard]},
   { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
   { path: 'notifications_user', component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },

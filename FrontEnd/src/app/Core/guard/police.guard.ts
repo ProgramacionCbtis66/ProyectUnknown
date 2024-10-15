@@ -10,9 +10,9 @@ export class PoliceGuard implements CanActivate { // Implementa la interfaz CanA
   constructor(private router: Router, private autentificacion: AuthService) { }
 
   private rutasPermitidasPorRol = {
-    Alumno: ['Alumnos_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user'],
-    Profesor: ['Profesores_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user'],
-    Administrador: ['Administrativos_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user'] 
+    Alumno: ['Alumnos_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user', 'Main_Dashboard'],
+    Profesor: ['Profesores_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user', 'Main_Dashboard'],
+    Administrador: ['Administrativos_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user', 'Main_Dashboard'] 
   };
 
   // Método que controla el acceso a las rutas

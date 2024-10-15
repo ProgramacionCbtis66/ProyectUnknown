@@ -34,6 +34,7 @@ export class LogInComponent implements OnInit {
     try {
       const response = await firstValueFrom(this.authService.login(userData));
       localStorage.setItem("adae", response.token);
+      localStorage.setItem("fotoPerfil", response.foto);
       this.sesion._foto = response.foto;
       const decodedToken = this.authService.decodifica();
       this.sesion._usuario = decodedToken.nombre;
@@ -42,18 +43,18 @@ export class LogInComponent implements OnInit {
         case 'Administrador':
           console.error('Nombre del Usuario:', this.sesion._usuario);
           Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          this.router.navigate(['/Administrativos_Dashboard']);
+          this.router.navigate(['/Main_Dashboard']);
 
           break;
         case 'Alumno':
           console.error('Nombre del Usuario:', this.sesion._usuario);
           Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          this.router.navigate(['/Alumnos_Dashboard']);
+          this.router.navigate(['/Main_Dashboard']);
           break;
         case 'Profesor':
           console.error('Nombre del Usuario:', this.sesion._usuario);
           Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          this.router.navigate(['/Profesores_Dashboard']);
+          this.router.navigate(['/Main_Dashboard']);
           break;
         default:
           this.router.navigate(['/Main_Dashboard']);

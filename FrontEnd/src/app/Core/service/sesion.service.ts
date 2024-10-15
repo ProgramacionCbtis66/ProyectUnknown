@@ -25,9 +25,6 @@ export class SesionService {
   get _rol(): string {return this.rol.value;}
   set _rol(value: string) { this.rol.next(value); }
 
-
-
-
   extraerBase64 = async (foto: any) => new Promise((resolve, reject) => {
     try {
       const unsafeImg = window.URL.createObjectURL(foto);
