@@ -15,6 +15,13 @@ import { DocenteComponent } from './dashboard/docente/docente.component';
 import { UserRegisterComponent } from './user-settings_Page/user-register/user-register.component';
 import { AlumnosListadoComponent } from './dashboard/servicios_escolares/alumnos-listado/alumnos-listado.component';
 import { ServiciosMenuComponent } from './dashboard/servicios_escolares/servicios-menu/servicios-menu.component';
+import { TerminosCondicionesComponent } from './politica-privacidad/terminos-condiciones/terminos-condiciones.component';
+import { SobreNosotrosComponent } from './politica-privacidad/sobre-nosotros/sobre-nosotros.component';
+import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
+import { AlumnosClasesComponent } from './dashboard/servicios_escolares/alumnos-clases/alumnos-clases.component';
+import { AlumnosRegistrosComponent } from './dashboard/servicios_escolares/alumnos-registros/alumnos-registros.component';
+import { AlumnosGruposComponent } from './dashboard/servicios_escolares/alumnos-grupos/alumnos-grupos.component';
+
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
@@ -34,6 +41,12 @@ const routes: Routes = [
   { path: "Profesores_Dashboard", component: DocenteComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
   { path: "alumnos-listado", component: AlumnosListadoComponent},
   { path: "servicios-menu", component: ServiciosMenuComponent},
+  { path: "terminos-condiciones", component: TerminosCondicionesComponent},
+  { path: "sobre-nosotros", component: SobreNosotrosComponent},
+  { path: "politica-privacidad", component: PoliticaPrivacidadComponent},
+  { path: "alumnos-clases-registro", component: AlumnosClasesComponent},
+  { path: "alumnos-registros", component: AlumnosRegistrosComponent},
+  { path: "alumnos-grupos", component: AlumnosGruposComponent},
   { path: '**', redirectTo: '', pathMatch: 'full' } // Ruta por defecto
 ];
 

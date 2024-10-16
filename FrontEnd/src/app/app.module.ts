@@ -32,6 +32,12 @@ import { AdministrativosComponent } from './dashboard/administrativos/administra
 import { UserNotificationsPageComponent } from './user-settings_Page/user-notifications-page/user-notifications-page.component';
 import { AlumnosListadoComponent } from './dashboard/servicios_escolares/alumnos-listado/alumnos-listado.component';
 import { ServiciosMenuComponent } from './dashboard/servicios_escolares/servicios-menu/servicios-menu.component';
+import { TerminosCondicionesComponent } from './politica-privacidad/terminos-condiciones/terminos-condiciones.component';
+import { SobreNosotrosComponent } from './politica-privacidad/sobre-nosotros/sobre-nosotros.component';
+import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
+import { AlumnosClasesComponent } from './dashboard/servicios_escolares/alumnos-clases/alumnos-clases.component';
+import { AlumnosRegistrosComponent } from './dashboard/servicios_escolares/alumnos-registros/alumnos-registros.component';
+import { AlumnosGruposComponent } from './dashboard/servicios_escolares/alumnos-grupos/alumnos-grupos.component';
 import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-devices-page/connected-devices-page.component';
 import Notiflix from 'notiflix';
 import { FormsModule } from '@angular/forms';
@@ -67,7 +73,14 @@ export function tokenGetter() {
     AdministrativosComponent,
     UserRegisterComponent,
     AlumnosListadoComponent,
-    ServiciosMenuComponent
+    ServiciosMenuComponent,
+    TerminosCondicionesComponent,
+    SobreNosotrosComponent,
+    PoliticaPrivacidadComponent,
+    AlumnosRegistrosComponent,
+    AlumnosClasesComponent,
+    AlumnosGruposComponent,
+
   ],
   imports: [
     FormsModule,

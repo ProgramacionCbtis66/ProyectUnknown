@@ -14,7 +14,7 @@
   <body>
     <header>
       <nav class="navbar">
-        <a (click)="redirigirAlDashboard()"  class="ADAE-logo-header"  >ADAE</a>
+        <a (click)="redirigirAlDashboard()" class="ADAE-logo-header">ADAE</a>
         <div
           class="user-icon"
           (click)="toggleMenu()"
@@ -38,7 +38,6 @@
                 <i class="bx bx-x-circle"></i> Cerrar sesión
               </a>
             </div>
-            
           </div>
         </div>
       </nav>
@@ -58,21 +57,21 @@
     <footer>
       <div class="footer-div">
         <nav>
-          <a [routerLink]="['/privacy-policy']" class="privacy-policy"
+          <a [routerLink]="['/politica-privacidad']" class="privacy-policy"
             >Política de privacidad</a
           >
         </nav>
         <div class="sep"></div>
         <nav>
           <a
-            [routerLink]="['/terms-and-conditions']"
+            [routerLink]="['/terminos-condiciones']"
             class="terms-and-condition"
             >Términos y condiciones</a
           >
         </nav>
         <div class="sep"></div>
         <nav>
-          <a [routerLink]="['/about-us']" class="terms-and-condition"
+          <a [routerLink]="['/sobre-nosotros']" class="terms-and-condition"
             >Sobre nosotros</a
           >
         </nav>

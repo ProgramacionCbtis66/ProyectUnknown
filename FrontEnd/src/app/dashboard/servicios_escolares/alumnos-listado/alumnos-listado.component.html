@@ -38,7 +38,7 @@
           <div class="col-md-8">
             <div class="row">
               <div class="col-md-5 mb-4">
-                <div class="custom-card">
+                <div class="custom-card" [routerLink]="['/alumnos-registros']">
                   <div class="icon-box">
                     <i class="bx bx-user"></i>
                     <!-- Aquí puedes poner el ícono que desees -->
@@ -53,7 +53,10 @@
               </div>
 
               <div class="col-md-5 mb-4">
-                <div class="custom-card">
+                <div
+                  class="custom-card"
+                  [routerLink]="['/alumnos-clases-registro']"
+                >
                   <div class="icon-box">
                     <i class="bx bx-book"></i>
                     <!-- Ícono de usuario -->
@@ -68,7 +71,7 @@
               </div>
 
               <div class="col-md-5 mb-4">
-                <div class="custom-card">
+                <div class="custom-card" [routerLink]="['/alumnos-grupos']">
                   <div class="icon-box">
                     <i class="bx bx-group"></i>
                     <!-- Ícono de usuario -->

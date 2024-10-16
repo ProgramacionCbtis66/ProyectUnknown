@@ -39,7 +39,32 @@
           </li>
         </ul>
         <!-- Docentes-->
-
+        <ul>
+          <li>
+            <a
+              *ngIf="sesion._rol === 'Profesor'"
+              routerLink="/Main_Dashboard"
+              routerLinkActive="active"
+              ><span class="highlight"></span>Home</a
+            >
+          </li>
+          <li>
+            <a
+              *ngIf="sesion._rol === 'Profesor'"
+              routerLink="/Main_Dashboard"
+              routerLinkActive="active"
+              ><span class="highlight"></span>Clases</a
+            >
+          </li>
+          <li>
+            <a
+              *ngIf="sesion._rol === 'Profesor'"
+              routerLink="/Main_Dashboard"
+              routerLinkActive="active"
+              ><span class="highlight"></span>Horario</a
+            >
+          </li>
+        </ul>
         <!-- Alumnos-->
         <ul>
           <li>
@@ -116,7 +141,26 @@
               </div>
             </div>
           </div>
+          <!-- Docentes-->
+          <div class="col-md-8" *ngIf="sesion._rol === 'Profesor'">
+            <div class="row">
+              <div class="col-md-5 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Clases</h5>
+                  </div>
+                </div>
+              </div>
 
+              <div class="col-md-5 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Horario</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- Contenedores Alumnos-->
           <div class="col-md-8" *ngIf="sesion._rol === 'Alumno'">
             <div class="row">
