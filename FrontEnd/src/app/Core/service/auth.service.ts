@@ -41,6 +41,7 @@ export class AuthService {
     if (token && !this.jwt.isTokenExpired(token)) {
       const decodedToken = this.decodifica();
       this.sesion._usuario = decodedToken.nombre;
+      this.sesion._apellido = decodedToken.apellido;
       this.sesion._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
       this.sesion._rol = decodedToken.rol;
     }

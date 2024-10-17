@@ -4,13 +4,15 @@ import env from '../../enviroment/enviroment.js';
 
 const login = async (req, res) => {
     const { correo_institucional, password } = req.body;
-    console.log(correo_institucional, password);
+    console.log('Correo institucional:', correo_institucional, 'Contraseña:', password);
 
-    const sqlUserExists = `SELECT id_usuario AS id, nombre, rol, foto FROM usuarios WHERE correo_institucional = ?`; // Consulta para verificar si el usuario existe
-    const sqlPasswordMatch = `SELECT id_usuario AS id, nombre, rol, foto FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`; // Consulta para verificar la contraseña
+    const sqlUserExists = `SELECT id_usuario AS id, nombre, apellido, rol, foto FROM usuarios WHERE correo_institucional = ?`; // Consulta para verificar si el usuario existe
+    const sqlPasswordMatch = `SELECT id_usuario AS id, nombre, apellido, rol, foto FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`; // Consulta para verificar la contraseña
+    const sqlAlumnoData = `SELECT numero_control, especialidad, semestre, turno, curp FROM alumnos WHERE id_usuario = ?`; // Consulta para obtener datos del alumno
     const conexion = await cnx();
     let registro;
     let foto;
+    let datosAlumno = null;
 
     try {
         // Primero, verifica si el usuario existe
@@ -36,21 +38,31 @@ const login = async (req, res) => {
     // Si la contraseña no coincide, enviar un error 401
     if (!registro || registro.length === 0) {
         return res.status(401).json({ respuesta: 'Contraseña incorrecta' });
-    }
-    else {
-        if (registro[0].foto !=  null ){
+    } else {
+        if (registro[0].foto != null) {
             foto = registro[0].foto.toString('utf8');
             registro[0].foto = null;
         }
     }
-    // Si el usuario existe y la contraseña es correcta, generar el token
+
     const user = registro[0];
+
+    // Si el usuario es un alumno, obtener datos de la tabla "alumnos"
+    try {
+        [datosAlumno] = await conexion.execute(sqlAlumnoData, [user.id]);
+        console.log('Datos del alumno:', datosAlumno?.[0] || 'No es un alumno o no tiene datos asociados');
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error al obtener los datos del alumno' });
+    }
+
+    // Generar el token con los datos del usuario
     const token = jwt.sign(user, env.key, { expiresIn: env.exp });
     console.log('Datos del usuario antes de enviar respuesta:', user);
 
-
-    res.json({ token: token, foto: foto });
-}
+    // Enviar los datos del usuario, foto y datos del alumno si aplica
+    res.json({ token: token, foto: foto, alumno: datosAlumno?.[0] || null });
+};
 
 const registrarAlumno = async (req, res) => {
     const { correo_institucional, nombre, rol, password, numero_de_control, especialidad, semestre } = req.body;

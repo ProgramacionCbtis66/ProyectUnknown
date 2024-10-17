@@ -97,7 +97,7 @@
 
     <div class="main_container">
       <div class="sub_container_1">
-        <h3 id="user_name_dashboard">Hello, {{ sesion._usuario }}</h3>
+        <h3 id="user_name_dashboard">Hello, {{ sesion._usuario }} {{ sesion._apellido }}</h3>
         <p id="rol_user_dashboard">{{ sesion._rol }}</p>
       </div>
 
@@ -115,7 +115,7 @@
                   height="150"
                   class="profile-pic"
                 />
-                <h5 class="card-title">{{ sesion._usuario }}</h5>
+                <h5 class="card-title">{{ sesion._usuario }} {{ sesion._apellido }}</h5>
                 <p class="card-text">{{ sesion._rol }}</p>
               </div>
             </div>

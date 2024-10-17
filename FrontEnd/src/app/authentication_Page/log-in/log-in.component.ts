@@ -40,21 +40,18 @@ export class LogInComponent implements OnInit {
       this.sesion._foto = response.foto;
       const decodedToken = this.authService.decodifica();
       this.sesion._usuario = decodedToken.nombre;
+      this.sesion._apellido = decodedToken.apellido;
       this.sesion._rol = decodedToken.rol;
       switch (decodedToken.rol) {
         case 'Administrador':
-          console.error('Nombre del Usuario:', this.sesion._usuario);
           Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
           this.router.navigate(['/Main_Dashboard']);
-
           break;
         case 'Alumno':
-          console.error('Nombre del Usuario:', this.sesion._usuario);
           Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
           this.router.navigate(['/Main_Dashboard']);
           break;
         case 'Profesor':
-          console.error('Nombre del Usuario:', this.sesion._usuario);
           Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
           this.router.navigate(['/Main_Dashboard']);
           break;
