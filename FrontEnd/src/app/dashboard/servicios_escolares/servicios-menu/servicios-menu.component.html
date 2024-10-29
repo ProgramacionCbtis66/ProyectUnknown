@@ -1,137 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Layout</title>
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="sidebar_header">
-        <h5>ADAE</h5>
-      </div>
-      <div class="sidebar_menu">
-        <ul>
-          <li>
-            <a routerLink="/Main_Dashboard" routerLinkActive="active"
-              ><span class="highlight"></span>Home</a
-            >
-          </li>
-          <li>
-            <a routerLink="/alumnos-listado" routerLinkActive="active"
-              ><span class="highlight"></span>Alumnos</a
-            >
-          </li>
-          <li>
-            <a routerLink="/servicios-menu" routerLinkActive="active"
-              ><span class="highlight"></span>Servicios</a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
+<head>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+</head>
 
-    <div class="main_container">
-      <!-- Agregar nuevos contenedores de perfil estilo Bootstrap -->
-      <div class="container mt-4">
-        <div class="row">
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-md-5 mb-4">
-                <div class="custom-card">
-                  <div class="icon-box">
-                    <i class="bx bxs-graduation"></i>
-                    <!-- Aquí puedes poner el ícono que desees -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Certificados</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
+<div class="sub_container_1 text-center">
+  <h3 id="user_name_dashboard">Hello, {{ sesion._usuario }} {{ sesion._apellido }}</h3>
+  <p id="rol_user_dashboard" class="text-muted">{{ sesion._rol }}</p>
+</div>
 
-              <div class="col-md-5 mb-4">
-                <div class="custom-card">
-                  <div class="icon-box">
-                    <i class="bx bx-spreadsheet"></i>
-                    <!-- Ícono de usuario -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Constancias</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-5 mb-4">
-                <div class="custom-card">
-                  <div class="icon-box">
-                    <i class="bx bx-user-plus"></i>
-                    <!-- Ícono de usuario -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Inscripciones</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-5 mb-4">
-                <div class="custom-card">
-                  <div class="icon-box">
-                    <i class="bx bx-tired"></i>
-                    <!-- Ícono de usuario -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Justificantes-faltas</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-5 mb-4">
-                <div class="custom-card">
-                  <div class="icon-box">
-                    <i class="bx bx-receipt"></i>
-                    <!-- Ícono de usuario -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Re-inscripciones</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-5 mb-4">
-                <div class="custom-card">
-                  <div class="icon-box">
-                    <i class="bx bx-plus-medical"></i>
-                    <!-- Ícono de usuario -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Seguros sociales</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
+<div class="container mt-4">
+  <div class="row">
+      <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+          <div class="custom-card">
+              <i class="fi fi-ss-square-plus student-ico"></i>
+              coming soon
+              <!-- Vacio -->
           </div>
-        </div>
       </div>
-    </div>
-
-    <!-- Fin de los nuevos contenedores -->
-  </body>
-</html>
+      <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+          <div class="custom-card">
+              <i class="fi fi-ss-square-plus student-ico"></i>
+              coming soon
+              <!-- Vacio -->
+          </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+          <div class="custom-card">
+              <i class="fi fi-ss-square-plus student-ico"></i>
+              coming soon:
+              <!-- Vacio -->
+          </div>
+      </div>
+      <!-- Agrega más elementos según sea necesario -->
+  </div>
+</div>

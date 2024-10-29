@@ -34,18 +34,29 @@ export class AuthService {
     this.limpiarSesion(); // Limpia los datos de la sesión en memoria
     this.toastr.info('Sesión cerrada con éxito', 'Info');
   }
-  x
 
   restaurarSesion(): void {
     const token = localStorage.getItem('adae');
     if (token && !this.jwt.isTokenExpired(token)) {
-      const decodedToken = this.decodifica();
-      this.sesion._usuario = decodedToken.nombre;
-      this.sesion._apellido = decodedToken.apellido;
-      this.sesion._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
-      this.sesion._rol = decodedToken.rol;
+        const decodedToken = this.decodifica();
+        this.sesion._usuario = decodedToken.nombre;
+        this.sesion._apellido = decodedToken.apellido;
+        this.sesion._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
+        this.sesion._rol = decodedToken.rol;
+
+        // Establecer datos del alumno si existen en el token
+        if (decodedToken.alumno) {
+            const alumno = decodedToken.alumno; // Accede a los datos del alumno dentro del token
+            this.sesion._numeroControl = alumno.numero_control;
+            this.sesion._especialidad = alumno.especialidad;
+            this.sesion._semestre = alumno.semestre;
+            this.sesion._turno = alumno.turno;
+            this.sesion._curp = alumno.curp;
+            this.sesion._grupo = alumno.grupo;
+        }
     }
-  }
+}
+
 
   // Método para limpiar la sesión al cerrar sesión
   limpiarSesion(): void {
@@ -110,5 +121,16 @@ export class AuthService {
       return true;
     }
     return false;
+  }
+
+  //metodo para la lista jeje luego lo muevo para organizarlo bien
+
+  // Nuevo método para obtener usuarios
+  getUsuarios(): Observable<any[]> {
+    return this.http.get<any[]>("http://localhost:4000/apiAdae/usr/listUsr/");
+  }
+
+  updateAlumno(id: number, data: any): Observable<any> {
+    return this.http.put("http://localhost:4000/apiAdae/usr/ActualizarAlumno", data);
   }
 }

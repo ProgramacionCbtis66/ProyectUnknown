@@ -1,75 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Layout</title>
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="sidebar_header">
-        <h5>ADAE</h5>
-      </div>
-      <div class="sidebar_menu">
-        <ul>
-          <li>
-            <a routerLink="/Administrativos_Dashboard" routerLinkActive="active"
-              ><span class="highlight"></span>Home</a
-            >
-          </li>
-          <li>
-            <a routerLink="/insights" routerLinkActive="active"
-              ><span class="highlight"></span>Clases</a
-            >
-          </li>
-          <li>
-            <a routerLink="/reports" routerLinkActive="active"
-              ><span class="highlight"></span>Horario</a
-            >
-          </li>
-        </ul>
+<div class="sub_container_1">
+  <h3 id="user_name_dashboard">Hello, {{ sesion._usuario }} {{ sesion._apellido }}</h3>
+  <p id="rol_user_dashboard">{{ sesion._rol }}</p>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- Contenedor de perfil -->
+    <div class="col-md-3">
+      <div class="card" (click)="navigateToProfile()">
+        <div class="card-body text-center">
+          <img
+            [src]="sesion._foto"
+            width="150"
+            height="150"
+            class="profile-pic rounded-circle"
+          />
+          <h5 class="card-title">{{ sesion._usuario }} {{ sesion._apellido }}</h5>
+          <p class="card-text">{{ sesion._rol }}</p>
+        </div>
       </div>
     </div>
-
-    <div class="main_container">
-      <div class="sub_container_1">
-        <h3 id="user_name_dashboard">Hello, Josh</h3>
-        <p id="rol_user_dashboard">Alumno</p>
-      </div>
-
-      <!-- Agregar nuevos contenedores de perfil estilo Bootstrap -->
-      <div class="container mt-4">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="card" (click)="navigateToProfile()">
-              <div class="card-body text-center">
-                <img src="" alt="" class="profile-pic" />
-                <h5 class="card-title">Joshefs Agustin</h5>
-                <p class="card-text">Rubio Carrillo</p>
-              </div>
+    
+    <!-- Contenedor dinámico para alumnos -->
+    <div class="col-md-8" *ngIf="sesion._rol === 'Alumno'">
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Clases</h5>
             </div>
           </div>
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-md-5 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Clases</h5>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-5 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Horario</h5>
-                  </div>
-                </div>
-              </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Horario</h5>
             </div>
           </div>
         </div>
       </div>
-      <!-- Fin de los nuevos contenedores -->
     </div>
-  </body>
-</html>
+  </div>
+</div>

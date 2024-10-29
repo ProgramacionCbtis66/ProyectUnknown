@@ -5,33 +5,31 @@ import { AuthService } from '../service/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class PoliceGuard implements CanActivate { // Implementa la interfaz CanActivate
+export class PoliceGuard implements CanActivate { 
 
   constructor(private router: Router, private autentificacion: AuthService) { }
 
   private rutasPermitidasPorRol = {
-    Alumno: ['Alumnos_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user', 'Main_Dashboard'],
-    Profesor: ['Profesores_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user', 'Main_Dashboard'],
-    Administrador: ['Administrativos_Dashboard', 'Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user', 'Main_Dashboard'] 
+    Alumno: ['Main_Dashboard', 'Main_Dashboard/Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user'],
+    Profesor: ['Main_Dashboard', 'Main_Dashboard/Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user'],
+    Administrador: ['Main_Dashboard', 'Main_Dashboard/Profile_User', 'segurity_user', 'notifications_user', 'connected_devices_user'] 
   };
 
-  // Método que controla el acceso a las rutas
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    const rutaActual = route.routeConfig?.path; // Obtiene la ruta activa
+    const rutaActual = state.url.split('?')[0]; // Obtiene la ruta activa sin parámetros
 
-    if (this.autentificacion.isAuth()) { // Verifica si está autenticado
-      const user = this.autentificacion.decodifica(); // Decodifica el token para obtener la información del usuario
+    if (this.autentificacion.isAuth()) {
+      const user = this.autentificacion.decodifica();
 
       if (user && user.rol && rutaActual) {
-        const rutasPermitidas = this.rutasPermitidasPorRol[user.rol]; // Obtiene las rutas permitidas para el rol del usuario
+        const rutasPermitidas = this.rutasPermitidasPorRol[user.rol];
 
-        if (rutasPermitidas && rutasPermitidas.includes(rutaActual)) {
-          return true; // Si la ruta actual está permitida para el rol del usuario, se concede acceso
+        if (rutasPermitidas && rutasPermitidas.some(ruta => rutaActual.includes(ruta))) {
+          return true; // Si la ruta está permitida, se concede acceso
         }
       }
     }
 
-    // Si no cumple las condiciones, redirige al login
     return this.router.createUrlTree(['/login']);
   }
 }

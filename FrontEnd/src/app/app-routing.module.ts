@@ -29,26 +29,35 @@ const routes: Routes = [
   { path: "login", component: LogInComponent },
   { path: "QRPage", component: LoginQRGeneratorComponent },
   { path: "register", component: UserRegisterComponent },
-  
+
   // Rutas protegidas
-  { path: "Main_Dashboard", component: MainDashboardComponent, canActivate: [PoliceGuard]},
-  { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard]},
-  { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
-  { path: 'notifications_user', component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
-  { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
-  { path: "Administrativos_Dashboard", component: AdministrativosComponent, canActivate: [PoliceGuard]}, // Ruta para el Dashboard de los Administrativos
-  { path: "Alumnos_Dashboard", component: AlumnoComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
-  { path: "Profesores_Dashboard", component: DocenteComponent, canActivate: [PoliceGuard]  }, // Ruta para el Dashboard de los Administrativos
-  { path: "alumnos-listado", component: AlumnosListadoComponent},
-  { path: "servicios-menu", component: ServiciosMenuComponent},
-  { path: "terminos-condiciones", component: TerminosCondicionesComponent},
-  { path: "sobre-nosotros", component: SobreNosotrosComponent},
-  { path: "politica-privacidad", component: PoliticaPrivacidadComponent},
-  { path: "alumnos-clases-registro", component: AlumnosClasesComponent},
-  { path: "alumnos-registros", component: AlumnosRegistrosComponent},
-  { path: "alumnos-grupos", component: AlumnosGruposComponent},
+  {
+    path: "Main_Dashboard",
+    component: MainDashboardComponent,
+    canActivate: [PoliceGuard],
+    children: [ // Rutas hijas del Dashboard
+      { path: 'administrativos', component: AdministrativosComponent },
+      { path: 'alumnos', component: AlumnoComponent },
+      { path: 'docentes', component: DocenteComponent },
+      { path: 'alumnos-listado', component: AlumnosListadoComponent },
+      { path: 'servicios-menu', component: ServiciosMenuComponent },
+      { path: 'alumnos-clases-registro', component: AlumnosClasesComponent },
+      { path: 'alumnos-registros', component: AlumnosRegistrosComponent },
+      { path: 'alumnos-grupos', component: AlumnosGruposComponent },
+      { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard] },
+      { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
+    { path: "notifications_user", component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
+    { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
+      { path: '', redirectTo: '', pathMatch: 'full' } // Redirección a una vista por defecto
+    ]
+  },
+  
+  { path: "terminos-condiciones", component: TerminosCondicionesComponent },
+  { path: "sobre-nosotros", component: SobreNosotrosComponent },
+  { path: "politica-privacidad", component: PoliticaPrivacidadComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' } // Ruta por defecto
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

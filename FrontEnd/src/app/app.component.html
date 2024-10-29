@@ -1,86 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <title>ADAE</title>
-    <link rel="style" href="app.component.css" />
-  </head>
 
-  <body>
-    <header>
-      <nav class="navbar">
-        <a (click)="redirigirAlDashboard()" class="ADAE-logo-header">ADAE</a>
-        <div
-          class="user-icon"
-          (click)="toggleMenu()"
-          *ngIf="sesion._usuario !== 'Sin Usuario Actual'"
-        >
-          <img [src]="sesion._foto" width="30" height="30" />
-          <div class="profile-menu" [ngClass]="{ show: menuOpen }">
-            <div class="profile-header">
-              <p>{{ sesion._usuario }}<br /></p>
-            </div>
-            <div class="profile-options">
-              <a [routerLink]="['/Profile_User']">
-                <i class="bx bx-user"></i> Ver mi perfil
-              </a>
-              <a [routerLink]="['/segurity_user']">
-                <i class="bx bx-shield"></i> Gestionar cuenta
-              </a>
-            </div>
-            <div class="profile-logout">
-              <a href="#" class="logout-btn" (click)="cerrarSesion()">
-                <i class="bx bx-x-circle"></i> Cerrar sesión
-              </a>
-            </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <title>ADAE</title>
+  <link rel="style" href="app.component.css" />
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <a (click)="redirigirAlDashboard()" class="ADAE-logo-header">ADAE</a>
+
+      <div class="user-icon" (click)="toggleMenu()" *ngIf="sesion._usuario !== 'Sin Nombre Actual'">
+
+        <img [src]="sesion._foto" width="30" height="30">
+        <div class="profile-menu" [ngClass]="{ show: menuOpen }">
+          <div class="profile-header">
+            <p>{{ sesion._usuario }}<br /></p>
+          </div>
+          <div class="profile-options">
+            <a [routerLink]="['/Main_Dashboard/Profile_User']">
+              <i class="bx bx-user"></i> Ver mi perfil
+            </a>
+            <a [routerLink]="['/Main_Dashboard/segurity_user']">
+              <i class="bx bx-shield"></i> Gestionar cuenta
+            </a>
+          </div>
+          <div class="profile-logout">
+            <a href="#" class="logout-btn" (click)="cerrarSesion()">
+              <i class="bx bx-x-circle"></i> Cerrar sesión
+            </a>
           </div>
         </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Superposición para el desenfoque -->
+  <div class="overlay" [ngClass]="{ active: menuOpen }" (click)="closeMenu()"></div>
+
+  <div class="mt-5">
+    <router-outlet></router-outlet>
+  </div>
+
+  <footer>
+    <div class="footer-div">
+      <nav>
+        <a [routerLink]="['/politica-privacidad']" class="privacy-policy">Política de privacidad</a>
       </nav>
-    </header>
-
-    <!-- Superposición para el desenfoque -->
-    <div
-      class="overlay"
-      [ngClass]="{ active: menuOpen }"
-      (click)="closeMenu()"
-    ></div>
-
-    <div class="mt-5">
-      <router-outlet></router-outlet>
+      <div class="sep"></div>
+      <nav>
+        <a [routerLink]="['/terminos-condiciones']" class="terms-and-condition">Términos y condiciones</a>
+      </nav>
+      <div class="sep"></div>
+      <nav>
+        <a [routerLink]="['/sobre-nosotros']" class="terms-and-condition">Sobre nosotros</a>
+      </nav>
     </div>
+    <div class="footer-div2">
+      Copyright © 2024 ADAE. Todos los derechos reservados.
+    </div>
+  </footer>
 
-    <footer>
-      <div class="footer-div">
-        <nav>
-          <a [routerLink]="['/politica-privacidad']" class="privacy-policy"
-            >Política de privacidad</a
-          >
-        </nav>
-        <div class="sep"></div>
-        <nav>
-          <a
-            [routerLink]="['/terminos-condiciones']"
-            class="terms-and-condition"
-            >Términos y condiciones</a
-          >
-        </nav>
-        <div class="sep"></div>
-        <nav>
-          <a [routerLink]="['/sobre-nosotros']" class="terms-and-condition"
-            >Sobre nosotros</a
-          >
-        </nav>
-      </div>
-      <div class="footer-div2">
-        Copyright © 2024 ADAE. Todos los derechos reservados.
-      </div>
-    </footer>
+  <script src="app.component.js"></script>
+</body>
 
-    <script src="app.component.js"></script>
-  </body>
 </html>

@@ -1,95 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Layout</title>
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="sidebar_header">
-        <h5>ADAE</h5>
-      </div>
-      <div class="sidebar_menu">
-        <ul>
-          <li>
-            <a routerLink="/Main_Dashboard" routerLinkActive="active"
-              ><span class="highlight"></span>Home</a
-            >
-          </li>
-          <li>
-            <a routerLink="/alumnos-listado" routerLinkActive="active"
-              ><span class="highlight"></span>Alumnos</a
-            >
-          </li>
-          <li>
-            <a routerLink="/servicios-menu" routerLinkActive="active"
-              ><span class="highlight"></span>Servicios</a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
+<div class="container Search">
+  <h2 class="my-3">Lista de Alumnos</h2>
 
-    <div class="main_container">
-      <!-- Agregar nuevos contenedores de perfil estilo Bootstrap -->
-      <div class="container mt-4">
-        <div class="row">
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-md-5 mb-4">
-                <div class="custom-card" [routerLink]="['/alumnos-registros']">
-                  <div class="icon-box">
-                    <i class="bx bx-user"></i>
-                    <!-- Aquí puedes poner el ícono que desees -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Alumnos</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
+  <!-- Barra de búsqueda -->
+  <input
+    type="text"
+    class="form-control my-3"
+    placeholder="Buscar por nombre, apellido o número de control"
+    [(ngModel)]="searchQuery"
+    (input)="onSearch()"
+  />
 
-              <div class="col-md-5 mb-4">
-                <div
-                  class="custom-card"
-                  [routerLink]="['/alumnos-clases-registro']"
-                >
-                  <div class="icon-box">
-                    <i class="bx bx-book"></i>
-                    <!-- Ícono de usuario -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Clases</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
+  <!-- Filtros de turno, grupo y especialidad -->
+  <div class="filters">
+    <select [(ngModel)]="selectedTurno" (change)="applyFilters()">
+      <option value="">Todos los turnos</option>
+      <option *ngFor="let turno of turnos">{{ turno }}</option>
+    </select>
 
-              <div class="col-md-5 mb-4">
-                <div class="custom-card" [routerLink]="['/alumnos-grupos']">
-                  <div class="icon-box">
-                    <i class="bx bx-group"></i>
-                    <!-- Ícono de usuario -->
-                  </div>
-                  <div class="content-box">
-                    <h4>Grupos</h4>
-                  </div>
-                  <div class="arrow-box">
-                    <i class="bx bx-right-arrow-alt"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
+      <option value="">Todos los grupos</option>
+      <option *ngFor="let grupo of grupos">{{ grupo }}</option>
+    </select>
+
+    <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
+      <option value="">Todas las especialidades</option>
+      <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
+    </select>
+  </div>
+</div>
+  <!-- Lista de tarjetas de alumnos -->
+  <div class="container">
+    <div class="alumnos-listado">
+      <div *ngFor="let usuario of filteredUsuarios" class="alumno-card">
+<div class="algo">
+  <img
+  [src]="usuario.foto || 'ruta/a/imagen_default.jpg'"
+  alt="Foto de {{ usuario.nombre }}"
+  class="alumno-foto"
+/>
+<div class="alumno-info">
+  <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
+  <p>Num: {{ usuario.numero_control }} &nbsp;&nbsp; {{ usuario.rol }} &nbsp;&nbsp; {{ usuario.turno }}</p>
+</div>
+
+</div>
+<div class="alumno-actions">
+  <span class="icon">{{ usuario.grupo }}</span> <!-- Muestra el grupo del alumno -->
+</div>
       </div>
     </div>
-
-    <!-- Fin de los nuevos contenedores -->
-  </body>
-</html>
+  </div>
+  
+  

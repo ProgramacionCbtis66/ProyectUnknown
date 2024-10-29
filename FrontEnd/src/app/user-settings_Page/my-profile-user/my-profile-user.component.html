@@ -1,80 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <title>Document</title>
-  </head>
-  <body>
-    <aside class="sidebar" [ngClass]="{ active: sidebarActive }">
-      <ul>
-        <li
-          routerLink="/Profile_User"
-          routerLinkActive="active"
-          (click)="setActiveMenu('perfil')"
-        >
-          <span class="icon"><i class="bx bxs-user"></i></span> mi perfil
-        </li>
-        <li
-          routerLink="/segurity_user"
-          routerLinkActive="active"
-          (click)="setActiveMenu('seguridad')"
-        >
-          <span class="icon"><i class="bx bxs-shield"></i></span> seguridad
-        </li>
-        <li
-          routerLink="/notifications_user"
-          routerLinkActive="active"
-          (click)="setActiveMenu('notificaciones')"
-        >
-          <span class="icon"><i class="bx bxs-bell"></i></span> notificaciones
-        </li>
-        <li
-          routerLink="/connected_devices_user"
-          routerLinkActive="active"
-          (click)="setActiveMenu('dispositivos')"
-        >
-          <span class="icon"><i class="bx bx-laptop"></i></span> dispositivos
-          conectados
-        </li>
-        <li class="logout" (click)="setActiveMenu('logout')">
-          <span class="icon">❌</span> Cerrar sesión
-        </li>
-      </ul>
-    </aside>
+<section class="Profile">
+  <div class="profile text-center">
+    <!-- Foto de perfil dinámica -->
+    <img [src]="sesion._foto || 'assets/default-profile-pic.jpg'" alt="Foto de perfil"
+      class="profile-pic rounded-circle" width="150" height="150" />
 
-    <section class="main-content" [ngClass]="{ blurred: sidebarActive }">
-      <div class="header">
-        <h2>Perfil</h2>
-        <div class="streak"></div>
-        <div id="menuBtn" (click)="toggleSidebar()">
-          <i class="bx bx-menu"></i>
-          <!-- Icono de tres rayas -->
-        </div>
-      </div>
-      <div class="profile">
-        <img src="profile-pic.jpg" alt="" class="profile-pic" />
-        <h3>Joshefs Agustin Rubio Carrillo</h3>
-        <div class="info">
-          <p><strong>Especialidad:</strong> <a href="#">Programación</a></p>
-          <p><strong>Grado:</strong> 5</p>
-          <p><strong>Grupo:</strong> "H"</p>
-          <p>
-            <strong>Número de Control:</strong> <a href="#">223300506604004</a>
-            <span class="icon">📋</span>
-          </p>
-        </div>
-      </div>
-    </section>
+    <!-- Nombre del usuario -->
+    <h3>{{ sesion._usuario }} {{ sesion._apellido }}</h3>
 
-    <div class="mt-5">
-      <router-outlet></router-outlet>
+    <div class="info mt-4">
+      <!-- Información personal -->
+      <p><strong>Especialidad:</strong> <a href="#">{{ sesion._especialidad || 'No disponible' }}</a></p>
+      <p><strong>Semestre:</strong> {{ sesion._semestre || 'No disponible' }}</p>
+      <p><strong>Grupo:</strong> "{{ sesion._grupo || 'No disponible' }}"</p>
+      <p>
+        <strong>Número de Control:</strong>
+        <a href="#">{{ sesion._numeroControl || 'No disponible' }}</a>
+        <span class="icon">📋</span>
+      </p>
     </div>
-
-    <script src="my-profile-user.component.ts"></script>
-  </body>
-</html>
+  </div>
+</section>

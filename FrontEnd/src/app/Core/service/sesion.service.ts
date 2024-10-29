@@ -7,27 +7,55 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class SesionService {
 
-
   constructor(
     private sanitizer: DomSanitizer,
   ) { }
 
-  private usuario = new BehaviorSubject<string>("Sin Usuario Actual"); // Usuario actual
+  // Información del usuario
+  private nombre = new BehaviorSubject<string>("Sin Nombre Actual");
   private apellido = new BehaviorSubject<string>("Sin Apellido Actual");
   private rol = new BehaviorSubject<string>('Sin Rol Actual');
-  private foto = new BehaviorSubject<string>("Sin Foto Actual"); // Foto actual
+  private foto = new BehaviorSubject<string | null>(null);
+  
+  // Información del alumno
+  private numeroControl = new BehaviorSubject<string>("Sin Número de Control");
+  private especialidad = new BehaviorSubject<string>("Sin Especialidad");
+  private semestre = new BehaviorSubject<number | null>(null);
+  private turno = new BehaviorSubject<string>("Sin Turno");
+  private curp = new BehaviorSubject<string>("Sin CURP");
+  private grupo = new BehaviorSubject<string>("Sin Grupo")
 
-  get _usuario(): string { return this.usuario.value; }
-  set _usuario(value: string) { this.usuario.next(value); }
+  // Métodos para usuario, apellido, rol y foto
+  get _usuario(): string { return this.nombre.value; }
+  set _usuario(value: string) { this.nombre.next(value); }
 
   get _apellido(): string { return this.apellido.value; }
   set _apellido(value: string) { this.apellido.next(value); }
 
-  get _foto(): string { return this.foto.value; }
-  set _foto(value: string) { this.foto.next(value); }
+  get _foto(): string | null { return this.foto.value; }
+  set _foto(value: string | null) { this.foto.next(value); }
 
-  get _rol(): string {return this.rol.value;}
+  get _rol(): string { return this.rol.value; }
   set _rol(value: string) { this.rol.next(value); }
+
+  // Nuevos métodos para los campos del alumno
+  get _numeroControl(): string { return this.numeroControl.value; }
+  set _numeroControl(value: string) { this.numeroControl.next(value); }
+
+  get _especialidad(): string { return this.especialidad.value; }
+  set _especialidad(value: string) { this.especialidad.next(value); }
+
+  get _semestre(): number | null { return this.semestre.value; }
+  set _semestre(value: number | null) { this.semestre.next(value); }
+
+  get _turno(): string { return this.turno.value; }
+  set _turno(value: string) { this.turno.next(value); }
+
+  get _curp(): string { return this.curp.value; }
+  set _curp(value: string) { this.curp.next(value); }
+
+  get _grupo(): string { return this.curp.value; }
+  set _grupo(value: string) { this.curp.next(value); }
 
   extraerBase64 = async (foto: any) => new Promise((resolve, reject) => {
     try {
@@ -90,5 +118,4 @@ export class SesionService {
       reader.readAsDataURL(blob);
     });
   }
-
 }

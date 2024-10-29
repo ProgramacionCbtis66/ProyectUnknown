@@ -15,7 +15,7 @@ body {
   font-family: 'Poppins', sans-serif;
   font-weight: 500; /* Poppins Medium */
   margin: 0;
-  background-color: #fbfbfd;
+  background-color: #353535;
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Permite que el footer se mantenga en la parte inferior */
@@ -25,33 +25,33 @@ header {
   position: fixed;
   width: 100%;
   z-index: 1000;
-  top: 0;
-  backdrop-filter: blur(14px);
   padding: 10px 20px;
-  background-color: rgba(251, 251, 253, 0.5);
+  background-color: #232323;
+  color: white;
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 40px;
+  padding: 0;
 }
 
 .ADAE-logo-header {
-  font-size: 1.1rem;
+  font-size: 20px;
   font-weight: 500;
-  display: flex;
-  align-items: center;
+  flex-direction: row;
+  justify-content: center;
   cursor: pointer;
 }
 
 /* Estilo del menú de usuario */
 .user-icon {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   cursor: pointer;
-  position: relative;
 }
 
 /* Estilo del menú */
@@ -183,18 +183,19 @@ footer {
   display: flex;
   justify-content: center; 
   align-items: center;
-  background-color: #eeeef3;
+  background-color: #232323;
   padding: 1.5rem;
   width: 100%; 
   margin-top: auto; 
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
+  color: white; 
 }
 
 .footer-div,
 .footer-div2 {
   display: flex;
   font-size: 0.6rem; 
-  color: rgba(0, 0, 0, 0.56);
+  color: rgb(255, 255, 255);
   align-items: center;
   margin: 0 10px; 
 }
@@ -228,6 +229,8 @@ footer {
     margin: 5px 0; 
   }
 }
+
+
 
 /* latin-ext */
 @font-face {

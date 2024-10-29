@@ -1,4 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { SesionService } from '../../Core/service/sesion.service';
+
 
 @Component({
   selector: 'app-my-profile-user',
@@ -9,7 +11,7 @@ export class MyProfileUserComponent implements OnInit {
   activeMenu: string = 'perfil'; // Elemento activo por defecto
   sidebarActive: boolean = true; // Mostrar el sidebar por defecto en modo PC
 
-  constructor() {}
+  constructor(public sesion: SesionService) {}
 
   ngOnInit(): void {
     window.scrollTo(0, 0);

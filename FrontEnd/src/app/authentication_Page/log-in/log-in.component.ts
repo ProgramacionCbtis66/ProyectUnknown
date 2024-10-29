@@ -24,7 +24,7 @@ export class LogInComponent implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
-   }
+  }
 
   navigateToQR(): void {
     this.router.navigate(['/QRPage']); // ruta para el iniciar sesion con
@@ -33,27 +33,63 @@ export class LogInComponent implements OnInit {
   async onLogin(): Promise<void> {
     this.isLoading = true; // Iniciar carga
     const userData = { correo_institucional: this.username, password: this.password };
+
     try {
       const response = await firstValueFrom(this.authService.login(userData));
+      console.log("Respuesta de login:", response); // <-- Depuración 
+
       localStorage.setItem("adae", response.token);
       localStorage.setItem("fotoPerfil", response.foto);
       this.sesion._foto = response.foto;
+
       const decodedToken = this.authService.decodifica();
+      console.log("Token decodificado:", decodedToken); // <-- Depuración
+
       this.sesion._usuario = decodedToken.nombre;
       this.sesion._apellido = decodedToken.apellido;
       this.sesion._rol = decodedToken.rol;
+
+      // Establecer datos del alumno si el rol es "Alumno" y el token contiene datos del alumno
+      if (decodedToken.rol === 'Alumno' && decodedToken.alumno) {
+        const alumno = decodedToken.alumno; // Accede a los datos del alumno dentro del token
+        this.sesion._numeroControl = alumno.numero_control;
+        this.sesion._especialidad = alumno.especialidad;
+        this.sesion._semestre = alumno.semestre;
+        this.sesion._turno = alumno.turno;
+        this.sesion._curp = alumno.curp;
+        this.sesion._grupo = alumno.grupo;
+      }
+
+      // Comparar la fecha de nacimiento con la fecha actual para la felicitación
+      const today = new Date();
+      const birthDate = new Date(decodedToken.fecha_nac); // La fecha de nacimiento del token
+
+      const isBirthday = (today.getDate() === birthDate.getUTCDate() &&
+        today.getMonth() === birthDate.getUTCMonth());
+
+      // Redirige según el rol del usuario
       switch (decodedToken.rol) {
         case 'Administrador':
-          Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
+          if (isBirthday) {
+            Notiflix.Notify.success('Feliz Cumpleaños ' + this.sesion._usuario);
+          } else {
+            Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
+          }
           this.router.navigate(['/Main_Dashboard']);
           break;
         case 'Alumno':
-          Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          this.router.navigate(['/Main_Dashboard']);
+          if (isBirthday) {
+            Notiflix.Notify.success('Feliz Cumpleaños ' + this.sesion._usuario);
+          } else {
+            Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
+          } this.router.navigate(['/Main_Dashboard']);
           break;
         case 'Profesor':
-          Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          this.router.navigate(['/Main_Dashboard']);
+          if (isBirthday) {
+            Notiflix.Notify.success('Feliz Cumpleaños ' + this.sesion._usuario);
+          } else {
+            Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
+          } this.router.navigate(['/Main_Dashboard']);
           break;
         default:
           this.router.navigate(['/Main_Dashboard']);
@@ -79,4 +115,12 @@ export class LogInComponent implements OnInit {
       Notiflix.Notify.failure('Error al iniciar sesión. Servidor no responde.');
     }
   }
+
+  showPassword: boolean = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+  
 }
+

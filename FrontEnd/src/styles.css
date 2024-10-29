@@ -32,3 +32,23 @@ body {
 body {
     overflow-y: scroll; /* Mantiene el desplazamiento vertical */
 }
+
+/* Estilos para navegadores WebKit (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 12px; /* Ancho de la barra de desplazamiento vertical */
+    height: 12px; /* Altura de la barra de desplazamiento horizontal */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #e8e8e8; /* Color de fondo del track de desplazamiento */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #232323; /* Color del control deslizante */
+    border: none; /* Espacio alrededor del control deslizante */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #393939; /* Color al pasar el cursor por encima del control */
+  }
+  

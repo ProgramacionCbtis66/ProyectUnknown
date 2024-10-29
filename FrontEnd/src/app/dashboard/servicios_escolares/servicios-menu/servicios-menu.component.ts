@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SesionService } from '../../../Core/service/sesion.service';
 
 @Component({
   selector: 'app-servicios-menu',
@@ -6,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './servicios-menu.component.css'
 })
 export class ServiciosMenuComponent {
-  constructor() {
+  constructor(protected sesion: SesionService) {
     window.scrollTo(0, 0);
   }
 }

@@ -1,183 +1,139 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Ubuntu', sans-serif;
-    background-color: rgba(251, 251, 253, .5);
-    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
 }
 
-#main {
-    width: 100vw;
-    height: 87vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-}
-
-html,
-body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-#sign-in {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 20px;
-    border-radius: 5%;
+/* Estilos generales de la tarjeta y el contenedor */
+.custom-card {
+    border-radius: 10%;
     border: none;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px,
-                rgba(17, 17, 26, .1) 0px 8px 24px,
-                rgba(17, 17, 26, 0.1) 0px 16px 48px;
-    width: 600px;
-    height: 600px;
-    margin: 0;
-    padding: 0;
-    
-    opacity: 0;
-    animation: fadeIn 1.7s ease forwards;
 }
 
-#sign-in p {
-    font-size: 3.5vw;
-    font-weight: 500;
-    user-select: none;
+.custom-title {
+    font-size: 175%;
 }
 
-.input-container {
-    position: relative;
+.custom-input {
+    background-color: whitesmoke;
+    border: none ;
+    border-radius: 50px;
 }
 
-.bx-right-arrow-circle {
-    position: absolute;
-    top: 39%;
-    right: 2%;
-    font-size: 1.5rem;
-    color: black;
+/* Estilo general para el contenedor del checkbox */
+.custom-checkbox {
+    margin-left: 20px;
 }
 
-.cursor-pointer {
+/* Estilo del input checkbox */
+.custom-check-input {
+    appearance: none; /* Elimina el estilo predeterminado del checkbox */
+    -webkit-appearance: none; /* Para navegadores WebKit */
+    width: 20px; /* Tamaño del checkbox */
+    height: 20px; /* Tamaño del checkbox */
+    border: 2px solid #333; /* Borde gris oscuro */
+    background: #ffffff; /* Fondo blanco por defecto */
+    border-radius: 4px; /* Bordes redondeados */
+    position: relative; /* Necesario para el pseudo-elemento */
     cursor: pointer; /* Cambia el cursor a puntero */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#sign-in #email {
-    padding: 1rem .9rem;
-    font-size: 1rem;
-    width: 450px;
-    border: 1px solid black;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-    background-color: #E0E9F5;
+.custom-check-input:hover{
+    transform: scale(1.3);
 }
 
-#email-phone:focus {
-    border: 1px solid skyblue;
-    outline: 0;
+/* Efecto al seleccionar el checkbox */
+.custom-check-input:checked {
+    background: black; /* Fondo negro al seleccionar */
+    border: 2px solid black; /* Borde negro al seleccionar */
 }
 
-#sign-in #password {
-    padding: 1rem .9rem;
-    font-size: 1rem;
-    width: 450px;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin-bottom: 31px;
+/* Marca personalizada que se muestra cuando está seleccionado */
+.custom-check-input:checked::after {
+    content: ''; /* Agrega contenido vacío */
+    position: absolute; /* Posicionamiento absoluto */
+    top: 50%; /* Centrado vertical */
+    left: 50%; /* Centrado horizontal */
+    width: 10px; /* Tamaño de la marca */
+    height: 10px; /* Tamaño de la marca */
+    background: white; /* Color de la marca (blanco) */
+    border-radius: 50%; /* Bordes redondeados para hacer un círculo */
+    transform: translate(-50%, -50%); /* Centra la marca */
 }
 
-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Estilo para la etiqueta del checkbox */
+.custom-check-label {
+    margin-left: 8px; /* Espaciado a la izquierda */
 }
 
-#check {
-    height: 16px;
-    width: 16px;
-    margin-right: 10px;
-    background-color: rgb(0, 0, 0);
+
+.custom-check-label {
+    /* Personaliza el estilo de la etiqueta del checkbox */
 }
 
-#sign-in #email-phone {
-    font-size: 1rem;
+/* Estilos de enlaces */
+.custom-link a {
+    font-size: 0.8rem;
 }
 
-.links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+/* Estilos del botón de inicio de sesión */
+.custom-btn {
+    background-color: black;
+    /* Color de fondo negro */
+    color: white;
+    /* Texto blanco */
+    border-radius: 25px;
+    /* Bordes redondeados */
+    border: 2px solid transparent;
+    /* Sin borde visible inicialmente */
+    padding: 7px 30px;
+    /* Espaciado interno */
+    font-weight: 500;
+    /* Negrita ligera */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    /* Transición suave */
 }
 
-.links a {
-    color: rgb(0, 128, 255);
+/* Efecto hover del botón de inicio de sesión */
+.custom-btn:hover {
+    background-color: white;
+    /* Fondo blanco al hacer hover */
+    color: black;
+    /* Texto negro al hacer hover */
+    border-color: black;
+    /* Borde negro al hacer hover */
 }
 
-@media only screen and (max-width: 600px) {
-    #sign-in {
-        width: 400px;
-        height: 450px;
-    }
-    
-    #sign-in p {
-        font-size: 8vw; 
-    }
-    
-    #sign-in #email,
-    #sign-in #password {
-        width: 100%; 
-        max-width: 300px; 
-    }
-    
-    .bx-right-arrow-circle {
-        top: 38%; 
-        right: 2%; 
-    }
+/* Estilos para el botón de mostrar/ocultar contraseña */
+.custom-password-toggle-btn {
+    background: none;
+
+    border: none;
+
+    padding: 0;
+
+    cursor: pointer;
 }
 
-@media only screen and (min-width: 600px) and (max-width: 1024px) {
-    #sign-in {
-        width: 500px;
-        height: 550px;
-    }
-    
-    #sign-in p {
-        font-size: 5vw; 
-    }
-    
-    #sign-in #email,
-    #sign-in #password {
-        width: 100%; 
-        max-width: 350px; 
-    }
-    
-    .bx-right-arrow-circle {
-        top: 39%; 
-        right: 4%; 
-    }
+/* Elimina los efectos hover y focus */
+.custom-password-toggle-btn:hover,
+.custom-password-toggle-btn:focus {
+    background: none;
+
+    box-shadow: none;
+
+    outline: none;
+}
+
+.custom-password-toggle-btn i:hover {
+    transform: scale(1.3);
+    /* Escala la imagen al pasar el cursor */
+}
+
+.custom-password-toggle-btn i {
+    font-size: 1.2rem;
+    /* Ajusta el tamaño del ícono */
+    margin: 5px;
+    color: #6c757d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Efecto de transición suave */
 }

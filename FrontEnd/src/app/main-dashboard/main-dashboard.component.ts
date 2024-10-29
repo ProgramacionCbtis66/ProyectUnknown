@@ -10,22 +10,60 @@ import { SesionService } from '../Core/service/sesion.service';
 })
 export class MainDashboardComponent implements OnInit {
 
-  constructor(private router: Router, protected sesion: SesionService) { } // Inyecta el Router en el constructor
+  constructor(private router: Router, protected sesion: SesionService) {
+
+    switch (sesion._rol) {
+      case "Administrador":
+        this.router.navigate(['Main_Dashboard/administrativos']);
+        break;
+
+      case "Alumno":
+        this.router.navigate(['Main_Dashboard/alumnos']);
+        break;
+
+      case "Profesor":
+        this.router.navigate(['Main_Dashboard/docentes']);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  menuItems = {
+    Administrador: [
+      { path: '/Main_Dashboard/administrativos', label: 'Home', icon: 'fi fi-ss-house-chimney' },
+      { path: '/Main_Dashboard/alumnos-listado', label: 'Alumnos', icon: 'fi fi-ss-people' },
+      { path: '/Main_Dashboard/servicios-menu', label: 'Servicios', icon: 'fi fi-ss-tools' },
+    ],
+    Profesor: [
+      { path: '/Main_Dashboard/docentes', label: 'Home', icon: 'fi fi-ss-house-chimney' },
+      { path: '/Main_Dashboard/clases', label: 'Clases', icon: 'fi fi-ss-class' },
+      { path: '/Main_Dashboard/horario', label: 'Horario', icon: 'fi fi-ss-schedule' },
+    ],
+    Alumno: [
+      { path: '/Main_Dashboard/alumnos', label: 'Home', icon: 'fi fi-ss-house-chimney' },
+      { path: '/Main_Dashboard/clases', label: 'Clases', icon: 'fi fi-ss-class' },
+      { path: '/Main_Dashboard/horario', label: 'Horario', icon: 'fi fi-ss-schedule' },
+    ],
+  };
+  
+  
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
   }
 
   goToAlumnos() {
-    this.router.navigate(['/alumnos-listado']);
+    this.router.navigate(['/Main_Dashboard/alumnos-listado']);
   }
 
   goToServicios() {
-    this.router.navigate(['/servicios-menu']);
+    this.router.navigate(['/Main_Dashboard/servicios-menu']);
   }
 
   // Método para navegar al perfil
   navigateToProfile(): void {
-    this.router.navigate(['/Profile_User']); // Asegúrate de que '/profile' sea la ruta correcta
+    this.router.navigate(['/Main_Dashboard/Profile_User']);
   }
 }
