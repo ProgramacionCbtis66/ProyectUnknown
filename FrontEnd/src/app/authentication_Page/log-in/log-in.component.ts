@@ -43,7 +43,7 @@ export class LogInComponent implements OnInit {
       this.sesion._foto = response.foto;
 
       const decodedToken = this.authService.decodifica();
-      console.log("Token decodificado:", decodedToken); // <-- Depuración
+      console.log("Token decodificado:", decodedToken, "Imagen: ", response.foto); // <-- Depuración
 
       this.sesion._usuario = decodedToken.nombre;
       this.sesion._apellido = decodedToken.apellido;
@@ -75,24 +75,24 @@ export class LogInComponent implements OnInit {
           } else {
             Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
           }
-          this.router.navigate(['/Main_Dashboard']);
+          this.router.navigate(['Main_Dashboard']);
           break;
         case 'Alumno':
           if (isBirthday) {
             Notiflix.Notify.success('Feliz Cumpleaños ' + this.sesion._usuario);
           } else {
             Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          } this.router.navigate(['/Main_Dashboard']);
+          } this.router.navigate(['Main_Dashboard']);
           break;
         case 'Profesor':
           if (isBirthday) {
             Notiflix.Notify.success('Feliz Cumpleaños ' + this.sesion._usuario);
           } else {
             Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          } this.router.navigate(['/Main_Dashboard']);
+          } this.router.navigate(['Main_Dashboard']);
           break;
         default:
-          this.router.navigate(['/Main_Dashboard']);
+          this.router.navigate(['Main_Dashboard']);
           break;
       }
     } catch (error) {

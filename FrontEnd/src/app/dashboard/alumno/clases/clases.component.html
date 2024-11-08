@@ -1,1 +1,22 @@
-<p>clases works!</p>
+<div class="container">
+  <div class="row">
+    <div class="class-card" *ngFor="let clase of clases">
+      <div class="color-bar">
+        <div class="class-card-image">
+          <img [src]="clase.foto" alt="Foto de la clase" />
+        </div>
+      </div> <!-- Barra de color a la izquierda -->
+      <div class="Principal-card-Content">
+        <div class="class-card-content">
+          <h3>{{ clase.nombreClase }}</h3>
+          <p class="profesor-nombre">{{ clase.nombreProfesor }}</p>
+          <p>Tarea Pendiente:</p>
+          <ul>
+            <li *ngFor="let tarea of getTruncatedTareas(clase)">{{ tarea }}</li>
+            <li *ngIf="hasMoreTareas(clase)">...</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

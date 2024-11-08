@@ -12,6 +12,7 @@ interface Usuario {
   especialidad: string;
   semestre: number;
   turno: string;
+  correo: string;
 }
 
 @Component({
@@ -34,6 +35,10 @@ export class AlumnosListadoComponent implements OnInit {
   grupos: string[] = [];
   especialidades: string[] = [];
 
+  // Modal y nuevo alumno
+  isModalOpen = false;
+  nuevoAlumno: Usuario = { grupo: '', nombre: '', apellido: '', rol: '', numero_control: '', especialidad: '', semestre: 0, turno: '', correo: '' };
+
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
@@ -49,7 +54,15 @@ export class AlumnosListadoComponent implements OnInit {
       },
       (error) => console.error('Error al obtener usuarios:', error)
     );
+
+    document.addEventListener('click', this.closeContextMenu.bind(this));
+
   }
+
+  ngOnDestroy() {
+    document.removeEventListener('click', this.closeContextMenu.bind(this));
+  }
+  
 
   onSearch() {
     this.applyFilters();
@@ -68,5 +81,70 @@ export class AlumnosListadoComponent implements OnInit {
 
       return matchesSearch && matchesTurno && matchesGrupo && matchesEspecialidad;
     });
+  }
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.nuevoAlumno = { grupo: '', nombre: '', apellido: '', rol: '', numero_control: '', especialidad: '', semestre: 0, turno: '', correo: '' };
+  }
+
+  addAlumno() {
+    // Aquí puedes agregar la lógica para añadir el nuevo alumno a tu lista o hacer una llamada al servicio
+    console.log('Nuevo alumno:', this.nuevoAlumno);
+    this.closeModal();
+  }
+
+  // Propiedades para el menú contextual
+  isContextMenuVisible = false;
+  contextMenuPosition = { x: '0px', y: '0px' };
+  selectedAlumno!: Usuario;
+
+  // Método para abrir el menú contextual
+  onRightClick(event: MouseEvent, alumno: Usuario) {
+    event.preventDefault();
+    this.isContextMenuVisible = true;
+    this.contextMenuPosition = {
+      x: `${event.clientX}px`,
+      y: `${event.clientY}px`
+    };
+    this.selectedAlumno = alumno;
+  }
+
+  // Métodos para cada acción del menú
+  copyNumeroControl() {
+    navigator.clipboard.writeText(this.selectedAlumno.numero_control);
+    this.closeContextMenu();
+  }
+
+  copyNombre() {
+    navigator.clipboard.writeText(`${this.selectedAlumno.nombre} ${this.selectedAlumno.apellido}`);
+    this.closeContextMenu();
+  }
+
+  copyDatos() {
+    const datos = `Nombre: ${this.selectedAlumno.nombre} ${this.selectedAlumno.apellido} Num.C: ${this.selectedAlumno.numero_control}`;
+    navigator.clipboard.writeText(datos);
+    this.closeContextMenu();
+  }
+
+  eliminarAlumno() {
+    // Lógica para eliminar al alumno
+    console.log('Eliminando alumno:', this.selectedAlumno);
+    this.closeContextMenu();
+  }
+
+  editarAlumno() {
+    // Lógica para editar al alumno
+    console.log('Editando alumno:', this.selectedAlumno);
+    this.closeContextMenu();
+  }
+
+  // Cierra el menú contextual
+  closeContextMenu() {
+    this.isContextMenuVisible = false;
   }
 }

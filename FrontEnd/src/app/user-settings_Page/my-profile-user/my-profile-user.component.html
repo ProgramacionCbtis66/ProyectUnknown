@@ -1,14 +1,14 @@
-<section class="Profile">
+<!-- <section class="Profile">
   <div class="profile text-center">
-    <!-- Foto de perfil dinámica -->
+    Foto de perfil dinámica
     <img [src]="sesion._foto || 'assets/default-profile-pic.jpg'" alt="Foto de perfil"
       class="profile-pic rounded-circle" width="150" height="150" />
 
-    <!-- Nombre del usuario -->
+    Nombre del usuario
     <h3>{{ sesion._usuario }} {{ sesion._apellido }}</h3>
 
     <div class="info mt-4">
-      <!-- Información personal -->
+      Información personal
       <p><strong>Especialidad:</strong> <a href="#">{{ sesion._especialidad || 'No disponible' }}</a></p>
       <p><strong>Semestre:</strong> {{ sesion._semestre || 'No disponible' }}</p>
       <p><strong>Grupo:</strong> "{{ sesion._grupo || 'No disponible' }}"</p>
@@ -19,4 +19,56 @@
       </p>
     </div>
   </div>
-</section>
+</section> -->
+
+<div class="container">
+  <div class="row">
+    <!-- Columna de la izquierda con dos cuadros apilados -->
+    <div class="col-md-8">
+      <div class="Profile card">
+
+        <img [src]="sesion._foto || 'assets/default-profile-pic.jpg'" alt="Foto de perfil"
+          class="profile-pic rounded-circle" />
+
+          <div class="InfoProfile">
+            <h3>{{ sesion._usuario }} {{ sesion._apellido }}</h3>
+          
+            <div [ngSwitch]="sesion._rol">
+              <div *ngSwitchCase="'Administrador'">
+                <!-- Contenido específico para Administrador -->
+                <p>Bienvenido Administrador</p>
+              </div>
+              <div *ngSwitchCase="'Profesor'">
+                <!-- Contenido específico para Profesor -->
+                <p>Bienvenido Profesor</p>
+              </div>
+              <div *ngSwitchCase="'Alumno'" class="alumno-info-grid">
+                <!-- Contenido específico para Alumno organizado en dos columnas -->
+                <p><strong>Número de Control:</strong> {{ sesion._numeroControl }}</p>
+                <p><strong>Especialidad:</strong> {{ sesion._especialidad }}</p>
+                <p><strong>Semestre:</strong> {{ sesion._semestre }}</p>
+                <p><strong>Turno:</strong> {{ sesion._turno }}</p>
+                <p><strong>CURP:</strong> {{ sesion._curp }}</p>
+                <p><strong>Grupo:</strong> {{ sesion._grupo }}</p>
+              </div>
+              <div *ngSwitchDefault>
+                <!-- Contenido para un rol no definido -->
+                <p>Rol no reconocido</p>
+              </div>
+            </div>
+          </div>
+          
+
+      </div>
+      <div class="Notifications card">
+        <!-- Contenido de notificaciones -->
+      </div>
+    </div>
+    <!-- Columna de la derecha con un cuadro grande -->
+    <div class="col-md-4">
+      <div class="widgets card-large">
+        <!-- Contenido de widgets -->
+      </div>
+    </div>
+  </div>
+</div>

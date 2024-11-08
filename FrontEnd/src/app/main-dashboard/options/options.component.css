@@ -1,0 +1,93 @@
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
+
+/* Animaciones y otros estilos */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px); 
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sub_container_1 {
+    margin-top: 24px;
+}
+
+.custom-card {
+    background-color: #f8f9fa;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+    max-width: 217px;
+    aspect-ratio: 1 / 1;
+    transition-duration: 0.2s;
+}
+
+.profile-pic {
+    width: 45%; /* Ajusta el tamaño al 50% del ancho del contenedor */
+    max-width: 170px; /* Limita el ancho máximo de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    object-fit: cover; /* Recorta la imagen para llenar el espacio */
+    border-radius: 50%; /* Asegura que la imagen se mantenga circular */
+}
+
+
+:root {
+    font-size: 16px; /* Tamaño base, puedes ajustarlo según tus preferencias */
+}
+
+.card-title {
+    margin: 0;
+    font-size: 0.9rem; /* 1.4 veces el tamaño base */
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.7rem; /* 1.1 veces el tamaño base */
+    color: #6c757d;
+}
+
+
+
+.custom-card:hover {
+    transform: scale(1.1);
+    color: #2c8adc;
+  
+}
+
+.custom-card::before {
+    content: attr(data-title);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+}
+
+.row {
+    padding-top: 24px;
+    padding-right: calc(var(--bs-gutter-x)* 1);
+    padding-left: calc(var(--bs-gutter-x)* 1);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.student-ico {
+    font-size: 4rem;
+}
+
+.col-6 {
+    max-width: 217px;
+}
+

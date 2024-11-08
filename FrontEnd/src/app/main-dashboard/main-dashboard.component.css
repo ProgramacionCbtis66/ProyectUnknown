@@ -1,27 +1,39 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
 
-
-body {
-    font-family: 'Ubuntu', sans-serif;
-    display: flex;
-    height: 100vh;
-    margin-top: 12px;
-    background-color: #fbfbfd;
-    color: #333;
-    overflow-x: hidden;
+html{
+    background-color: #3e3e3e;
+    font-family: 'Poppins', sans-serif;
 }
 
+body{
+    font-family: 'Poppins', sans-serif;
+
+}
+
+/* Estilos para el layout */
+.layout {
+    display: flex;
+    height: 93.91vh; /* Para que ocupe toda la altura de la ventana */
+}
+
+/* Estilos para la barra lateral */
 .sidebar {
-    width: 190px;
-    background-color: #353535;
-    height: 100vh;
-    padding: 20px 0;
+    max-width:200px ;
+    min-width: 200px; /* Puedes ajustar el ancho de la barra lateral */
+    background-color: #333;
+    color: white;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    flex-shrink: 0;
 }
+
+/* Estilos para el contenedor principal */
+.main_container {
+    flex-grow: 1; /* Ocupa todo el espacio restante */
+    padding: 20px;
+    background-color: #f1f1f1;
+    overflow-y: auto; /* Habilita el scroll si el contenido excede la altura */
+}
+
 
 .sidebar_header {
     display: flex;

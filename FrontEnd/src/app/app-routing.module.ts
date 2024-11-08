@@ -21,6 +21,8 @@ import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-priv
 import { AlumnosClasesComponent } from './dashboard/servicios_escolares/alumnos-clases/alumnos-clases.component';
 import { AlumnosRegistrosComponent } from './dashboard/servicios_escolares/alumnos-registros/alumnos-registros.component';
 import { AlumnosGruposComponent } from './dashboard/servicios_escolares/alumnos-grupos/alumnos-grupos.component';
+import { ClasesComponent } from './dashboard/alumno/clases/clases.component';
+import { OptionsComponent } from './main-dashboard/options/options.component';
 
 
 const routes: Routes = [
@@ -36,22 +38,24 @@ const routes: Routes = [
     component: MainDashboardComponent,
     canActivate: [PoliceGuard],
     children: [ // Rutas hijas del Dashboard
-      { path: 'administrativos', component: AdministrativosComponent },
-      { path: 'alumnos', component: AlumnoComponent },
-      { path: 'docentes', component: DocenteComponent },
-      { path: 'alumnos-listado', component: AlumnosListadoComponent },
-      { path: 'servicios-menu', component: ServiciosMenuComponent },
-      { path: 'alumnos-clases-registro', component: AlumnosClasesComponent },
-      { path: 'alumnos-registros', component: AlumnosRegistrosComponent },
-      { path: 'alumnos-grupos', component: AlumnosGruposComponent },
+      { path: 'administrativos', component: AdministrativosComponent, canActivate: [PoliceGuard] },
+      { path: 'alumnos', component: AlumnoComponent, canActivate: [PoliceGuard] },
+      { path: 'docentes', component: DocenteComponent, canActivate: [PoliceGuard] },
+      { path: 'alumnos-listado', component: AlumnosListadoComponent, canActivate: [PoliceGuard] },
+      { path: 'servicios-menu', component: ServiciosMenuComponent, canActivate: [PoliceGuard] },
+      { path: 'alumnos-clases-registro', component: AlumnosClasesComponent, canActivate: [PoliceGuard] },
+      { path: 'alumnos-registros', component: AlumnosRegistrosComponent, canActivate: [PoliceGuard] },
+      { path: 'alumnos-grupos', component: AlumnosGruposComponent, canActivate: [PoliceGuard] },
+      { path: 'clases', component: ClasesComponent, canActivate: [PoliceGuard] },
       { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard] },
       { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
-    { path: "notifications_user", component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
-    { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
+      { path: "notifications_user", component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
+      { path: "options", component: OptionsComponent, canActivate: [PoliceGuard] },
+      { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
       { path: '', redirectTo: '', pathMatch: 'full' } // Redirección a una vista por defecto
     ]
   },
-  
+
   { path: "terminos-condiciones", component: TerminosCondicionesComponent },
   { path: "sobre-nosotros", component: SobreNosotrosComponent },
   { path: "politica-privacidad", component: PoliticaPrivacidadComponent },

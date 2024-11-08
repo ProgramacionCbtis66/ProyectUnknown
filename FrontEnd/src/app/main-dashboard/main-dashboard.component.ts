@@ -14,15 +14,15 @@ export class MainDashboardComponent implements OnInit {
 
     switch (sesion._rol) {
       case "Administrador":
-        this.router.navigate(['Main_Dashboard/administrativos']);
+        this.router.navigate(['Main_Dashboard/options']);
         break;
 
       case "Alumno":
-        this.router.navigate(['Main_Dashboard/alumnos']);
+        this.router.navigate(['Main_Dashboard/options']);
         break;
 
       case "Profesor":
-        this.router.navigate(['Main_Dashboard/docentes']);
+        this.router.navigate(['Main_Dashboard/options']);
         break;
 
       default:
@@ -32,19 +32,19 @@ export class MainDashboardComponent implements OnInit {
 
   menuItems = {
     Administrador: [
-      { path: '/Main_Dashboard/administrativos', label: 'Home', icon: 'fi fi-ss-house-chimney' },
+      { path: '/Main_Dashboard/options', label: 'Home', icon: 'fi fi-ss-house-chimney' },
       { path: '/Main_Dashboard/alumnos-listado', label: 'Alumnos', icon: 'fi fi-ss-people' },
       { path: '/Main_Dashboard/servicios-menu', label: 'Servicios', icon: 'fi fi-ss-tools' },
     ],
     Profesor: [
-      { path: '/Main_Dashboard/docentes', label: 'Home', icon: 'fi fi-ss-house-chimney' },
-      { path: '/Main_Dashboard/clases', label: 'Clases', icon: 'fi fi-ss-class' },
-      { path: '/Main_Dashboard/horario', label: 'Horario', icon: 'fi fi-ss-schedule' },
+      { path: '/Main_Dashboard/options', label: 'Home', icon: 'fi fi-ss-house-chimney' },
+      { path: '/Main_Dashboard/clases', label: 'Clases', icon: 'fi fi-ss-graduation-cap' },
+      { path: '/Main_Dashboard/horario', label: 'Horario', icon: 'fi fi-ss-calendar' },
     ],
     Alumno: [
-      { path: '/Main_Dashboard/alumnos', label: 'Home', icon: 'fi fi-ss-house-chimney' },
-      { path: '/Main_Dashboard/clases', label: 'Clases', icon: 'fi fi-ss-class' },
-      { path: '/Main_Dashboard/horario', label: 'Horario', icon: 'fi fi-ss-schedule' },
+      { path: '/Main_Dashboard/options', label: 'Home', icon: 'fi fi-ss-house-chimney' },
+      { path: '/Main_Dashboard/clases', label: 'Clases', icon: 'fi fi-ss-graduation-cap' },
+      { path: '/Main_Dashboard/horario', label: 'Horario', icon: 'fi fi-ss-calendar' },
     ],
   };
   

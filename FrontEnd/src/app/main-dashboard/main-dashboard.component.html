@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Layout</title>
-</head>
-<body>
+<section class="layout">
   <nav class="sidebar">
     <header class="sidebar_header">
+      <!-- Encabezado del sidebar -->
     </header>
     <div class="sidebar_menu">
       <ul *ngIf="menuItems[sesion._rol]">
@@ -19,11 +13,9 @@
         </li>
       </ul>
     </div>
-    
   </nav>
 
   <div class="main_container">
     <router-outlet></router-outlet> <!-- Aquí se cargarán los componentes hijos -->
   </div>
-</body>
-</html>
+</section>

@@ -12,18 +12,18 @@ export class SesionService {
   ) { }
 
   // Información del usuario
-  private nombre = new BehaviorSubject<string>("Sin Nombre Actual");
-  private apellido = new BehaviorSubject<string>("Sin Apellido Actual");
-  private rol = new BehaviorSubject<string>('Sin Rol Actual');
+  private nombre = new BehaviorSubject<string>('No disponible');
+  private apellido = new BehaviorSubject<string>('No disponible');
+  private rol = new BehaviorSubject<string>('No disponible');
   private foto = new BehaviorSubject<string | null>(null);
   
   // Información del alumno
-  private numeroControl = new BehaviorSubject<string>("Sin Número de Control");
-  private especialidad = new BehaviorSubject<string>("Sin Especialidad");
+  private numeroControl = new BehaviorSubject<string>('No disponible');
+  private especialidad = new BehaviorSubject<string>('No disponible');
   private semestre = new BehaviorSubject<number | null>(null);
-  private turno = new BehaviorSubject<string>("Sin Turno");
-  private curp = new BehaviorSubject<string>("Sin CURP");
-  private grupo = new BehaviorSubject<string>("Sin Grupo")
+  private turno = new BehaviorSubject<string>('No disponible');
+  private curp = new BehaviorSubject<string>('No disponible');
+  private grupo = new BehaviorSubject<string>('No disponible')
 
   // Métodos para usuario, apellido, rol y foto
   get _usuario(): string { return this.nombre.value; }
@@ -54,8 +54,8 @@ export class SesionService {
   get _curp(): string { return this.curp.value; }
   set _curp(value: string) { this.curp.next(value); }
 
-  get _grupo(): string { return this.curp.value; }
-  set _grupo(value: string) { this.curp.next(value); }
+  get _grupo(): string { return this.grupo.value; }
+  set _grupo(value: string) { this.grupo.next(value); }
 
   extraerBase64 = async (foto: any) => new Promise((resolve, reject) => {
     try {

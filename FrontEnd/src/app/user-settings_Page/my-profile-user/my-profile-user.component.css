@@ -1,45 +1,100 @@
 .Profile {
+  background-color: #3e3e3e;
+  height: 300px;
+  border-radius: 20px;
+  align-items: center;
+  /* Alinea la imagen y el texto verticalmente */
+  padding: 20px;
+  /* Añade un poco de espacio interno */
+  margin-top: 24px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  /* Evita que el efecto hover de los li salga del borde redondeado */
+  flex-direction: row;
   display: flex;
-  justify-content: center; /* Centra el contenido horizontalmente */
-  align-items: center; /* Centra el contenido verticalmente */
-  height: 100vh; /* Hace que la sección ocupe toda la altura de la ventana */
-  width: 100%; /* Hace que la sección ocupe todo el ancho de la ventana */
-  background-color: #f8f9fa; /* Cambia el color de fondo si es necesario */
+
 }
 
-.profile {
-  text-align: center; /* Asegura que el texto esté centrado */
-  width: 500px; /* Limita el ancho del perfil, ajusta según lo necesites */
-  margin: 0 auto; /* Centra el div dentro del contenedor */
-  padding: 40px; /* Añade algo de padding alrededor del perfil */
-  background-color: white; /* Color de fondo del div del perfil */
-  border-radius: 10px; /* Bordes redondeados */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+.Notifications {
+  background-color: #3e3e3e;
+  height: 300px;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  /* Evita que el efecto hover de los li salga del borde redondeado */
+
 }
 
-h3 {
-  margin: 10px 0; /* Espaciado arriba y abajo del nombre */
-  font-size: 1.5rem; /* Tamaño de fuente para el nombre */
-  font-weight: 700; /* Peso de fuente más fuerte */
-  color: #333; /* Color del texto */
+.widgets {
+  background-color: #3e3e3e;
+  height: 624px;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  /* Evita que el efecto hover de los li salga del borde redondeado */
+  position: relative;
+
 }
 
-.info p {
-  margin: 8px 0; /* Espaciado entre párrafos */
-  font-size: 1rem; /* Tamaño de fuente para la información */
-  color: #555; /* Color del texto */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Cambia de right a left para mover la barra al lado izquierdo */
+  width: 45px;
+  /* Ancho de la barra */
+  height: 100%;
+  /* Altura de la barra */
+  background-color: #333;
+  /* Color de la barra */
 }
 
-.info a {
-  color: #007bff; /* Color del enlace */
-  text-decoration: none; /* Sin subrayado */
+.widgets::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  /* Coloca la barra en la parte inferior */
+  left: 0;
+  width: 100%;
+  /* Ancho de la barra para que ocupe todo el div */
+  height: 45px;
+  /* Altura de la barra */
+  background-color: #333;
+  /* Color de la barra */
 }
 
-.info a:hover {
-  text-decoration: underline; /* Subrayado al pasar el cursor */
+.profile-pic {
+  margin-left: 45px;
+  margin-right: 25px;
+  
+  width: 150px;
+   height:150px;
 }
 
-.icon {
-  margin-left: 5px; /* Espaciado entre el texto y el icono */
-  font-size: 1.2rem; /* Tamaño del icono */
+.InfoProfile{
+  flex-direction: column;
+  color: white;
+}
+
+.container {}
+
+/*Datos Alumnos*/
+
+.alumno-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño */
+  gap: 0.5rem; /* Espacio entre los elementos */
+  padding: 1rem;
+}
+
+.alumno-info-grid p {
+  margin: 0;
+  padding: 0.5rem;
+  background-color: #333;
+  border-radius: 10px;
 }
