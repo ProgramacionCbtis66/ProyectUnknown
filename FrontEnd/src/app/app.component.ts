@@ -1,10 +1,10 @@
+// app.component.ts
+
 import { Component, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { SesionService } from './Core/service/sesion.service';
-import { Router } from '@angular/router'; // Importa el servicio de Router
+import { Router } from '@angular/router';
 import { AuthService } from '../app/Core/service/auth.service';
-
-
 
 @Component({
   selector: 'app-root',
@@ -16,25 +16,35 @@ export class AppComponent {
   menuOpen = false;
   isSwipeEnabled = false;
 
-  constructor(private titleService: Title, protected sesion: SesionService, private router: Router, private authService: AuthService) {
-    // Cambiar el título de la página
+  constructor(
+    private titleService: Title,
+    protected sesion: SesionService,
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.titleService.setTitle(this.title);
-    this.authService.restaurarSesion(); // Restaurar la sesión al cargar la app
+
+    // Escucha cuando la sesión ha sido restaurada y redirige al dashboard
+    this.authService.sessionRestored$.subscribe((restored) => {
+      if (restored) {
+        this.redirigirAlDashboard();
+      }
+    });
   }
 
   cerrarSesion() {
     this.authService.cerrarSesion();
-    this.router.navigate(['/login']); // Redirige al login después de cerrar la sesión
+    this.router.navigate(['/main']); // Redirige al login después de cerrar la sesión
   }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
-    document.body.classList.toggle('no-scroll', this.menuOpen); // Deshabilitar scroll
+    document.body.classList.toggle('no-scroll', this.menuOpen);
   }
 
   closeMenu() {
     this.menuOpen = false;
-    document.body.classList.remove('no-scroll'); // Habilita el scroll cuando se cierra el menú
+    document.body.classList.remove('no-scroll');
   }
 
   // Método para redirigir al dashboard correspondiente
@@ -43,18 +53,17 @@ export class AppComponent {
       const user = this.sesion._rol;
 
       if (user === 'Alumno') {
-        this.router.navigate(['/Main_Dashboard/alumnos']);
+        this.router.navigate(['/Main_Dashboard/options']);
       } else if (user === 'Profesor') {
-        this.router.navigate(['/Main_Dashboard/docentes']);
+        this.router.navigate(['/Main_Dashboard/options']);
       } else if (user === 'Administrador') {
-        this.router.navigate(['/Main_Dashboard/administradores']);
+        this.router.navigate(['/Main_Dashboard/options']);
       }
 
     } else {
-      this.router.navigate(['/main']); // Si no hay sesión, redirigir a /main
+      this.router.navigate(['/main']);
     }
   }
-
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: Event) {
@@ -62,7 +71,6 @@ export class AppComponent {
     const menu = document.querySelector('.user-icon') as HTMLElement;
     const profileMenu = document.querySelector('.profile-menu') as HTMLElement;
 
-    // Cierra el menú si se hace clic fuera de él y del icono de usuario
     if (menu && profileMenu && !menu.contains(target) && !profileMenu.contains(target)) {
       this.closeMenu();
     }

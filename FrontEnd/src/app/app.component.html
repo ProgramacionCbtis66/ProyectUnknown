@@ -1,91 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <title>ADAE</title>
-    <link rel="style" href="app.component.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+<header>
+  <nav class="navbar">
+    <!-- Enlace de redirección a /main -->
+    <a
+      href="javascript:void(0);"
+      (click)="redirigirAlDashboard()"
+      class="ADAE-logo-header"
+      >ADAE</a
+    >
 
-  <body>
-    <header>
-      <nav class="navbar">
-        <a (click)="redirigirAlDashboard()" class="ADAE-logo-header">ADAE</a>
-
-        <div
-          class="user-icon"
-          (click)="toggleMenu()"
-          *ngIf="sesion._usuario !== 'No disponible'"
-        >
-          <img [src]="sesion._foto" width="30" height="30" />
-          <div class="profile-menu" [ngClass]="{ show: menuOpen }">
-            <div class="profile-header">
-              <p>{{ sesion._usuario }}<br /></p>
-            </div>
-            <div class="profile-options">
-              <a [routerLink]="['/Main_Dashboard/Profile_User']">
-                <i class="bx bx-user"></i> Ver mi perfil
-              </a>
-              <a [routerLink]="['/Main_Dashboard/segurity_user']">
-                <i class="bx bx-shield"></i> Gestionar cuenta
-              </a>
-            </div>
-            <div class="profile-logout">
-              <a href="#" class="logout-btn" (click)="cerrarSesion()">
-                <i class="bx bx-x-circle"></i> Cerrar sesión
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-    <!-- Superposición para el desenfoque -->
+    <!-- Menú de usuario -->
     <div
-      class="overlay"
-      [ngClass]="{ active: menuOpen }"
-      (click)="closeMenu()"
-    ></div>
-
-    <div class="mt-5">
-      <router-outlet></router-outlet>
+      class="user-icon"
+      (click)="toggleMenu()"
+      *ngIf="sesion._usuario !== 'No disponible'"
+    >
+      <img [src]="sesion._foto" width="30" height="30" />
+      <div class="profile-menu" [ngClass]="{ show: menuOpen }">
+        <div class="profile-header">
+          <p>{{ sesion._usuario }}<br /></p>
+        </div>
+        <div class="profile-options">
+          <a [routerLink]="['/Main_Dashboard/Profile_User']">
+            <i class="bx bx-user"></i> Ver mi perfil
+          </a>
+          <a [routerLink]="['/Main_Dashboard/segurity_user']">
+            <i class="bx bx-shield"></i> Gestionar cuenta
+          </a>
+        </div>
+        <div class="profile-logout">
+          <a
+            href="javascript:void(0);"
+            class="logout-btn"
+            (click)="cerrarSesion()"
+          >
+            <i class="bx bx-x-circle"></i> Cerrar sesión
+          </a>
+        </div>
+      </div>
     </div>
+  </nav>
+</header>
 
-    <script src="app.component.js"></script>
-  </body>
+<!-- Superposición para el desenfoque -->
+<div
+  class="overlay"
+  [ngClass]="{ active: menuOpen }"
+  (click)="closeMenu()"
+></div>
 
-  <footer>
-    <div class="footer-div">
-      <nav>
-        <a [routerLink]="['/politica-privacidad']" class="privacy-policy"
-          >Política de privacidad</a
-        >
-      </nav>
-      <div class="sep"></div>
-      <nav>
-        <a [routerLink]="['/terminos-condiciones']" class="terms-and-condition"
-          >Términos y condiciones</a
-        >
-      </nav>
-      <div class="sep"></div>
-      <nav>
-        <a [routerLink]="['/sobre-nosotros']" class="terms-and-condition"
-          >Sobre nosotros</a
-        >
-      </nav>
-    </div>
-    <div class="footer-div2">
-      Copyright © 2024 ADAE. Todos los derechos reservados.
-    </div>
-  </footer>
-</html>
+<div class="mt-5">
+  <router-outlet></router-outlet>
+</div>
+
+<footer>
+  <div class="footer-div">
+    <nav>
+      <a [routerLink]="['/politica-privacidad']" class="privacy-policy"
+        >Política de privacidad</a
+      >
+    </nav>
+    <div class="sep"></div>
+    <nav>
+      <a [routerLink]="['/terminos-condiciones']" class="terms-and-condition"
+        >Términos y condiciones</a
+      >
+    </nav>
+    <div class="sep"></div>
+    <nav>
+      <a [routerLink]="['/sobre-nosotros']" class="terms-and-condition"
+        >Sobre nosotros</a
+      >
+    </nav>
+  </div>
+  <div class="footer-div2">
+    Copyright © 2024 ADAE. Todos los derechos reservados.
+  </div>
+</footer>
