@@ -15,35 +15,43 @@ body {
   font-family: 'Poppins', sans-serif;
   font-weight: 500; /* Poppins Medium */
   margin: 0;
-  background-color: #353535;
+  background-color: #fbfbfd;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Permite que el footer se mantenga en la parte inferior */
+  min-height: 100vh; /* Permite que el footer se mantenga en la parte inferior */
 }
 
 header {
   position: fixed;
   width: 100%;
   z-index: 1000;
+  top: 0;
+  backdrop-filter: blur(14px);
   padding: 10px 20px;
-  background-color: #232323;
-  color: white;
+  background-color: rgba(251, 251, 253, 0.5);
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 40px;
-  padding: 0;
 }
 
 .ADAE-logo-header {
-  font-size: 20px;
+  font-size: 1.1rem;
   font-weight: 500;
-  flex-direction: row;
-  justify-content: center;
+  display: flex;
+  align-items: center;
   cursor: pointer;
+}
+
+/* Estilo del menú de usuario */
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
 }
 
 /* Estilo del menú de usuario */
