@@ -13,9 +13,9 @@ a {
 
 body {
   font-family: 'Poppins', sans-serif;
-  font-weight: 500; /* Poppins Medium */
+  font-weight: 00; /* Poppins Medium */
   margin: 0;
-  background-color: #fbfbfd;
+  background-color: #f8f9fa;
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Permite que el footer se mantenga en la parte inferior */

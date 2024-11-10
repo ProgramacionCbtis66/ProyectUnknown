@@ -7,13 +7,13 @@ html{
 
 body{
     font-family: 'Poppins', sans-serif;
-
+    
 }
 
 /* Estilos para el layout */
 .layout {
     display: flex;
-    height: 93.91vh; /* Para que ocupe toda la altura de la ventana */
+    height: 100vh; /* Para que ocupe toda la altura de la ventana */
 }
 
 /* Estilos para la barra lateral */
