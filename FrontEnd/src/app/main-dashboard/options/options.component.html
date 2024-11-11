@@ -1,73 +1,92 @@
 <head>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+  <link
+    rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css"
+  />
 </head>
 
 <div class="sub_container_1 text-center">
-    <h3 id="user_name_dashboard">Hello, {{ sesion._usuario }} {{ sesion._apellido }}</h3>
-    <p id="rol_user_dashboard" class="text-muted">{{ sesion._rol }}</p>
+  <h3 id="user_name_dashboard">
+    Hola, {{ sesion._usuario }} {{ sesion._apellido }}
+  </h3>
+  <p id="rol_user_dashboard" class="text-muted">{{ sesion._rol }}</p>
 </div>
 
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer" (click)="navigateToProfile()">
-            <div class="custom-card">
-
-                <img [src]="sesion._foto" class="profile-pic rounded-circle mb-3"
-                    alt="Profile Picture" />
-                <h5 class="card-title">{{ sesion._usuario }} {{ sesion._apellido }}</h5>
-                <p class="card-text">{{ sesion._rol }}</p>
-                <!-- Perfil -->
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer" (click)="goToAlumnos()">
-            <div class="custom-card">
-                <i class="fi fi-ss-student student-ico"></i>
-                <h5 class="card-title">Lista Alumnos</h5>
-                <!-- Lista Alumnos -->
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer" (click)="goToServicios()">
-            <div class="custom-card">
-                <i class="fi fi-ss-user-headset student-ico"></i>
-                <h5 class="card-title">Servicios Escolares</h5>
-                <!-- Servicios Escolares -->
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
-            <div class="custom-card">
-                <i class="fi fi-ss-calendar student-ico"></i>
-                <h5 class="card-title">Horarios</h5>
-                <!-- Horario -->
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer" (click)="goToClases()">
-            <div class="custom-card">
-                <i class="fi fi-ss-graduation-cap student-ico"></i>
-                <h5 class="card-title">Clases</h5>
-                <!-- Clases -->
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
-            <div class="custom-card">
-                <i class="fi fi-ss-square-plus student-ico"></i>
-                coming soon
-                <!-- Vacio -->
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
-            <div class="custom-card">
-                <i class="fi fi-ss-square-plus student-ico"></i>
-                coming soon
-                <!-- Vacio -->
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
-            <div class="custom-card">
-                <i class="fi fi-ss-square-plus student-ico"></i>
-                coming soon
-                <!-- Vacio -->
-            </div>
-        </div>
-        <!-- Agrega más elementos según sea necesario -->
+  <div class="row">
+    <div
+      class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+      (click)="navigateToProfile()"
+    >
+      <div class="custom-card">
+        <img
+          [src]="sesion._foto"
+          class="profile-pic rounded-circle mb-3"
+          alt="Profile Picture"
+        />
+        <h5 class="card-title">{{ sesion._usuario }} {{ sesion._apellido }}</h5>
+        <p class="card-text">{{ sesion._rol }}</p>
+        <!-- Perfil -->
+      </div>
     </div>
+    <div
+      class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+      (click)="goToAlumnos()"
+    >
+      <div class="custom-card">
+        <i class="fi fi-ss-student student-ico"></i>
+        <h5 class="card-title">Lista Alumnos</h5>
+        <!-- Lista Alumnos -->
+      </div>
+    </div>
+    <div
+      class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+      (click)="goToServicios()"
+    >
+      <div class="custom-card">
+        <i class="fi fi-ss-user-headset student-ico"></i>
+        <h5 class="card-title">Servicios Escolares</h5>
+        <!-- Servicios Escolares -->
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+      <div class="custom-card">
+        <i class="fi fi-ss-calendar student-ico"></i>
+        <h5 class="card-title">Horarios</h5>
+        <!-- Horario -->
+      </div>
+    </div>
+    <div
+      class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+      (click)="goToClases()"
+    >
+      <div class="custom-card">
+        <i class="fi fi-ss-graduation-cap student-ico"></i>
+        <h5 class="card-title">Clases</h5>
+        <!-- Clases -->
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+      <div class="custom-card">
+        <i class="fi fi-ss-square-plus student-ico"></i>
+        coming soon
+        <!-- Vacio -->
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+      <div class="custom-card">
+        <i class="fi fi-ss-square-plus student-ico"></i>
+        coming soon
+        <!-- Vacio -->
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+      <div class="custom-card">
+        <i class="fi fi-ss-square-plus student-ico"></i>
+        coming soon
+        <!-- Vacio -->
+      </div>
+    </div>
+    <!-- Agrega más elementos según sea necesario -->
+  </div>
 </div>
