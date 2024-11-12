@@ -125,7 +125,7 @@ export class AlumnosListadoComponent implements OnInit {
   }
 
   
-  options = ['Editar', 'Eliminar', 'Copiar'];
+  options = ['Editar', 'Eliminar'];
 
   toggleDropdown(usuario: Usuario): void {
     usuario.isDropdownVisible = !usuario.isDropdownVisible;

@@ -6,7 +6,6 @@ import { SesionService } from './Core/service/sesion.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../app/Core/service/auth.service';
 
-<<<<<<< HEAD
 declare global {
   interface Window {
     bootstrap: any;
@@ -14,8 +13,6 @@ declare global {
 }
 
 
-=======
->>>>>>> 6012a83e695b27c9f8a5d0866737a6ecdea71c79
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -33,14 +30,6 @@ export class AppComponent {
     private authService: AuthService
   ) {
     this.titleService.setTitle(this.title);
-<<<<<<< HEAD
-    this.authService.restoreSession(); // Restaurar la sesión al cargar la app
-  }
-
-  cerrarSesion() {
-    this.authService.logout();
-    this.router.navigate(['/login']); // Redirige al login después de cerrar la sesión
-=======
 
     // Escucha cuando la sesión ha sido restaurada y redirige al dashboard
     this.authService.sessionRestored$.subscribe((restored) => {
@@ -51,9 +40,8 @@ export class AppComponent {
   }
 
   cerrarSesion() {
-    this.authService.cerrarSesion();
+    this.authService.logout();
     this.router.navigate(['/main']); // Redirige al login después de cerrar la sesión
->>>>>>> 6012a83e695b27c9f8a5d0866737a6ecdea71c79
   }
 
   toggleMenu() {

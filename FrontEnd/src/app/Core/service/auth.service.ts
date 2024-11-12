@@ -17,6 +17,10 @@ export class AuthService {
   private readonly authUrl = environment.autorization;
   public estatus = true;
 
+  // BehaviorSubject para emitir el estado de restauración de la sesión
+  private sessionRestoredSource = new BehaviorSubject<boolean>(false);
+  public sessionRestored$ = this.sessionRestoredSource.asObservable();
+
   constructor(
     private http: HttpClient,
     private jwtHelper: JwtHelperService,
@@ -37,6 +41,9 @@ export class AuthService {
     if (token && !this.jwtHelper.isTokenExpired(token)) {
       const decodedToken = this.decodeToken();
       this.setSessionData(decodedToken);
+      this.sessionRestoredSource.next(true);  // Emite 'true' indicando que la sesión ha sido restaurada
+    } else {
+      this.sessionRestoredSource.next(false); // Emite 'false' si no se restaura la sesión
     }
   }
 
@@ -109,7 +116,6 @@ export class AuthService {
     return this.http.post(`${this.baseApiUrl}/usr/RegistrarAlumno`, data)
       .pipe(catchError(this.handleError.bind(this)));
   }
-  
 
   public updateStudent(id: number, data: any): Observable<any> {
     return this.http.put(`${this.baseApiUrl}/usr/ActualizarAlumno`, data)
