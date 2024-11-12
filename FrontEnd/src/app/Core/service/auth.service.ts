@@ -13,70 +13,134 @@ import { SesionService } from 'src/app/Core/service/sesion.service';
 })
 export class AuthService {
 
-  private ruta = environment.HTTPS; // URL base del servidor
-  private usr = environment.autorization; // URL de autorización
-  public estatus: boolean = true; // Estado de autenticación
+<<<<<<< HEAD
+  private readonly baseApiUrl = environment.HTTPS;
+  private readonly authUrl = environment.autorization;
+  public estatus = true;
+=======
+  private ruta = environment.HTTPS;
+  private usr = environment.autorization;
+  public estatus: boolean = true;
+
+  // Observable para emitir cuando la sesión es restaurada
+  private sessionRestoredSubject = new BehaviorSubject<boolean>(false);
+  public sessionRestored$ = this.sessionRestoredSubject.asObservable();
+>>>>>>> 6012a83e695b27c9f8a5d0866737a6ecdea71c79
 
   constructor(
     private http: HttpClient,
     private jwtHelper: JwtHelperService,
     private toastr: ToastrService,
-    protected sesion: SesionService
-
+<<<<<<< HEAD
+    private sesionService: SesionService
   ) { 
-    this.restaurarSesion(); // Restauramos la sesión al cargar el servicio
+    this.restoreSession();
   }
 
-  // Cierra la sesion del usuario
-  public cerrarSesion(): void {
-    localStorage.removeItem("adae"); // Elimina el token
-    this.limpiarSesion(); // Limpia los datos de la sesión en memoria
+  public logout(): void {
+    localStorage.removeItem("adae");
+    this.clearSession();
     this.toastr.info('Sesión cerrada con éxito', 'Info');
   }
 
+  public restoreSession(): void {
+    const token = localStorage.getItem('adae');
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      const decodedToken = this.decodeToken();
+      this.setSessionData(decodedToken);
+    }
+  }
+
+  private setSessionData(decodedToken: any): void {
+    this.sesionService._usuario = decodedToken.nombre;
+    this.sesionService._apellido = decodedToken.apellido;
+    this.sesionService._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
+    this.sesionService._rol = decodedToken.rol;
+
+    if (decodedToken.alumno) {
+      const { numero_control, especialidad, semestre, turno, curp, grupo } = decodedToken.alumno;
+      Object.assign(this.sesionService, { _numeroControl: numero_control, _especialidad: especialidad, _semestre: semestre, _turno: turno, _curp: curp, _grupo: grupo });
+    }
+  }
+
+  private clearSession(): void {
+    Object.assign(this.sesionService, { _usuario: "No disponible", _rol: "No disponible", _foto: "No disponible" });
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+=======
+    protected sesion: SesionService
+  ) { 
+    this.restaurarSesion();
+  }
+
+  // Método para cerrar sesión
+  public cerrarSesion(): void {
+    localStorage.removeItem("adae");
+    this.limpiarSesion();
+    
+  }
+
+  // Método para restaurar sesión
   restaurarSesion(): void {
     const token = localStorage.getItem('adae');
     if (token && !this.jwt.isTokenExpired(token)) {
-        const decodedToken = this.decodifica();
-        this.sesion._usuario = decodedToken.nombre;
-        this.sesion._apellido = decodedToken.apellido;
-        this.sesion._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
-        this.sesion._rol = decodedToken.rol;
+      const decodedToken = this.decodifica();
+      this.sesion._usuario = decodedToken.nombre;
+      this.sesion._apellido = decodedToken.apellido;
+      this.sesion._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
+      this.sesion._rol = decodedToken.rol;
 
-        // Establecer datos del alumno si existen en el token
-        if (decodedToken.alumno) {
-            const alumno = decodedToken.alumno; // Accede a los datos del alumno dentro del token
-            this.sesion._numeroControl = alumno.numero_control;
-            this.sesion._especialidad = alumno.especialidad;
-            this.sesion._semestre = alumno.semestre;
-            this.sesion._turno = alumno.turno;
-            this.sesion._curp = alumno.curp;
-            this.sesion._grupo = alumno.grupo;
-        }
+      if (decodedToken.alumno) {
+        const alumno = decodedToken.alumno;
+        this.sesion._numeroControl = alumno.numero_control;
+        this.sesion._especialidad = alumno.especialidad;
+        this.sesion._semestre = alumno.semestre;
+        this.sesion._turno = alumno.turno;
+        this.sesion._curp = alumno.curp;
+        this.sesion._grupo = alumno.grupo;
+      }
+
+      // Emitir que la sesión ha sido restaurada
+      this.sessionRestoredSubject.next(true);
     }
-}
-
-
-  // Método para limpiar la sesión al cerrar sesión
-  limpiarSesion(): void {
-    this.sesion._usuario = "Sin Usuario Actual";
-    this.sesion._rol = "Sin Rol Actual";
-    this.sesion._foto = "Sin Foto Actual";
   }
 
-  // Manejo de errores para las solicitudes HTTP
+  // Método para limpiar la sesión completamente
+  limpiarSesion(): void {
+    this.sesion._usuario = "Sin Usuario Actual";
+    this.sesion._apellido = "Sin Apellido Actual";
+    this.sesion._rol = "Sin Rol Actual";
+    this.sesion._foto = "Sin Foto Actual";
+    this.sesion._numeroControl = "No disponible";
+    this.sesion._especialidad = "No disponible";
+    this.sesion._semestre = null;
+    this.sesion._turno = "No disponible";
+    this.sesion._curp = "No disponible";
+    this.sesion._grupo = "No disponible";
+  }
+
+  // Método para manejar errores en solicitudes HTTP
   private handleError(error: HttpErrorResponse) {
+>>>>>>> 6012a83e695b27c9f8a5d0866737a6ecdea71c79
     console.error('Error: ', error);
     this.toastr.error('Ocurrió un error en el servidor', 'Error');
     return throwError(() => error);
   }
 
   public login(user: any): Observable<any> {
-    return this.http.post('http://localhost:4000/apiAdae/usr/login/', user)
-      .pipe(catchError(this.handleError.bind(this))); // Manejo de errores
+<<<<<<< HEAD
+    return this.http.post(`${this.baseApiUrl}/usr/login/`, user)
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
-  // Verifica si el usuario está autenticado
+=======
+    return this.http.post('http://localhost:4000/apiAdae/usr/login/', user)
+      .pipe(catchError(this.handleError.bind(this)));
+  }
+
+  // Método para verificar autenticación
+>>>>>>> 6012a83e695b27c9f8a5d0866737a6ecdea71c79
   public isAuth(): boolean {
     const token = localStorage.getItem("adae");
     if (token && !this.jwtHelper.isTokenExpired(token)) {
@@ -87,47 +151,59 @@ export class AuthService {
     }
   }
 
-  // Decodifica el token
-  public decodifica(): any {
+<<<<<<< HEAD
+  public decodeToken(): any {
     const token = localStorage.getItem("adae");
-    if (token) {
-      return decode(token); // Decodifica el token si no es nulo
-    }
-    return null; // Retorna null si no hay token
+    return token ? decode(token) : null;
   }
 
-  // Continúa la sesión aumentando la expiración del token
-  public continuar(): void {
-    let tokedecode = this.decodifica();
-    if (tokedecode) {
-      tokedecode.exp += 1800; // Aumenta el tiempo de expiración
-      let tokecode = this.jwt.decodeToken(tokedecode);
-      localStorage.setItem("adae", tokecode);
+  public extendSession(): void {
+    const tokenDecoded = this.decodeToken();
+    if (tokenDecoded) {
+      tokenDecoded.exp += 1800;
+      const extendedToken = this.jwtHelper.decodeToken(tokenDecoded);
+      localStorage.setItem("adae", extendedToken);
     }
   }
 
-  // Verifica si el token ha expirado
-  public tokeExpired(): boolean {
-    const tokenDecode = this.decodifica();
-    if (!tokenDecode) {
-      return true; // Si no hay token, considera que ha expirado
-    }
-    const tiempo = (tokenDecode.exp - Date.now() / 1000);
-    if (tiempo < 0) {
-      localStorage.clear(); // Limpia el localStorage si ha expirado
+  public isTokenExpired(): boolean {
+    const tokenDecoded = this.decodeToken();
+    if (!tokenDecoded || (tokenDecoded.exp - Date.now() / 1000) < 0) {
+      localStorage.clear();
       return true;
     }
     return false;
   }
 
-  //metodo para la lista jeje luego lo muevo para organizarlo bien
-
-  // Nuevo método para obtener usuarios
-  getUsuarios(): Observable<any[]> {
-    return this.http.get<any[]>("http://localhost:4000/apiAdae/usr/listUsr/");
+  public getUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/usr/listUsr/`)
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
-  updateAlumno(id: number, data: any): Observable<any> {
-    return this.http.put("http://localhost:4000/apiAdae/usr/ActualizarAlumno", data);
+  public registerAlum(data: any): Observable<any> {
+    return this.http.post(`${this.baseApiUrl}/usr/RegistrarAlumno`, data)
+      .pipe(catchError(this.handleError.bind(this)));
+  }
+  
+
+  public updateStudent(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.baseApiUrl}/usr/ActualizarAlumno`, data)
+      .pipe(catchError(this.handleError.bind(this)));
+=======
+  // Método para decodificar el token
+  public decodifica(): any {
+    const token = localStorage.getItem("adae");
+    if (token) {
+      return decode(token);
+    }
+    return null;
+  }
+
+  // Método para obtener la lista de usuarios
+  public getUsuarios(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.ruta}/usr/listUsr/`).pipe(
+      catchError(this.handleError.bind(this))
+    );
+>>>>>>> 6012a83e695b27c9f8a5d0866737a6ecdea71c79
   }
 }
