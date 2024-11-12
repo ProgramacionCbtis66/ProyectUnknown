@@ -32,6 +32,7 @@ export class PoliceGuard implements CanActivate {
       'Main_Dashboard', 
       'Main_Dashboard/options', 
       'Main_Dashboard/Profile_User', 
+      'Main_Dashboard/segurity_user',
       'segurity_user', 
       'notifications_user', 
       'connected_devices_user',
