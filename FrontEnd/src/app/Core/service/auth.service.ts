@@ -13,60 +13,70 @@ import { SesionService } from 'src/app/Core/service/sesion.service';
 })
 export class AuthService {
 
-  private readonly baseApiUrl = environment.HTTPS;
-  private readonly authUrl = environment.autorization;
-  public estatus = true;
+  private ruta = environment.HTTPS; // URL base del servidor
+  private usr = environment.autorization; // URL de autorización
+  public estatus: boolean = true; // Estado de autenticación
 
   constructor(
     private http: HttpClient,
     private jwtHelper: JwtHelperService,
     private toastr: ToastrService,
-    private sesionService: SesionService
+    protected sesion: SesionService
+
   ) { 
-    this.restoreSession();
+    this.restaurarSesion(); // Restauramos la sesión al cargar el servicio
   }
 
-  public logout(): void {
-    localStorage.removeItem("adae");
-    this.clearSession();
+  // Cierra la sesion del usuario
+  public cerrarSesion(): void {
+    localStorage.removeItem("adae"); // Elimina el token
+    this.limpiarSesion(); // Limpia los datos de la sesión en memoria
     this.toastr.info('Sesión cerrada con éxito', 'Info');
   }
 
-  public restoreSession(): void {
+  restaurarSesion(): void {
     const token = localStorage.getItem('adae');
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
-      const decodedToken = this.decodeToken();
-      this.setSessionData(decodedToken);
+    if (token && !this.jwt.isTokenExpired(token)) {
+        const decodedToken = this.decodifica();
+        this.sesion._usuario = decodedToken.nombre;
+        this.sesion._apellido = decodedToken.apellido;
+        this.sesion._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
+        this.sesion._rol = decodedToken.rol;
+
+        // Establecer datos del alumno si existen en el token
+        if (decodedToken.alumno) {
+            const alumno = decodedToken.alumno; // Accede a los datos del alumno dentro del token
+            this.sesion._numeroControl = alumno.numero_control;
+            this.sesion._especialidad = alumno.especialidad;
+            this.sesion._semestre = alumno.semestre;
+            this.sesion._turno = alumno.turno;
+            this.sesion._curp = alumno.curp;
+            this.sesion._grupo = alumno.grupo;
+        }
     }
+}
+
+
+  // Método para limpiar la sesión al cerrar sesión
+  limpiarSesion(): void {
+    this.sesion._usuario = "Sin Usuario Actual";
+    this.sesion._rol = "Sin Rol Actual";
+    this.sesion._foto = "Sin Foto Actual";
   }
 
-  private setSessionData(decodedToken: any): void {
-    this.sesionService._usuario = decodedToken.nombre;
-    this.sesionService._apellido = decodedToken.apellido;
-    this.sesionService._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
-    this.sesionService._rol = decodedToken.rol;
-
-    if (decodedToken.alumno) {
-      const { numero_control, especialidad, semestre, turno, curp, grupo } = decodedToken.alumno;
-      Object.assign(this.sesionService, { _numeroControl: numero_control, _especialidad: especialidad, _semestre: semestre, _turno: turno, _curp: curp, _grupo: grupo });
-    }
-  }
-
-  private clearSession(): void {
-    Object.assign(this.sesionService, { _usuario: "No disponible", _rol: "No disponible", _foto: "No disponible" });
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
+  // Manejo de errores para las solicitudes HTTP
+  private handleError(error: HttpErrorResponse) {
     console.error('Error: ', error);
     this.toastr.error('Ocurrió un error en el servidor', 'Error');
     return throwError(() => error);
   }
 
   public login(user: any): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/usr/login/`, user)
-      .pipe(catchError(this.handleError.bind(this)));
+    return this.http.post('http://localhost:4000/apiAdae/usr/login/', user)
+      .pipe(catchError(this.handleError.bind(this))); // Manejo de errores
   }
 
+  // Verifica si el usuario está autenticado
   public isAuth(): boolean {
     const token = localStorage.getItem("adae");
     if (token && !this.jwtHelper.isTokenExpired(token)) {
@@ -77,42 +87,47 @@ export class AuthService {
     }
   }
 
-  public decodeToken(): any {
+  // Decodifica el token
+  public decodifica(): any {
     const token = localStorage.getItem("adae");
-    return token ? decode(token) : null;
+    if (token) {
+      return decode(token); // Decodifica el token si no es nulo
+    }
+    return null; // Retorna null si no hay token
   }
 
-  public extendSession(): void {
-    const tokenDecoded = this.decodeToken();
-    if (tokenDecoded) {
-      tokenDecoded.exp += 1800;
-      const extendedToken = this.jwtHelper.decodeToken(tokenDecoded);
-      localStorage.setItem("adae", extendedToken);
+  // Continúa la sesión aumentando la expiración del token
+  public continuar(): void {
+    let tokedecode = this.decodifica();
+    if (tokedecode) {
+      tokedecode.exp += 1800; // Aumenta el tiempo de expiración
+      let tokecode = this.jwt.decodeToken(tokedecode);
+      localStorage.setItem("adae", tokecode);
     }
   }
 
-  public isTokenExpired(): boolean {
-    const tokenDecoded = this.decodeToken();
-    if (!tokenDecoded || (tokenDecoded.exp - Date.now() / 1000) < 0) {
-      localStorage.clear();
+  // Verifica si el token ha expirado
+  public tokeExpired(): boolean {
+    const tokenDecode = this.decodifica();
+    if (!tokenDecode) {
+      return true; // Si no hay token, considera que ha expirado
+    }
+    const tiempo = (tokenDecode.exp - Date.now() / 1000);
+    if (tiempo < 0) {
+      localStorage.clear(); // Limpia el localStorage si ha expirado
       return true;
     }
     return false;
   }
 
-  public getUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/usr/listUsr/`)
-      .pipe(catchError(this.handleError.bind(this)));
+  //metodo para la lista jeje luego lo muevo para organizarlo bien
+
+  // Nuevo método para obtener usuarios
+  getUsuarios(): Observable<any[]> {
+    return this.http.get<any[]>("http://localhost:4000/apiAdae/usr/listUsr/");
   }
 
-  public registerAlum(data: any): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/usr/RegistrarAlumno`, data)
-      .pipe(catchError(this.handleError.bind(this)));
-  }
-  
-
-  public updateStudent(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.baseApiUrl}/usr/ActualizarAlumno`, data)
-      .pipe(catchError(this.handleError.bind(this)));
+  updateAlumno(id: number, data: any): Observable<any> {
+    return this.http.put("http://localhost:4000/apiAdae/usr/ActualizarAlumno", data);
   }
 }

@@ -12,7 +12,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 </head>
 
 <body>
@@ -20,41 +19,71 @@
     <nav class="navbar">
       <a (click)="redirigirAlDashboard()" class="ADAE-logo-header">ADO</a>
 
-      <div class="user-icon" (click)="toggleMenu()" *ngIf="sesion._usuario !== 'No disponible'">
-
-        <img [src]="sesion._foto" width="30" height="30">
-        <div class="profile-menu" [ngClass]="{ show: menuOpen }">
-          <div class="profile-header">
-            <p>{{ sesion._usuario }}<br /></p>
-          </div>
-          <div class="profile-options">
-            <a [routerLink]="['/Main_Dashboard/Profile_User']">
-              <i class="bx bx-user"></i> Ver mi perfil
-            </a>
-            <a [routerLink]="['/Main_Dashboard/segurity_user']">
-              <i class="bx bx-shield"></i> Gestionar cuenta
-            </a>
-          </div>
-          <div class="profile-logout">
-            <a href="#" class="logout-btn" (click)="cerrarSesion()">
-              <i class="bx bx-x-circle"></i> Cerrar sesión
-            </a>
-          </div>
+    <!-- Menú de usuario -->
+    <div
+      class="user-icon"
+      (click)="toggleMenu()"
+      *ngIf="sesion._usuario !== 'No disponible'"
+    >
+      <img [src]="sesion._foto" width="30" height="30" />
+      <div class="profile-menu" [ngClass]="{ show: menuOpen }">
+        <div class="profile-header">
+          <p>{{ sesion._usuario }}<br /></p>
+        </div>
+        <div class="profile-options">
+          <a [routerLink]="['/Main_Dashboard/Profile_User']">
+            <i class="bx bx-user"></i> Ver mi perfil
+          </a>
+          <a [routerLink]="['/Main_Dashboard/segurity_user']">
+            <i class="bx bx-shield"></i> Gestionar cuenta
+          </a>
+        </div>
+        <div class="profile-logout">
+          <a
+            href="javascript:void(0);"
+            class="logout-btn"
+            (click)="cerrarSesion()"
+          >
+            <i class="bx bx-x-circle"></i> Cerrar sesión
+          </a>
         </div>
       </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Superposición para el desenfoque -->
+<div
+  class="overlay"
+  [ngClass]="{ active: menuOpen }"
+  (click)="closeMenu()"
+></div>
+
+<div class="mt-5">
+  <router-outlet></router-outlet>
+</div>
+
+<footer>
+  <div class="footer-div">
+    <nav>
+      <a [routerLink]="['/politica-privacidad']" class="privacy-policy"
+        >Política de privacidad</a
+      >
     </nav>
-  </header>
-
-  <!-- Superposición para el desenfoque -->
-  <div class="overlay" [ngClass]="{ active: menuOpen }" (click)="closeMenu()"></div>
-
-  <div class="mt-5">
-    <router-outlet></router-outlet>
+    <div class="sep"></div>
+    <nav>
+      <a [routerLink]="['/terminos-condiciones']" class="terms-and-condition"
+        >Términos y condiciones</a
+      >
+    </nav>
+    <div class="sep"></div>
+    <nav>
+      <a [routerLink]="['/sobre-nosotros']" class="terms-and-condition"
+        >Sobre nosotros</a
+      >
+    </nav>
   </div>
-
-
-
-  <script src="app.component.js"></script>
-</body>
-
-</html>
+  <div class="footer-div2">
+    Copyright © 2024 ADAE. Todos los derechos reservados.
+  </div>
+</footer>
