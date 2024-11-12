@@ -1,6 +1,10 @@
 import cnx from './conexion.js';
 import jwt from 'jsonwebtoken';
 import env from '../../enviroment/enviroment.js';
+import nodemailer from 'nodemailer';
+
+
+
 
 const login = async (req, res) => {
     const { correo_institucional, password } = req.body;
@@ -11,7 +15,7 @@ const login = async (req, res) => {
     const sqlAlumnoData = `SELECT numero_control, especialidad, semestre, turno, curp, grupo FROM alumnos WHERE id_usuario = ?`; // Consulta para obtener datos del alumno
     const conexion = await cnx();
     let registro;
-    let foto;
+    let foto; ``
     let datosAlumno = null;
 
     try {
@@ -68,47 +72,97 @@ const login = async (req, res) => {
 };
 
 
+
 const registrarAlumno = async (req, res) => {
-    const { correo_institucional, nombre, rol, password, numero_de_control, especialidad, semestre } = req.body;
+    const {
+        correo_institucional,
+        nombre,
+        apellido,
+        rol,
+        password,
+        numero_control,
+        especialidad,
+        semestre,
+        turno,
+        curp,
+        grupo,
+        foto
+    } = req.body;
 
-    // Valida que los datos requeridos estén presentes
-    if (!correo_institucional || !nombre || !rol || !password) {
-        return res.status(400).json({ error: 'Todos los campos de usuario son obligatorios' });
-    }
-
-    // Valida que los campos adicionales del alumno estén presentes
-    if (!numero_de_control || !especialidad || !semestre) {
-        return res.status(400).json({ error: 'Los campos de alumno son obligatorios' });
-    }
+    
 
     const sqlCheckUserExists = `SELECT id_usuario FROM usuarios WHERE correo_institucional = ?`;
-    const sqlInsertUser = `INSERT INTO usuarios (correo_institucional, nombre, rol, contraseña) VALUES (?, ?, ?, ?)`;
-    const sqlInsertAlumno = `INSERT INTO alumnos (id_usuario, numero_control, especialidad, semestre) VALUES (?, ?, ?, ?)`;
+    const sqlInsertUser = `INSERT INTO usuarios (correo_institucional, nombre, apellido, rol, contraseña, foto) VALUES (?, ?, ?, ?, ?, ?)`;
+    const sqlInsertAlumno = `INSERT INTO alumnos (id_usuario, numero_control, especialidad, semestre, turno, curp, grupo) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     const conexion = await cnx();
-    let registro;
 
     try {
         // Verifica si el usuario ya existe
-        [registro] = await conexion.execute(sqlCheckUserExists, [correo_institucional]);
+        const [registro] = await conexion.execute(sqlCheckUserExists, [correo_institucional]);
 
         if (registro && registro.length > 0) {
-            return res.status(409).json({ error: 'El usuario ya existe' }); // Conflicto
+            return res.status(409).json({ error: 'El usuario ya existe' });
         }
 
         // Inserta el nuevo usuario en la tabla de usuarios
-        const [resultadoUsuario] = await conexion.execute(sqlInsertUser, [correo_institucional, nombre, rol, password]);
-        const id_usuario = resultadoUsuario.insertId; // Obtiene el ID del usuario insertado
+        const [resultadoUsuario] = await conexion.execute(sqlInsertUser, [
+            correo_institucional,
+            nombre,
+            apellido,
+            rol,
+            password,
+            foto
+        ]);
+
+        const id_usuario = resultadoUsuario.insertId;
 
         // Inserta los datos adicionales en la tabla de alumnos
-        await conexion.execute(sqlInsertAlumno, [id_usuario, numero_de_control, especialidad, semestre]);
+        await conexion.execute(sqlInsertAlumno, [
+            id_usuario,
+            numero_control,
+            especialidad,
+            semestre,
+            turno,
+            curp,
+            grupo
+        ]);
 
-        res.status(201).json({ mensaje: 'Alumno registrado exitosamente' }); // Creado
+        // Configuración de transporte para nodemailer
+        const transporter = nodemailer.createTransport({
+            host: "smtp-mail.outlook.com",
+            port: 587,
+            secure: false, // true for port 465, false for other ports
+            auth: {
+                user: "ADAE_@outlook.com",
+                pass: "!sVXE45rCMbU7hm",
+            },
+        });
+
+        // Configuración del correo electrónico
+        const mailOptions = {
+            from: 'ADAE_@outlook.com',
+            to: correo_institucional,
+            subject: 'Confirmación de Registro',
+            text: `Hola ${nombre} ${apellido},\n\nTu registro ha sido exitoso. Bienvenido al sistema.\n\nSaludos,\nEquipo`,
+            html: "<b>Hello world?</b>", // html body
+        };
+
+        // Envía el correo
+        await transporter.sendMail(mailOptions);
+
+        res.status(201).json({ mensaje: 'Alumno registrado exitosamente y correo de confirmación enviado' });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({ error: 'Error en la base de datos' });
+    } finally {
+        await conexion.end();
     }
-}
+};
+
+
+
+
 
 const listaUsuario = async (req, res) => {
     const sql = `

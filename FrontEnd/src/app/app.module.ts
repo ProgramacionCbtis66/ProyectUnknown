@@ -42,6 +42,7 @@ import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-de
 import Notiflix from 'notiflix';
 import { FormsModule } from '@angular/forms';
 import { UserRegisterComponent } from './user-settings_Page/user-register/user-register.component';
+import { DropMenuComponent } from './dashboard/servicios_escolares/alumnos-listado/drop-menu/drop-menu.component';
 
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
@@ -80,6 +81,7 @@ export function tokenGetter() {
     AlumnosRegistrosComponent,
     AlumnosClasesComponent,
     AlumnosGruposComponent,
+    DropMenuComponent,
 
   ],
   imports: [

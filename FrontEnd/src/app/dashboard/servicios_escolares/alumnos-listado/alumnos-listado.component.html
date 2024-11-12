@@ -2,53 +2,109 @@
   <h2 class="my-3">Lista de Alumnos</h2>
 
   <!-- Barra de búsqueda -->
-  <input
-    type="text"
-    class="form-control my-3"
-    placeholder="Buscar por nombre, apellido o número de control"
-    [(ngModel)]="searchQuery"
-    (input)="onSearch()"
-  />
+  <input type="text" class="form-control my-3 BarraBusqueda" placeholder="Buscar por nombre, apellido o número de control"
+    [(ngModel)]="searchQuery" (input)="onSearch()" />
 
   <!-- Filtros de turno, grupo y especialidad -->
   <div class="filters">
-    <select [(ngModel)]="selectedTurno" (change)="applyFilters()">
+    <select class="Filtros" [(ngModel)]="selectedTurno" (change)="applyFilters()">
       <option value="">Todos los turnos</option>
       <option *ngFor="let turno of turnos">{{ turno }}</option>
     </select>
 
-    <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
+    <select class="Filtros" [(ngModel)]="selectedGrupo" (change)="applyFilters()">
       <option value="">Todos los grupos</option>
       <option *ngFor="let grupo of grupos">{{ grupo }}</option>
     </select>
 
-    <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
+    <select class="Filtros" [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
       <option value="">Todas las especialidades</option>
       <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
     </select>
+
+    <button class="add-Alumno" (click)="abrirModal()">
+      <i class="fi fi-br-plus add-icon"></i>
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="alumnoModal" tabindex="-1" aria-labelledby="alumnoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="alumnoModalLabel">Registrar Alumno</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <!-- Columna 1: Datos del Alumno -->
+              <div class="col-md-6">
+                <input type="text" class="form-control mb-3" placeholder="Correo Institucional" [(ngModel)]="nuevoAlumno.correo_institucional">
+                <input type="text" class="form-control mb-3" placeholder="Nombre" [(ngModel)]="nuevoAlumno.nombre">
+                <input type="text" class="form-control mb-3" placeholder="Apellido" [(ngModel)]="nuevoAlumno.apellido">
+                <input type="password" class="form-control mb-3" placeholder="Contraseña" [(ngModel)]="nuevoAlumno.password">
+                <input type="text" class="form-control mb-3" placeholder="Número de Control" [(ngModel)]="nuevoAlumno.numero_control">
+                
+                <!-- Campo de Especialidad editable o seleccionable -->
+                <div class="form-group mb-3">
+                  <label for="especialidad">Especialidad</label>
+                  <input list="especialidades" class="form-control" placeholder="Escribe o selecciona una especialidad"
+                    [(ngModel)]="nuevoAlumno.especialidad">
+                  <datalist id="especialidades">
+                    <option *ngFor="let especialidad of especialidades" [value]="especialidad"></option>
+                  </datalist>
+                </div>
+              </div>
+    
+              <!-- Columna 2: Otros Datos -->
+              <div class="col-md-6">
+                <div class="col-md-6">
+                  <!-- Semestre (solo del 1 al 6) -->
+                  <select class="form-control mb-3" [(ngModel)]="nuevoAlumno.semestre">
+                    <option value="" disabled selected>Selecciona el semestre</option>
+                    <option *ngFor="let semestre of [1, 2, 3, 4, 5, 6]" [value]="semestre">{{ semestre }}</option>
+                  </select>
+                </div>
+                <input type="text" class="form-control mb-3" placeholder="Grupo" [(ngModel)]="nuevoAlumno.grupo">
+                <input type="text" class="form-control mb-3" placeholder="Turno" [(ngModel)]="nuevoAlumno.turno">
+                <input type="text" class="form-control mb-3" placeholder="CURP" [(ngModel)]="nuevoAlumno.curp">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="guardarAlumno()">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+    
   </div>
 </div>
-  <!-- Lista de tarjetas de alumnos -->
-  <div class="container">
-    <div class="alumnos-listado">
-      <div *ngFor="let usuario of filteredUsuarios" class="alumno-card">
-<div class="algo">
-  <img
-  [src]="usuario.foto || 'ruta/a/imagen_default.jpg'"
-  alt="Foto de {{ usuario.nombre }}"
-  class="alumno-foto"
-/>
-<div class="alumno-info">
-  <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
-  <p>Num: {{ usuario.numero_control }} &nbsp;&nbsp; {{ usuario.rol }} &nbsp;&nbsp; {{ usuario.turno }}</p>
-</div>
 
-</div>
-<div class="alumno-actions">
-  <span class="icon">{{ usuario.grupo }}</span> <!-- Muestra el grupo del alumno -->
-</div>
+<!-- Lista de tarjetas de alumnos -->
+<div class="container">
+  <div class="alumnos-listado">
+    <div *ngFor="let usuario of filteredUsuarios" class="alumno-card" (click)="toggleDropdown(usuario)">
+      <div class="algo">
+        <img [src]="usuario.foto || 'ruta/a/imagen_default.jpg'" alt="Foto de {{ usuario.nombre }}"
+          class="alumno-foto" />
+        <div class="alumno-info">
+          <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
+          <p>Num: {{ usuario.numero_control }} &nbsp;&nbsp; {{ usuario.rol }} &nbsp;&nbsp; {{ usuario.turno }}</p>
+        </div>
+      </div>
+      <div class="alumno-actions">
+        <span class="icon">{{ usuario.grupo }}</span> <!-- Muestra el grupo del alumno -->
+      </div>
+      <div class="dropdown" [ngClass]="{'show': usuario.isDropdownVisible}">
+        <div class="option" *ngFor="let option of options" (click)="selectOption(option, usuario)">
+            {{ option }}
+        </div>
       </div>
     </div>
   </div>
-  
-  
+</div>

@@ -4,6 +4,11 @@ import { SesionService } from './Core/service/sesion.service';
 import { Router } from '@angular/router'; // Importa el servicio de Router
 import { AuthService } from '../app/Core/service/auth.service';
 
+declare global {
+  interface Window {
+    bootstrap: any;
+  }
+}
 
 
 @Component({
@@ -19,11 +24,11 @@ export class AppComponent {
   constructor(private titleService: Title, protected sesion: SesionService, private router: Router, private authService: AuthService) {
     // Cambiar el título de la página
     this.titleService.setTitle(this.title);
-    this.authService.restaurarSesion(); // Restaurar la sesión al cargar la app
+    this.authService.restoreSession(); // Restaurar la sesión al cargar la app
   }
 
   cerrarSesion() {
-    this.authService.cerrarSesion();
+    this.authService.logout();
     this.router.navigate(['/login']); // Redirige al login después de cerrar la sesión
   }
 
@@ -67,4 +72,5 @@ export class AppComponent {
       this.closeMenu();
     }
   }
+  
 }

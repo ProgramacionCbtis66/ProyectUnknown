@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../Core/service/auth.service';
-import { Router } from '@angular/router'; // Importa el servicio de Router
+import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import Notiflix from 'notiflix';
 import { SesionService } from 'src/app/Core/service/sesion.service';
@@ -11,10 +11,11 @@ import { SesionService } from 'src/app/Core/service/sesion.service';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent implements OnInit {
-  username: string = '';
-  password: string = '';
-  errorMessage: string = '';
-  isLoading: boolean = false; // Nueva propiedad para el estado de carga
+  username = '';
+  password = '';
+  errorMessage = '';
+  isLoading = false;
+  showPassword = false;
 
   constructor(
     private authService: AuthService,
@@ -27,100 +28,85 @@ export class LogInComponent implements OnInit {
   }
 
   navigateToQR(): void {
-    this.router.navigate(['/QRPage']); // ruta para el iniciar sesion con
+    this.router.navigate(['/QRPage']);
   }
 
   async onLogin(): Promise<void> {
-    this.isLoading = true; // Iniciar carga
+    this.isLoading = true;
     const userData = { correo_institucional: this.username, password: this.password };
 
     try {
       const response = await firstValueFrom(this.authService.login(userData));
-      console.log("Respuesta de login:", response); // <-- Depuración 
-
-      localStorage.setItem("adae", response.token);
-      localStorage.setItem("fotoPerfil", response.foto);
-      this.sesion._foto = response.foto;
-
-      const decodedToken = this.authService.decodifica();
-      console.log("Token decodificado:", decodedToken, "Imagen: ", response.foto); // <-- Depuración
-
-      this.sesion._usuario = decodedToken.nombre;
-      this.sesion._apellido = decodedToken.apellido;
-      this.sesion._rol = decodedToken.rol;
-
-      // Establecer datos del alumno si el rol es "Alumno" y el token contiene datos del alumno
-      if (decodedToken.rol === 'Alumno' && decodedToken.alumno) {
-        const alumno = decodedToken.alumno; // Accede a los datos del alumno dentro del token
-        this.sesion._numeroControl = alumno.numero_control;
-        this.sesion._especialidad = alumno.especialidad;
-        this.sesion._semestre = alumno.semestre;
-        this.sesion._turno = alumno.turno;
-        this.sesion._curp = alumno.curp;
-        this.sesion._grupo = alumno.grupo;
-      }
-
-      // Comparar la fecha de nacimiento con la fecha actual para la felicitación
-      const today = new Date();
-      const birthDate = new Date(decodedToken.fecha_nac); // La fecha de nacimiento del token
-
-      const isBirthday = (today.getDate() === birthDate.getUTCDate() &&
-        today.getMonth() === birthDate.getUTCMonth());
-
-      // Redirige según el rol del usuario
-      switch (decodedToken.rol) {
-        case 'Administrador':
-          if (isBirthday) {
-            Notiflix.Notify.success('Feliz Cumpleaños ' + this.sesion._usuario);
-          } else {
-            Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          }
-          this.router.navigate(['Main_Dashboard']);
-          break;
-        case 'Alumno':
-          if (isBirthday) {
-            Notiflix.Notify.success('Feliz Cumpleaños ' + this.sesion._usuario);
-          } else {
-            Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          } this.router.navigate(['Main_Dashboard']);
-          break;
-        case 'Profesor':
-          if (isBirthday) {
-            Notiflix.Notify.success('Feliz Cumpleaños ' + this.sesion._usuario);
-          } else {
-            Notiflix.Notify.success('Bienvenido ' + this.sesion._usuario);
-          } this.router.navigate(['Main_Dashboard']);
-          break;
-        default:
-          this.router.navigate(['Main_Dashboard']);
-          break;
-      }
+      this.storeSessionData(response);
+      this.handleLoginSuccess();
     } catch (error) {
-      console.error('Error de inicio de sesión:', error);
       this.handleError(error);
     } finally {
-      this.isLoading = false; // Finalizar carga
+      this.isLoading = false;
     }
+  }
+
+  private storeSessionData(response: any): void {
+    localStorage.setItem("adae", response.token);
+    localStorage.setItem("fotoPerfil", response.foto);
+    this.sesion._foto = response.foto;
+
+    const decodedToken = this.authService.decodeToken();
+    this.sesion._usuario = decodedToken.nombre;
+    this.sesion._apellido = decodedToken.apellido;
+    this.sesion._rol = decodedToken.rol;
+
+    if (decodedToken.rol === 'Alumno' && decodedToken.alumno) {
+      const alumno = decodedToken.alumno;
+      this.sesion._numeroControl = alumno.numero_control;
+      this.sesion._especialidad = alumno.especialidad;
+      this.sesion._semestre = alumno.semestre;
+      this.sesion._turno = alumno.turno;
+      this.sesion._curp = alumno.curp;
+      this.sesion._grupo = alumno.grupo;
+    }
+  }
+
+  private handleLoginSuccess(): void {
+    const decodedToken = this.authService.decodeToken();
+    const isBirthday = this.checkIfBirthday(decodedToken.fecha_nac);
+    
+    this.showWelcomeMessage(isBirthday);
+    this.redirectBasedOnRole(decodedToken.rol);
+  }
+
+  private checkIfBirthday(birthDateStr: string): boolean {
+    const today = new Date();
+    const birthDate = new Date(birthDateStr);
+    return today.getDate() === birthDate.getUTCDate() && today.getMonth() === birthDate.getUTCMonth();
+  }
+
+  private showWelcomeMessage(isBirthday: boolean): void {
+    const message = isBirthday ? `Feliz Cumpleaños ${this.sesion._usuario}` : `Bienvenido ${this.sesion._usuario}`;
+    Notiflix.Notify.success(message);
+  }
+
+  private redirectBasedOnRole(role: string): void {
+    const validRoles = ['Administrador', 'Alumno', 'Profesor'];
+    const route = validRoles.includes(role) ? 'Main_Dashboard' : 'Main_Dashboard';
+    this.router.navigate([route]);
   }
 
   private handleError(error: any): void {
-    if (error.status === 404) {
-      this.errorMessage = 'Correo no encontrado';
-      Notiflix.Notify.failure('Correo no encontrado');
-    } else if (error.status === 401) {
-      this.errorMessage = 'Contraseña incorrecta';
-      Notiflix.Notify.failure('Contraseña incorrecta');
-    } else {
-      this.errorMessage = 'Servidor no responde';
-      Notiflix.Notify.failure('Error al iniciar sesión. Servidor no responde.');
+    switch (error.status) {
+      case 404:
+        this.errorMessage = 'Correo no encontrado';
+        break;
+      case 401:
+        this.errorMessage = 'Contraseña incorrecta';
+        break;
+      default:
+        this.errorMessage = 'Servidor no responde';
     }
+    Notiflix.Notify.failure(this.errorMessage);
   }
 
-  showPassword: boolean = false;
-
-  togglePasswordVisibility() {
+  togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
-  
 }
-

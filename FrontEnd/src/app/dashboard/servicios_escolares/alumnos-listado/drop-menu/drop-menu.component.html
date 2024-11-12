@@ -1,0 +1,8 @@
+<div class="gotita" (click)="toggleDropdown()">
+    ¡Pasa el mouse por aquí!
+    <div class="dropdown" [ngClass]="{'show': isDropdownVisible}">
+        <div class="option" *ngFor="let option of options" (click)="selectOption(option)">
+            {{ option }}
+        </div>
+    </div>
+</div>

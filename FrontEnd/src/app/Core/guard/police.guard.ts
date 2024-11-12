@@ -51,7 +51,7 @@ export class PoliceGuard implements CanActivate {
     console.log('Ruta actual:', rutaActual);
   
     if (this.autentificacion.isAuth()) {
-      const user = this.autentificacion.decodifica();
+      const user = this.autentificacion.decodeToken();
       console.log('Usuario decodificado:', user);
   
       if (user && user.rol) {
