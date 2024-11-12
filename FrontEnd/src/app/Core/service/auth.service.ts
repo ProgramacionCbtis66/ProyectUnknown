@@ -33,7 +33,6 @@ export class AuthService {
   public logout(): void {
     localStorage.removeItem("adae");
     this.clearSession();
-    this.toastr.info('Sesión cerrada con éxito', 'Info');
   }
 
   public restoreSession(): void {
