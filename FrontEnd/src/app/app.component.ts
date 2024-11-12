@@ -13,6 +13,7 @@ declare global {
 }
 
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,13 +31,7 @@ export class AppComponent {
     private authService: AuthService
   ) {
     this.titleService.setTitle(this.title);
-
-    // Escucha cuando la sesión ha sido restaurada y redirige al dashboard
-    this.authService.sessionRestored$.subscribe((restored) => {
-      if (restored) {
-        this.redirigirAlDashboard();
-      }
-    });
+    this.authService.restoreSession(); // Restaurar la sesión al cargar la app
   }
 
   cerrarSesion() {

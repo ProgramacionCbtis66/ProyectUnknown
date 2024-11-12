@@ -115,6 +115,7 @@ export class AuthService {
     return this.http.post(`${this.baseApiUrl}/usr/RegistrarAlumno`, data)
       .pipe(catchError(this.handleError.bind(this)));
   }
+  
 
   public updateStudent(id: number, data: any): Observable<any> {
     return this.http.put(`${this.baseApiUrl}/usr/ActualizarAlumno`, data)
