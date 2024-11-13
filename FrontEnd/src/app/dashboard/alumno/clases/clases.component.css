@@ -1,83 +1,83 @@
-.class-card {
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 350px);
+  grid-auto-rows: 270px;
+  gap: 24px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card-custom {
+  background-color: #333;
+  color: #fff;
+  border-radius: 50px;
+  padding: 20px;
+  padding-top: 8px;
+  padding-inline: 8px;
   display: flex;
-  border: none;
-  border-radius: 30px;
-  overflow: hidden;
-  margin: 10px;
-  background-color: #3e3e3e;
-  padding: 0px;
-  max-width: 250px;
-  max-height: 350px;
-  color: white;
-  transition-duration: 0.2s;
-}
-
-.color-bar {
-  width: 40%;
-  /* Ancho de la barra */
-  background-color: #5d79de;
-  /* Color de la barra */
   flex-direction: column;
+  justify-content: space-between;
 }
 
-.Principal-card-Content {
-  padding: 15px;
-  flex-grow: 1;
+.profile{
+  background-color: rgb(77, 77, 77);
+  height: 80px;
+  padding: 10px;
+  border-radius: 50px;
 }
 
-
-.class-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.class-card-image {
-  flex-shrink: 0;
-  width: 60px;
-  height: 60px;
+.profile-circle {
+  width: 55px; /* Reduced from 50px */
+  height: 55px; /* Reduced from 50px */
+  margin-inline: 10px;
+  aspect-ratio: 1;
+  background-color: #ffffff;
   border-radius: 50%;
-  overflow: hidden;
-  margin: 15px;
-  background-color: #555;
 }
 
-.class-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-
-}
-
-.class-card-content {
-  flex-grow: 1;
-}
-
-.class-card h3 {
-  font-size: 1.2rem;
+.student-name {
   font-weight: bold;
-  margin: 0;
+  font-size: 0.9rem; /* Reduced from 1.1rem */
+  margin-right: 10px;
 }
 
-.profesor-nombre {
-  font-size: 0.9rem;
-  color: #ccc;
-  margin: 5px 0;
+.subject-title {
+  font-weight: bold;
+  margin-top: 10px; /* Reduced from 15px */
+  font-size: 0.85rem; /* Reduced to make text smaller */
 }
 
-.class-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.task-item {
+  background-color: #555;
+  padding: 7px; /* Reduced from 10px */
+  margin-inline: 15px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 7px; /* Reduced from 10px */
+  font-size: 0.8rem; /* Reduced text size */
 }
 
-.class-card ul li {
-  font-size: 0.9rem;
-  color: #ddd;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.status-indicator {
+  width: 20px; /* Reduced from 15px */
+  height: 20px; /* Reduced from 15px */
+  border-radius: 50%;
+  font-weight: 100; /* Sets font to thin */
 }
 
-.Principal-card-Content {}
+.status-red {
+  background-color: #ff4d4d;
+}
 
-.Color-Bar {}
+.status-orange {
+  background-color: #ffa500;
+}
+
+.status-green {
+  background-color: #4caf50;
+}

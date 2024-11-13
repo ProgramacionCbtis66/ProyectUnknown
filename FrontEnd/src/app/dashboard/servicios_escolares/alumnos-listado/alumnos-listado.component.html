@@ -1,54 +1,56 @@
-<div class="container Search">
-  <h2 class="my-3">Lista de Alumnos</h2>
-
-  <!-- Barra de búsqueda -->
-  <input
-    type="text"
-    class="form-control my-3"
-    placeholder="Buscar por nombre, apellido o número de control"
-    [(ngModel)]="searchQuery"
-    (input)="onSearch()"
-  />
-
-  <!-- Filtros de turno, grupo y especialidad -->
-  <div class="filters">
-    <select [(ngModel)]="selectedTurno" (change)="applyFilters()">
-      <option value="">Todos los turnos</option>
-      <option *ngFor="let turno of turnos">{{ turno }}</option>
-    </select>
-
-    <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
-      <option value="">Todos los grupos</option>
-      <option *ngFor="let grupo of grupos">{{ grupo }}</option>
-    </select>
-
-    <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
-      <option value="">Todas las especialidades</option>
-      <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
-    </select>
-  </div>
-</div>
-  <!-- Lista de tarjetas de alumnos -->
-  <div class="container">
-    <div class="alumnos-listado">
-      <div *ngFor="let usuario of filteredUsuarios" class="alumno-card">
-<div class="algo">
-  <img
-  [src]="usuario.foto || 'ruta/a/imagen_default.jpg'"
-  alt="Foto de {{ usuario.nombre }}"
-  class="alumno-foto"
-/>
-<div class="alumno-info">
-  <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
-  <p>Num: {{ usuario.numero_control }} &nbsp;&nbsp; {{ usuario.rol }} &nbsp;&nbsp; {{ usuario.turno }}</p>
-</div>
-
-</div>
-<div class="alumno-actions">
-  <span class="icon">{{ usuario.grupo }}</span> <!-- Muestra el grupo del alumno -->
-</div>
-      </div>
+<section>
+  <div class="container Search">
+    <h2 class="my-3">Lista de Alumnos</h2>
+  
+    <!-- Barra de búsqueda -->
+    <input
+      type="text"
+      class="form-control my-3"
+      placeholder="Buscar por nombre, apellido o número de control"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+    />
+  
+    <!-- Filtros de turno, grupo y especialidad -->
+    <div class="filters">
+      <select [(ngModel)]="selectedTurno" (change)="applyFilters()">
+        <option value="">Todos los turnos</option>
+        <option *ngFor="let turno of turnos">{{ turno }}</option>
+      </select>
+  
+      <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
+        <option value="">Todos los grupos</option>
+        <option *ngFor="let grupo of grupos">{{ grupo }}</option>
+      </select>
+  
+      <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
+        <option value="">Todas las especialidades</option>
+        <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
+      </select>
     </div>
   </div>
+    <!-- Lista de tarjetas de alumnos -->
+    <div class="container">
+      <div class="alumnos-listado">
+        <div *ngFor="let usuario of filteredUsuarios" class="alumno-card">
+  <div class="algo">
+    <img
+    [src]="usuario.foto || 'ruta/a/imagen_default.jpg'"
+    alt="Foto de {{ usuario.nombre }}"
+    class="alumno-foto"
+  />
+  <div class="alumno-info">
+    <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
+    <p>Num: {{ usuario.numero_control }} &nbsp;&nbsp; {{ usuario.rol }} &nbsp;&nbsp; {{ usuario.turno }}</p>
+  </div>
   
-  
+  </div>
+  <div class="alumno-actions">
+    <div class="Fondo-Grupo">
+      <span class="icon">{{ usuario.grupo }}</span> <!-- Muestra el grupo del alumno -->
+    </div>
+  </div>
+        </div>
+      </div>
+    </div>  
+</section>

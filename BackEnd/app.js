@@ -30,8 +30,9 @@ app.use((req, res, next) => {
 });
 
 import UserApi from './api/rutas/usuario.js';
+import EmailApi from './api/rutas/Email.js';
 import prueba from './api/rutas/pruebas.js';
 
-app.use('/apiAdae', [UserApi, prueba]);
+app.use('/apiAdae', [UserApi, prueba, EmailApi]);
 
 export default app;

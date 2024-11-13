@@ -1,22 +1,32 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+
+
 <div class="container">
-  <div class="row">
-    <div class="class-card" *ngFor="let clase of clases">
-      <div class="color-bar">
-        <div class="class-card-image">
-          <img [src]="clase.foto" alt="Foto de la clase" />
-        </div>
-      </div> <!-- Barra de color a la izquierda -->
-      <div class="Principal-card-Content">
-        <div class="class-card-content">
-          <h3>{{ clase.nombreClase }}</h3>
-          <p class="profesor-nombre">{{ clase.nombreProfesor }}</p>
-          <p>Tarea Pendiente:</p>
-          <ul>
-            <li *ngFor="let tarea of getTruncatedTareas(clase)">{{ tarea }}</li>
-            <li *ngIf="hasMoreTareas(clase)">...</li>
-          </ul>
-        </div>
-      </div>
+  <div class="card-custom text-center" *ngFor="let clase of clases">
+    <div class="d-flex align-items-center profile">
+      <div class="profile-circle mr-3"></div>
+      <div class="student-name">{{ clase.nombreProfesor }}</div>
+    </div>
+    
+    <div class="subject-title">{{ clase.nombreClase }}</div>
+  
+    <div class="task-item">
+      <span>Tarea: Derivada de Riemman</span>
+      <div class="status-indicator status-red"></div>
+    </div>
+  
+    <div class="task-item">
+      <span>Tarea: Derivada de Riemman</span>
+      <div class="status-indicator status-orange"></div>
+    </div>
+  
+    <div class="task-item">
+      <span>Tarea: Derivada de Riemman</span>
+      <div class="status-indicator status-green"></div>
     </div>
   </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

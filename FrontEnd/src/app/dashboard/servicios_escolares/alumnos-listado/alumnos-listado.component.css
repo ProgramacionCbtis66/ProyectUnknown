@@ -1,19 +1,33 @@
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container {
+  padding: 0px;
+  margin: 0px;
+}
+
 .alumnos-listado {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   gap: 1.5rem;
-  margin: 10px;
 }
 
 .alumno-card {
   display: flex;
   align-items: center;
-  background-color: #3e3e3e; /* Fondo oscuro */
-  color: white; /* Texto en color blanco */
-  border-radius: 20px; /* Bordes redondeados */
+  background-color: #3e3e3e;
+  /* Fondo oscuro */
+  color: white;
+  /* Texto en color blanco */
+  border-radius: 20px;
+  /* Bordes redondeados */
 
-  width: 100%;
-  max-width: 450px;
+  width: 80%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   transition-duration: 0.2s;
@@ -21,9 +35,9 @@
 
 .alumno-card:hover {
   transform: scale(1.05);
-  }
+}
 
-.algo{
+.algo {
   display: flex;
   align-items: center;
   margin: 15px;
@@ -33,7 +47,8 @@
 .alumno-foto {
   width: 60px;
   height: 60px;
-  border-radius: 50%; /* Imagen circular */
+  border-radius: 50%;
+  /* Imagen circular */
   object-fit: cover;
   margin-right: 15px;
 }
@@ -59,16 +74,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #2b2b2b; /* Fondo oscuro para el icono */
+  background-color: #2b2b2b;
+  /* Fondo oscuro para el icono */
   border-radius: 0 20px 20px 0;
   height: 100%;
   width: 15%;
 }
 
-.alumno-actions .icon {
+.Fondo-Grupo {
+  display: flex;
+
+  background-color: #2b2b2b;
+  height: 90px;
+  width: 100%;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.Fondo-Grupo .icon {
+
   font-size: 2rem;
   font-weight: bold;
   color: white;
+
 }
 
 .Search {
@@ -132,34 +162,24 @@ h2 {
   padding: 1rem;
 }
 
-/*Menu Contextual*/
+@media (max-width: 768px) {
+  .alumnos-listado {
+    margin-inline: 0px;
+  }
 
-.context-menu {
-  position: absolute;
-  background-color: #2b2b2b;
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 20px;
-  z-index: 1000;
-  width: 200px;
-  overflow: hidden; /* Evita que el efecto hover de los li salga del borde redondeado */
+  .container {
+    max-width: 767px;
+    min-width: auto;
+    margin: 0px;
+  }
 
+  .alumno-info h5 {
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+
+  .alumno-info p {
+    font-size: 0.7rem;
+    color: #c2c2c2;
+  }
 }
-
-.context-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0px 0;
-}
-
-.context-menu ul li {
-  padding: 10px;
-  cursor: pointer;
-  
-}
-
-.context-menu ul li:hover {
-  background-color: #444444;
-}
-
-/*Menu Contextual*/

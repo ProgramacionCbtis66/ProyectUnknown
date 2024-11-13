@@ -11,8 +11,9 @@ const env = {
     portServer: process.env.portServer,
     key: process.env.jwt_key,
     exp: process.env.jwt_expiration,
-    dir: process.env.direccion
-
+    dir: process.env.direccion,
+    pwdKey: process.env.passwordCorreo,
+    correoKey: process.env.correo,
 }
 
 export default env;
