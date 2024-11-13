@@ -36,8 +36,11 @@ export class AppComponent {
 
   cerrarSesion() {
     this.authService.logout();
-    this.router.navigate(['/main']); // Redirige al login después de cerrar la sesión
+    this.menuOpen = false;  // Cierra el menú si estaba abierto
+    document.body.classList.remove('no-scroll');  // Permite el scroll nuevamente
+    this.router.navigate(['/main']);  // Redirige al login después de cerrar sesión
   }
+  
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

@@ -8,6 +8,25 @@ import { SesionService } from '../../Core/service/sesion.service';
   styleUrls: ['./my-profile-user.component.css']
 })
 export class MyProfileUserComponent implements OnInit {
+
+  // Definimos la propiedad showEmoji para controlar la visibilidad de la carita
+  showEmoji = false;
+  isCopied = false;
+  // Función para mostrar el emoji cuando pasa el mouse
+  toggleEmoji(show: boolean) {
+    this.showEmoji = show;
+  }
+
+  copyToClipboard() {
+    const textToCopy = this.sesion._numeroControl;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      this.isCopied = true;
+      setTimeout(() => this.isCopied = false, 1000); // Duración del efecto de copiado
+    }).catch(err => {
+      console.error('Error al copiar al portapapeles:', err);
+    });
+  }
+
   activeMenu: string = 'perfil'; // Elemento activo por defecto
   sidebarActive: boolean = true; // Mostrar el sidebar por defecto en modo PC
 
