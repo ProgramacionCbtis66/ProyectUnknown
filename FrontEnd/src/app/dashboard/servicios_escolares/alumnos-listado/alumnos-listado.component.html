@@ -59,19 +59,41 @@
 
   <div class="container">
     <div class="students-list">
-      <div *ngFor="let usuario of filteredUsuarios" class="student-card">
+      <div *ngFor="let usuario of filteredUsuarios" class="student-card" (mouseleave)="hideOptionsDropdown()">
         <div class="student-info">
           <img [src]="usuario.foto || 'ruta/a/imagen_default.jpg'" alt="Foto de {{ usuario.nombre }}"
             class="student-photo" />
           <div class="info">
             <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
-            <p>Num: {{ usuario.numero_control }} &nbsp;&nbsp; Semestre: {{ usuario.semestre }}° &nbsp;&nbsp; {{ usuario.especialidad }} &nbsp;&nbsp; {{ usuario.turno }}</p>
+            <p>
+              Num: {{ usuario.numero_control }} &nbsp;&nbsp; Semestre: {{ usuario.semestre }}° &nbsp;&nbsp;
+              {{ usuario.especialidad }} &nbsp;&nbsp; {{ usuario.turno }}
+            </p>
           </div>
         </div>
         <div class="student-group">
           <span class="group-icon">{{ usuario.grupo }}</span>
         </div>
+
+        <!-- Gota con tres puntos o menú de opciones -->
+        <div class="options-dropdown" (click)="toggleOptionsDropdown($event, usuario)">
+          <ng-container *ngIf="showOptions !== usuario">
+            <!-- Icono de tres puntos -->
+            <i class="fi fi-br-menu-dots"></i>
+          </ng-container>
+          <ng-container *ngIf="showOptions === usuario">
+            <!-- Menú de opciones desplegable -->
+            <ul class="options-menu">
+              <li (click)="editStudent(usuario)">Editar</li>
+              <li (click)="deleteStudent(usuario)">Eliminar</li>
+              <li (click)="copyStudent(usuario)">Copiar</li>
+            </ul>
+          </ng-container>
+        </div>
+
+
       </div>
     </div>
+
   </div>
 </section>

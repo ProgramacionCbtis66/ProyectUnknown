@@ -24,6 +24,7 @@ export class AlumnosListadoComponent implements OnInit {
   usuarios: Usuario[] = [];
   filteredUsuarios: Usuario[] = [];
   searchQuery = '';
+  showOptions: any = null; // Almacena el usuario cuyo menú está visible
 
   // Variables para los filtros
   selectedTurno = '';
@@ -59,8 +60,12 @@ export class AlumnosListadoComponent implements OnInit {
     );
 
     this.checkScreenSize();
+    document.addEventListener('click', this.hideOptionsDropdown.bind(this));
   }
 
+  ngOnDestroy() {
+    document.removeEventListener('click', this.hideOptionsDropdown.bind(this));
+  }
   // Escucha el cambio de tamaño de la ventana
   @HostListener('window:resize')
   onResize() {
@@ -129,5 +134,26 @@ export class AlumnosListadoComponent implements OnInit {
 
     // Aplica los filtros después de cambiar el turno
     this.applyFilters();
+  }
+
+  toggleOptionsDropdown(event: Event, usuario: any) {
+    event.stopPropagation(); // Evita que el evento se propague
+    this.showOptions = this.showOptions === usuario ? null : usuario;
+  }
+
+  hideOptionsDropdown() {
+    this.showOptions = null;
+  }
+
+  editStudent(usuario: any) {
+    console.log('Editar estudiante:', usuario);
+  }
+
+  deleteStudent(usuario: any) {
+    console.log('Eliminar estudiante:', usuario);
+  }
+
+  copyStudent(usuario: any) {
+    console.log('Copiar estudiante:', usuario);
   }
 }

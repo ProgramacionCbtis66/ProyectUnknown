@@ -1,4 +1,5 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
 
 /* Estructura general */
 .container {
@@ -131,7 +132,9 @@
   gap: 1.5rem;
 }
 
+/* Ajustes para la tarjeta del estudiante */
 .student-card {
+  position: relative; /* Necesario para posicionar .options-dropdown */
   display: flex;
   align-items: stretch;
   background-color: #3e3e3e;
@@ -140,6 +143,7 @@
   width: 80%;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
+  
 }
 
 .student-card:hover {
@@ -215,6 +219,88 @@
   height: 20px;
   aspect-ratio: 1;
 }
+
+/* Gota de opciones */
+.options-dropdown {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  background-color: #2b2b2b;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition-duration: 0.4s;
+}
+
+.options-dropdown i {
+  color: white;
+  width: 15px;
+  height: 20px;
+
+}
+
+/* Muestra la gota de opciones al hacer hover en la tarjeta */
+.student-card:hover .options-dropdown {
+  opacity: 1;
+  transform: translateX(80px) translateY(-50%);
+}
+
+/* Gota de opciones */
+.options-dropdown {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  background-color: #2b2b2b;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.4s, transform 0.4s;
+}
+
+.options-dropdown i {
+  color: white;
+  width: 15px;
+  height: 20px;
+}
+
+/* Estilo del menú de opciones */
+.options-dropdown .options-menu {
+  position: absolute;
+  top: -40px;          /* Mueve el menú hacia abajo en relación con el botón */
+  right: -50px;       /* Mueve el menú hacia la izquierda en relación con el botón */
+  background-color: #2b2b2b;
+  border-radius: 10px;
+  padding: 5px 10px;
+  width: max-content;
+  list-style: none;
+  margin: 0;
+}
+
+.options-dropdown .options-menu li {
+  padding: 5px 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.options-dropdown .options-menu li:hover {
+  background-color: #404040;
+  border-radius: 5px;
+}
+
+
 
 /* Medios de comunicación */
 @media (max-width: 768px) {
