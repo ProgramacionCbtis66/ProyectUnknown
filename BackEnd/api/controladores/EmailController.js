@@ -38,22 +38,26 @@ function MailOptions(tipo, emailData) {
     switch (tipo) {
         case "EmailVerify":
             mailOptions = {
-                from: env.correoKey,
+                from: `ADAE <${env.correoKey}>`,
                 to: emailData.destinatario,
                 subject: "Bienvenido a ADAE",
                 text: `Hola ${emailData.nombre}, ¡Gracias por registrarte en ADAE! Estamos felices de darte la bienvenida.`,
                 html: `
-                    <html>
-                        <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
-                            <div style="max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+                   <html>
+                        <head>
+                            <!-- Importar fuente Poppins desde Google Fonts -->
+                            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+                        </head>
+                        <body style="font-family: 'Poppins', Arial, sans-serif; margin: 0; padding: 60px; background-color:#f1f2f4;">
+                            <div style="width: 400px; min-width: 400px; max-width: 400px; margin: auto; border: none; border-radius: 15px; overflow: hidden;">
                                 <!-- Encabezado -->
-                                <div style="background-color: #343a40; padding: 20px; text-align: center;">
-                                    <h2 style="color: #ffffff; margin: 0;">ADAE</h2>
+                                <div style="background-color: #252527; padding: 20px; text-align: center;">
+                                    <h2 style="color: #ffffff; margin: 0; font-size: 2rem;">ADAE</h2>
                                 </div>
                                 
                                 <!-- Cuerpo -->
-                                <div style="padding: 20px; color: #333;">
-                                    <h3 style="margin-top: 0;">¡Registro Exitoso!</h3>
+                                <div style="padding:30px 60px; color: #333; background-color: #ffffff;">
+                                    <h3 style="margin-top: 0; font-size: 2rem;">¡Registro Exitoso!</h3>
                                     <p>Estimado(a) <strong>${emailData.nombre}</strong>,</p>
                                     <p>Gracias por unirte a <strong>ADAE</strong>. Estamos felices de tenerte con nosotros.</p>
                                     <p>Ahora puedes acceder a nuestra plataforma y comenzar a disfrutar de todos los beneficios y herramientas que ofrecemos.</p>
@@ -61,8 +65,8 @@ function MailOptions(tipo, emailData) {
                                 </div>
                                 
                                 <!-- Pie de página -->
-                                <div style="background-color: #f8f9fa; padding: 10px; text-align: center; font-size: 12px; color: #6c757d;">
-                                    <p style="margin: 0;">&copy; 2024 ADAE. Todos los derechos reservados.</p>
+                                <div style="background-color: #FAFAFA; padding: 10px; text-align: center; font-size: 12px; color: #6c757d;">
+                                    <p style="margin: 20px;">&copy; 2024 ADAE. Todos los derechos reservados.</p>
                                 </div>
                             </div>
                         </body>
