@@ -1,56 +1,77 @@
-<section>
-  <div class="container Search">
-    <h2 class="my-3">Lista de Alumnos</h2>
-  
-    <!-- Barra de búsqueda -->
-    <input
-      type="text"
-      class="form-control my-3"
-      placeholder="Buscar por nombre, apellido o número de control"
-      [(ngModel)]="searchQuery"
-      (input)="onSearch()"
-    />
-  
-    <!-- Filtros de turno, grupo y especialidad -->
-    <div class="filters">
-      <select [(ngModel)]="selectedTurno" (change)="applyFilters()">
-        <option value="">Todos los turnos</option>
-        <option *ngFor="let turno of turnos">{{ turno }}</option>
-      </select>
-  
-      <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
-        <option value="">Todos los grupos</option>
-        <option *ngFor="let grupo of grupos">{{ grupo }}</option>
-      </select>
-  
-      <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
-        <option value="">Todas las especialidades</option>
-        <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
-      </select>
+<section class="student-list-section">
+  <div class="container search">
+    <h2 class="title">Lista de Alumnos</h2>
+    <input type="text" class="form-control search-bar" placeholder="Buscar por nombre, apellido o número de control"
+      [(ngModel)]="searchQuery" (input)="onSearch()" />
+
+    <div class="filters-larges-container">
+      <!-- Botón de filtros (funciona en todas las pantallas) -->
+      <button class="filter-toggle" (click)="toggleFilters()" aria-label="Abrir filtros">
+        <i class="fi fi-bs-filters"></i>
+      </button>
+
+      <!-- Filtros en pantalla grande -->
+      <div class="filters large-screen-filters" [class.show]="areFiltersVisible">
+        <!-- Botón para cambiar turno -->
+        <button (click)="toggleTurno()" class="turno-toggle">
+          <i [class]="turnoIcono"></i>
+        </button>
+        <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
+          <option value="">All grupos</option>
+          <option *ngFor="let grupo of grupos">{{ grupo }}</option>
+        </select>
+        <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
+          <option value="">All especialidades</option>
+          <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
+        </select>
+        <select [(ngModel)]="selectedSemestre" (change)="applyFilters()">
+          <option value="">All Semestre</option>
+          <option *ngFor="let semestre of semestres" [value]="semestre">{{ semestre }}</option>
+        </select>
+      </div>
     </div>
   </div>
-    <!-- Lista de tarjetas de alumnos -->
-    <div class="container">
-      <div class="alumnos-listado">
-        <div *ngFor="let usuario of filteredUsuarios" class="alumno-card">
-  <div class="algo">
-    <img
-    [src]="usuario.foto || 'ruta/a/imagen_default.jpg'"
-    alt="Foto de {{ usuario.nombre }}"
-    class="alumno-foto"
-  />
-  <div class="alumno-info">
-    <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
-    <p>Num: {{ usuario.numero_control }} &nbsp;&nbsp; {{ usuario.rol }} &nbsp;&nbsp; {{ usuario.turno }}</p>
-  </div>
-  
-  </div>
-  <div class="alumno-actions">
-    <div class="Fondo-Grupo">
-      <span class="icon">{{ usuario.grupo }}</span> <!-- Muestra el grupo del alumno -->
+
+  <!-- Modal de filtros en pantallas pequeñas -->
+  <div class="modal-filters" [class.show]="isModalOpen">
+    <div class="modal-content">
+      <button class="close-modal" (click)="toggleFilters()">×</button>
+      <div class="filters small-screen-filters">
+        <!-- Botón para cambiar turno -->
+        <button (click)="toggleTurno()" class="turno-toggle">
+          <i [class]="turnoIcono"></i>
+        </button>
+        <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
+          <option value="">Todos los grupos</option>
+          <option *ngFor="let grupo of grupos">{{ grupo }}</option>
+        </select>
+        <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
+          <option value="">Todas las especialidades</option>
+          <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
+        </select>
+        <select [(ngModel)]="selectedSemestre" (change)="applyFilters()">
+          <option value="">All Semestre</option>
+          <option *ngFor="let semestre of semestres">{{ semestre }}</option>
+        </select>
+      </div>
     </div>
   </div>
+
+  <div class="container">
+    <div class="students-list">
+      <div *ngFor="let usuario of filteredUsuarios" class="student-card">
+        <div class="student-info">
+          <img [src]="usuario.foto || 'ruta/a/imagen_default.jpg'" alt="Foto de {{ usuario.nombre }}"
+            class="student-photo" />
+          <div class="info">
+            <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
+            <p>Num: {{ usuario.numero_control }} &nbsp;&nbsp; Semestre: {{ usuario.semestre }}° &nbsp;&nbsp; {{ usuario.especialidad }} &nbsp;&nbsp; {{ usuario.turno }}</p>
+          </div>
+        </div>
+        <div class="student-group">
+          <span class="group-icon">{{ usuario.grupo }}</span>
         </div>
       </div>
-    </div>  
+    </div>
+  </div>
 </section>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from '../../../Core/service/auth.service';
 
 // Usuario con datos extendidos de la tabla 'alumnos'
@@ -29,45 +29,49 @@ export class AlumnosListadoComponent implements OnInit {
   selectedTurno = '';
   selectedGrupo = '';
   selectedEspecialidad = '';
+  selectedSemestre: number | '' = ''; // Filtro de semestre
+
 
   // Listas únicas para cada filtro
   turnos: string[] = [];
   grupos: string[] = [];
   especialidades: string[] = [];
+  semestres: number[] = []; // Lista de semestres únicos
 
-  // Modal y nuevo alumno
-  isModalOpen = false;
   nuevoAlumno: Usuario = { grupo: '', nombre: '', apellido: '', rol: '', numero_control: '', especialidad: '', semestre: 0, turno: '', correo: '' };
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.getUsuarios().subscribe(
       (data) => {
         this.usuarios = data;
         this.filteredUsuarios = data;
-        
+
         // Inicializa los valores únicos para los filtros
         this.turnos = Array.from(new Set(this.usuarios.map(usuario => usuario.turno)));
         this.grupos = Array.from(new Set(this.usuarios.map(usuario => usuario.grupo)));
         this.especialidades = Array.from(new Set(this.usuarios.map(usuario => usuario.especialidad)));
+        this.semestres = Array.from(new Set(this.usuarios.map(usuario => usuario.semestre)));
+
       },
       (error) => console.error('Error al obtener usuarios:', error)
     );
 
-    document.addEventListener('click', this.closeContextMenu.bind(this));
-
+    this.checkScreenSize();
   }
 
-  ngOnDestroy() {
-    document.removeEventListener('click', this.closeContextMenu.bind(this));
+  // Escucha el cambio de tamaño de la ventana
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
   }
-  
 
   onSearch() {
     this.applyFilters();
   }
 
+  // Aplica los filtros según los valores seleccionados
   applyFilters() {
     this.filteredUsuarios = this.usuarios.filter(usuario => {
       const matchesSearch =
@@ -78,74 +82,52 @@ export class AlumnosListadoComponent implements OnInit {
       const matchesTurno = this.selectedTurno ? usuario.turno === this.selectedTurno : true;
       const matchesGrupo = this.selectedGrupo ? usuario.grupo === this.selectedGrupo : true;
       const matchesEspecialidad = this.selectedEspecialidad ? usuario.especialidad === this.selectedEspecialidad : true;
+      const matchesSemestre = this.selectedSemestre ? usuario.semestre == this.selectedSemestre : true; // Filtro de semestre
 
-      return matchesSearch && matchesTurno && matchesGrupo && matchesEspecialidad;
+
+      return matchesSearch && matchesTurno && matchesGrupo && matchesEspecialidad && matchesSemestre;
     });
   }
 
-  openModal() {
-    this.isModalOpen = true;
+  isModalOpen = false;
+  areFiltersVisible = false;
+
+  // Función para alternar entre modal y filtros según el tamaño de pantalla
+  toggleFilters() {
+    if (window.innerWidth <= 768) {
+      this.isModalOpen = !this.isModalOpen; // Pantallas pequeñas: alterna el modal
+    } else {
+      this.areFiltersVisible = !this.areFiltersVisible; // Pantallas grandes: muestra/oculta filtros
+    }
   }
 
-  closeModal() {
-    this.isModalOpen = false;
-    this.nuevoAlumno = { grupo: '', nombre: '', apellido: '', rol: '', numero_control: '', especialidad: '', semestre: 0, turno: '', correo: '' };
+  // Verifica el tamaño de la pantalla y ajusta la visibilidad de los filtros
+  private checkScreenSize() {
+    if (window.innerWidth > 768) {
+      this.isModalOpen = false; // Oculta el modal si la pantalla es grande
+    } else {
+      this.areFiltersVisible = false; // Oculta los filtros grandes si la pantalla es pequeña
+    }
   }
 
-  addAlumno() {
-    // Aquí puedes agregar la lógica para añadir el nuevo alumno a tu lista o hacer una llamada al servicio
-    console.log('Nuevo alumno:', this.nuevoAlumno);
-    this.closeModal();
-  }
+  // Variables para el estado de turno y los iconos/texto asociados
+  turnoMatutino = true; // Estado inicial
+  turnoIcono = 'fi fi-ss-clouds-sun';
 
-  // Propiedades para el menú contextual
-  isContextMenuVisible = false;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  selectedAlumno!: Usuario;
+  // Alterna el turno y actualiza el icono y texto, también aplica el filtro
+  toggleTurno() {
+    this.turnoMatutino = !this.turnoMatutino;
 
-  // Método para abrir el menú contextual
-  onRightClick(event: MouseEvent, alumno: Usuario) {
-    event.preventDefault();
-    this.isContextMenuVisible = true;
-    this.contextMenuPosition = {
-      x: `${event.clientX}px`,
-      y: `${event.clientY}px`
-    };
-    this.selectedAlumno = alumno;
-  }
+    // Cambia el ícono según el turno
+    if (this.turnoMatutino) {
+      this.turnoIcono = 'fi fi-ss-clouds-sun';
+      this.selectedTurno = 'Matutino'; // Asegúrate de que el valor del filtro se actualice
+    } else {
+      this.turnoIcono = 'fi fi-ss-clouds-moon';
+      this.selectedTurno = 'Vespertino'; // Asegúrate de que el valor del filtro se actualice
+    }
 
-  // Métodos para cada acción del menú
-  copyNumeroControl() {
-    navigator.clipboard.writeText(this.selectedAlumno.numero_control);
-    this.closeContextMenu();
-  }
-
-  copyNombre() {
-    navigator.clipboard.writeText(`${this.selectedAlumno.nombre} ${this.selectedAlumno.apellido}`);
-    this.closeContextMenu();
-  }
-
-  copyDatos() {
-    const datos = `Nombre: ${this.selectedAlumno.nombre} ${this.selectedAlumno.apellido} Num.C: ${this.selectedAlumno.numero_control}`;
-    navigator.clipboard.writeText(datos);
-    this.closeContextMenu();
-  }
-
-  eliminarAlumno() {
-    // Lógica para eliminar al alumno
-    console.log('Eliminando alumno:', this.selectedAlumno);
-    this.closeContextMenu();
-  }
-
-  editarAlumno() {
-    // Lógica para editar al alumno
-    console.log('Editando alumno:', this.selectedAlumno);
-    this.closeContextMenu();
-  }
-
-  // Cierra el menú contextual
-  closeContextMenu() {
-    this.isContextMenuVisible = false;
+    // Aplica los filtros después de cambiar el turno
+    this.applyFilters();
   }
 }
-
