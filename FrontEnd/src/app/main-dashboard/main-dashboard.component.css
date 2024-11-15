@@ -7,20 +7,20 @@ html{
 
 body{
     font-family: 'Poppins', sans-serif;
-
+    
 }
 
 /* Estilos para el layout */
 .layout {
     display: flex;
-    height: 93.91vh; /* Para que ocupe toda la altura de la ventana */
+    height: 100vh; /* Para que ocupe toda la altura de la ventana */
 }
 
 /* Estilos para la barra lateral */
 .sidebar {
     max-width:200px ;
-    min-width: 200px; /* Puedes ajustar el ancho de la barra lateral */
-    background-color: #333;
+    min-width: 240px; /* Puedes ajustar el ancho de la barra lateral */
+    background-color: #353535;
     color: white;
     display: flex;
     flex-direction: column;
@@ -63,7 +63,7 @@ body{
     font-size: 1rem;
     padding: 10px 20px;
     border-radius: 10px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease;
 }
 
 .highlight {
@@ -85,7 +85,6 @@ body{
 .sidebar_menu a:hover {
     background-color: #525252;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    transform: scale(1.02); /* Agregar un ligero aumento */
 }
 
 .main_container {

@@ -24,7 +24,7 @@ export class AppComponent {
 
   cerrarSesion() {
     this.authService.cerrarSesion();
-    this.router.navigate(['/login']); // Redirige al login después de cerrar la sesión
+    this.router.navigate(['/main']); // Redirige al login después de cerrar la sesión
   }
 
   toggleMenu() {
