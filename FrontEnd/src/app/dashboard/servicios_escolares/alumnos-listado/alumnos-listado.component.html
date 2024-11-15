@@ -5,23 +5,64 @@
       [(ngModel)]="searchQuery" (input)="onSearch()" />
 
     <div class="filters-larges-container">
-<!-- Botón para añadir alumno nuevo -->
-<button class="filter-toggle" (click)="openAddStudentModal()">
-  <i class="fi fi-br-plus"></i>
-</button>
+      <!-- Botón para añadir alumno nuevo -->
+      <button class="filter-toggle" (click)="openAddStudentModal()">
+        <i class="fi fi-br-plus"></i>
+      </button>
 
 <!-- Modal para ingresar datos del nuevo alumno -->
 <div *ngIf="isAddStudentModalOpen" class="modal-overlay" (click)="closeAddStudentModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
-      <h2>Enviar Correo</h2>
-      <form (ngSubmit)="enviarCorreo()">
+    <h2>Enviar Correo</h2>
+    <form (ngSubmit)="enviarCorreo()">
+      <div class="form-grid">
+        <div class="form-group">
           <label for="nombre">Nombre:</label>
           <input type="text" id="nombre" [(ngModel)]="correoData.nombre" name="nombre" required>
-          <label for="correo">Correo:</label>
-          <input type="email" id="correo" [(ngModel)]="correoData.destinatario" name="correo" required>
-          <button type="submit">Enviar Correo</button>
-          <button type="button" (click)="closeAddStudentModal()">Cancelar</button>
-      </form>
+        </div>
+        <div class="form-group">
+          <label for="apellido">Apellido:</label>
+          <input type="text" id="apellido" [(ngModel)]="correoData.apellido" name="apellido" required>
+        </div>
+        <div class="form-group">
+          <label for="correoInstitucional">Correo:</label>
+          <input type="email" id="correoInstitucional" [(ngModel)]="correoData.correoInstitucional" name="correoInstitucional" required>
+        </div>
+        <div class="form-group">
+          <label for="contrasena">Contraseña:</label>
+          <input type="password" id="contrasena" [(ngModel)]="correoData.contrasena" name="contrasena" required>
+        </div>
+        <div class="form-group">
+          <label for="semestre">Semestre:</label>
+          <input type="number" id="semestre" [(ngModel)]="correoData.semestre" name="semestre" required>
+        </div>
+        <div class="form-group">
+          <label for="grupo">Grupo:</label>
+          <input type="text" id="grupo" [(ngModel)]="correoData.grupo" name="grupo" required>
+        </div>
+        <div class="form-group">
+          <label for="especialidad">Especialidad:</label>
+          <input type="text" id="especialidad" [(ngModel)]="correoData.especialidad" name="especialidad" required>
+        </div>
+        <div class="form-group">
+          <label for="numeroControl">Número de Control:</label>
+          <input type="text" id="numeroControl" [(ngModel)]="correoData.numeroControl" name="numeroControl" required>
+        </div>
+        <div class="form-group">
+          <label for="turno">Turno:</label>
+          <select id="turno" [(ngModel)]="correoData.turno" name="turno" required>
+            <option value="Matutino">Matutino</option>
+            <option value="Vespertino">Vespertino</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="curp">CURP:</label>
+          <input type="text" id="curp" [(ngModel)]="correoData.curp" name="curp" required>
+        </div>
+      </div>
+      <button type="submit">Enviar Correo</button>
+      <button type="button" (click)="closeAddStudentModal()">Cancelar</button>
+    </form>
   </div>
 </div>
 
@@ -33,47 +74,47 @@
       </button>
 
       <!-- Filtros en pantalla grande -->
-      <div class="filters large-screen-filters" [class.show]="areFiltersVisible">
+      <div class="filters large-screen-filters" [class.show]="uiState.areFiltersVisible">
         <!-- Botón para cambiar turno -->
         <button (click)="toggleTurno()" class="turno-toggle">
-          <i [class]="turnoIcono"></i>
+          <i [class]="uiState.turnoIcono"></i>
         </button>
-        <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
-          <option value="">All grupos</option>
-          <option *ngFor="let grupo of grupos">{{ grupo }}</option>
+        <select [(ngModel)]="selectedFilters.grupo" (change)="applyFilters()">
+          <option value="">Todos los grupos</option>
+          <option *ngFor="let grupo of filterOptions.grupos">{{ grupo }}</option>
         </select>
-        <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
-          <option value="">All especialidades</option>
-          <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
+        <select [(ngModel)]="selectedFilters.especialidad" (change)="applyFilters()">
+          <option value="">Todas las especialidades</option>
+          <option *ngFor="let especialidad of filterOptions.especialidades">{{ especialidad }}</option>
         </select>
-        <select [(ngModel)]="selectedSemestre" (change)="applyFilters()">
-          <option value="">All Semestre</option>
-          <option *ngFor="let semestre of semestres" [value]="semestre">{{ semestre }}</option>
+        <select [(ngModel)]="selectedFilters.semestre" (change)="applyFilters()">
+          <option value="">Todos los semestres</option>
+          <option *ngFor="let semestre of filterOptions.semestres" [value]="semestre">{{ semestre }}</option>
         </select>
       </div>
     </div>
   </div>
 
   <!-- Modal de filtros en pantallas pequeñas -->
-  <div class="modal-filters" [class.show]="isModalOpen">
+  <div class="modal-filters" [class.show]="uiState.isModalOpen">
     <div class="modal-content-filters">
       <button class="close-modal" (click)="toggleFilters()">×</button>
       <div class="filters small-screen-filters">
         <!-- Botón para cambiar turno -->
         <button (click)="toggleTurno()" class="turno-toggle">
-          <i [class]="turnoIcono"></i>
+          <i [class]="uiState.turnoIcono"></i>
         </button>
-        <select [(ngModel)]="selectedGrupo" (change)="applyFilters()">
+        <select [(ngModel)]="selectedFilters.grupo" (change)="applyFilters()">
           <option value="">Todos los grupos</option>
-          <option *ngFor="let grupo of grupos">{{ grupo }}</option>
+          <option *ngFor="let grupo of filterOptions.grupos">{{ grupo }}</option>
         </select>
-        <select [(ngModel)]="selectedEspecialidad" (change)="applyFilters()">
+        <select [(ngModel)]="selectedFilters.especialidad" (change)="applyFilters()">
           <option value="">Todas las especialidades</option>
-          <option *ngFor="let especialidad of especialidades">{{ especialidad }}</option>
+          <option *ngFor="let especialidad of filterOptions.especialidades">{{ especialidad }}</option>
         </select>
-        <select [(ngModel)]="selectedSemestre" (change)="applyFilters()">
-          <option value="">All Semestre</option>
-          <option *ngFor="let semestre of semestres">{{ semestre }}</option>
+        <select [(ngModel)]="selectedFilters.semestre" (change)="applyFilters()">
+          <option value="">Todos los semestres</option>
+          <option *ngFor="let semestre of filterOptions.semestres">{{ semestre }}</option>
         </select>
       </div>
     </div>
@@ -112,10 +153,7 @@
             </ul>
           </ng-container>
         </div>
-
-
       </div>
     </div>
-
   </div>
 </section>

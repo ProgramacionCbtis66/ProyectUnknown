@@ -2,7 +2,6 @@ import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../Core/service/auth.service';
 import { EmailService } from '../../../Core/service/email.service';
 
-
 interface Usuario {
   grupo: string;
   nombre: string;
@@ -26,23 +25,47 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   filteredUsuarios: Usuario[] = [];
   searchQuery = '';
   showOptions: Usuario | null = null;
+  selectedFilters = {
+    turno: '',
+    grupo: '',
+    especialidad: '',
+    semestre: '' as number | ''
+  };
+  filterOptions = {
+    turnos: [] as string[],
+    grupos: [] as string[],
+    especialidades: [] as string[],
+    semestres: [] as number[]
+  };
 
-  selectedTurno = '';
-  selectedGrupo = '';
-  selectedEspecialidad = '';
-  selectedSemestre: number | '' = '';
+  uiState = {
+    isModalOpen: false,
+    areFiltersVisible: false,
+    turnoMatutino: true,
+    turnoIcono: 'fi fi-ss-clouds-sun'
+  };
 
-  turnos: string[] = [];
-  grupos: string[] = [];
-  especialidades: string[] = [];
-  semestres: number[] = [];
 
-  isModalOpen = false;  
-  areFiltersVisible = false;
-  turnoMatutino = true;
-  turnoIcono = 'fi fi-ss-clouds-sun';
 
-  constructor(private readonly authService: AuthService, private emailService: EmailService) { }
+  // Declaración de datos para el nuevo alumno
+  correoData = {
+    nombre: '',
+    apellido: '',
+    correoInstitucional: '',
+    contrasena: '',
+    semestre: null,
+    grupo: '',
+    especialidad: '',
+    numeroControl: '',
+    turno: '',
+    curp: ''
+  };
+  isAddStudentModalOpen = false;
+
+  constructor(
+    private readonly authService: AuthService,
+    private emailService: EmailService
+  ) { }
 
   ngOnInit() {
     this.fetchUsuarios();
@@ -59,17 +82,21 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.usuarios = data;
         this.filteredUsuarios = data;
-        this.initializeUniqueFilterValues();
+        this.initializeFilterOptions();
       },
       error: (error) => console.error('Error al obtener usuarios:', error)
     });
   }
 
-  private initializeUniqueFilterValues() {
-    this.turnos = Array.from(new Set(this.usuarios.map(usuario => usuario.turno)));
-    this.grupos = Array.from(new Set(this.usuarios.map(usuario => usuario.grupo)));
-    this.especialidades = Array.from(new Set(this.usuarios.map(usuario => usuario.especialidad)));
-    this.semestres = Array.from(new Set(this.usuarios.map(usuario => usuario.semestre)));
+  private initializeFilterOptions() {
+    this.filterOptions.turnos = this.getUniqueValues('turno');
+    this.filterOptions.grupos = this.getUniqueValues('grupo');
+    this.filterOptions.especialidades = this.getUniqueValues('especialidad');
+    this.filterOptions.semestres = this.getUniqueValues('semestre');
+  }
+
+  private getUniqueValues(key: keyof Usuario): any[] {
+    return Array.from(new Set(this.usuarios.map(usuario => usuario[key])));
   }
 
   @HostListener('window:resize')
@@ -82,47 +109,45 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   }
 
   applyFilters() {
-    this.filteredUsuarios = this.usuarios.filter(usuario => 
-      this.matchesSearch(usuario) &&
-      this.matchesSelectedFilters(usuario)
+    this.filteredUsuarios = this.usuarios.filter(usuario =>
+      this.matchesSearch(usuario) && this.matchesSelectedFilters(usuario)
     );
   }
-  
+
   private matchesSelectedFilters(usuario: Usuario): boolean {
-    return (!this.selectedTurno || usuario.turno === this.selectedTurno) &&
-           (!this.selectedGrupo || usuario.grupo === this.selectedGrupo) &&
-           (!this.selectedEspecialidad || usuario.especialidad === this.selectedEspecialidad) &&
-           (!this.selectedSemestre || String(usuario.semestre) === String(this.selectedSemestre));
+    return (!this.selectedFilters.turno || usuario.turno === this.selectedFilters.turno) &&
+      (!this.selectedFilters.grupo || usuario.grupo === this.selectedFilters.grupo) &&
+      (!this.selectedFilters.especialidad || usuario.especialidad === this.selectedFilters.especialidad) &&
+      (!this.selectedFilters.semestre || String(usuario.semestre) === String(this.selectedFilters.semestre));
   }
-  
 
   private matchesSearch(usuario: Usuario): boolean {
     const query = this.searchQuery.toLowerCase();
     return usuario.nombre.toLowerCase().includes(query) ||
-           usuario.apellido.toLowerCase().includes(query) ||
-           usuario.numero_control.toLowerCase().includes(query);
+      usuario.apellido.toLowerCase().includes(query) ||
+      usuario.numero_control.toLowerCase().includes(query);
   }
 
   toggleFilters() {
     if (window.innerWidth <= 768) {
-      this.isModalOpen = !this.isModalOpen;
+      this.uiState.isModalOpen = !this.uiState.isModalOpen;
     } else {
-      this.areFiltersVisible = !this.areFiltersVisible;
+      this.uiState.areFiltersVisible = !this.uiState.areFiltersVisible;
     }
   }
 
   private checkScreenSize() {
     if (window.innerWidth > 768) {
-      this.isModalOpen = false;
+      this.uiState.isModalOpen = false;
     } else {
-      this.areFiltersVisible = false;
+      this.uiState.areFiltersVisible = false;
     }
   }
 
   toggleTurno() {
-    this.turnoMatutino = !this.turnoMatutino;
-    this.selectedTurno = this.turnoMatutino ? 'Matutino' : 'Vespertino';
-    this.turnoIcono = this.turnoMatutino ? 'fi fi-ss-clouds-sun' : 'fi fi-ss-clouds-moon';
+    this.uiState.turnoMatutino = !this.uiState.turnoMatutino;
+    this.selectedFilters.turno = this.uiState.turnoMatutino ? 'Matutino' : 'Vespertino';
+    this.uiState.turnoIcono = this.uiState.turnoMatutino ? 'fi fi-ss-clouds-sun' : 'fi fi-ss-clouds-moon';
     this.applyFilters();
   }
 
@@ -147,32 +172,28 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     console.log('Copiar estudiante:', usuario);
   }
 
-// Variables actuales
-correoData = { destinatario: '', nombre: '' };
-isAddStudentModalOpen = false;
-
-openAddStudentModal() {
+  openAddStudentModal() {
     this.isAddStudentModalOpen = true;
-}
-
-closeAddStudentModal() {
-    this.isAddStudentModalOpen = false;
-}
-
-
-
-enviarCorreo() {
-  const { destinatario, nombre } = this.correoData;
-
-  if (destinatario && nombre) {
-    this.emailService.enviarCorreo(destinatario, nombre)
-      .then(() => {
-        console.log("Correo enviado desde el componente");
-        this.closeAddStudentModal();
-      })
-      .catch((error) => console.error("Error al enviar el correo:", error));
-  } else {
-    console.error("Faltan datos para enviar el correo");
   }
-}
+
+  closeAddStudentModal() {
+    this.isAddStudentModalOpen = false;
+  }
+
+  // Función para enviar datos del nuevo alumno
+  enviarCorreo() {
+    const { correoInstitucional, nombre } = this.correoData;
+  
+    if (correoInstitucional && nombre) {
+      this.emailService.enviarCorreo(correoInstitucional, nombre)
+        .then(() => {
+          console.log("Correo enviado desde el componente");
+          this.closeAddStudentModal();
+        })
+        .catch((error) => console.error("Error al enviar el correo:", error));
+    } else {
+      console.error("Faltan datos para enviar el correo");
+    }
+  }
+  
 }
