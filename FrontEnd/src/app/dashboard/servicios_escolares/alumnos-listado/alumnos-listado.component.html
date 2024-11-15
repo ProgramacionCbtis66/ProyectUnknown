@@ -5,6 +5,28 @@
       [(ngModel)]="searchQuery" (input)="onSearch()" />
 
     <div class="filters-larges-container">
+<!-- Botón para añadir alumno nuevo -->
+<button class="filter-toggle" (click)="openAddStudentModal()">
+  <i class="fi fi-br-plus"></i>
+</button>
+
+<!-- Modal para ingresar datos del nuevo alumno -->
+<div *ngIf="isAddStudentModalOpen" class="modal-overlay" (click)="closeAddStudentModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>Enviar Correo</h2>
+      <form (ngSubmit)="enviarCorreo()">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" [(ngModel)]="correoData.nombre" name="nombre" required>
+          <label for="correo">Correo:</label>
+          <input type="email" id="correo" [(ngModel)]="correoData.destinatario" name="correo" required>
+          <button type="submit">Enviar Correo</button>
+          <button type="button" (click)="closeAddStudentModal()">Cancelar</button>
+      </form>
+  </div>
+</div>
+
+
+
       <!-- Botón de filtros (funciona en todas las pantallas) -->
       <button class="filter-toggle" (click)="toggleFilters()" aria-label="Abrir filtros">
         <i class="fi fi-bs-filters"></i>
@@ -34,7 +56,7 @@
 
   <!-- Modal de filtros en pantallas pequeñas -->
   <div class="modal-filters" [class.show]="isModalOpen">
-    <div class="modal-content">
+    <div class="modal-content-filters">
       <button class="close-modal" (click)="toggleFilters()">×</button>
       <div class="filters small-screen-filters">
         <!-- Botón para cambiar turno -->

@@ -1,7 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../Core/service/auth.service';
+import { EmailService } from '../../../Core/service/email.service';
 
-// Usuario con datos extendidos de la tabla 'alumnos'
+
 interface Usuario {
   grupo: string;
   nombre: string;
@@ -20,45 +21,31 @@ interface Usuario {
   templateUrl: './alumnos-listado.component.html',
   styleUrls: ['./alumnos-listado.component.css']
 })
-export class AlumnosListadoComponent implements OnInit {
+export class AlumnosListadoComponent implements OnInit, OnDestroy {
   usuarios: Usuario[] = [];
   filteredUsuarios: Usuario[] = [];
   searchQuery = '';
-  showOptions: any = null; // Almacena el usuario cuyo menú está visible
+  showOptions: Usuario | null = null;
 
-  // Variables para los filtros
   selectedTurno = '';
   selectedGrupo = '';
   selectedEspecialidad = '';
-  selectedSemestre: number | '' = ''; // Filtro de semestre
+  selectedSemestre: number | '' = '';
 
-
-  // Listas únicas para cada filtro
   turnos: string[] = [];
   grupos: string[] = [];
   especialidades: string[] = [];
-  semestres: number[] = []; // Lista de semestres únicos
+  semestres: number[] = [];
 
-  nuevoAlumno: Usuario = { grupo: '', nombre: '', apellido: '', rol: '', numero_control: '', especialidad: '', semestre: 0, turno: '', correo: '' };
+  isModalOpen = false;  
+  areFiltersVisible = false;
+  turnoMatutino = true;
+  turnoIcono = 'fi fi-ss-clouds-sun';
 
-  constructor(private authService: AuthService) { }
+  constructor(private readonly authService: AuthService, private emailService: EmailService) { }
 
   ngOnInit() {
-    this.authService.getUsuarios().subscribe(
-      (data) => {
-        this.usuarios = data;
-        this.filteredUsuarios = data;
-
-        // Inicializa los valores únicos para los filtros
-        this.turnos = Array.from(new Set(this.usuarios.map(usuario => usuario.turno)));
-        this.grupos = Array.from(new Set(this.usuarios.map(usuario => usuario.grupo)));
-        this.especialidades = Array.from(new Set(this.usuarios.map(usuario => usuario.especialidad)));
-        this.semestres = Array.from(new Set(this.usuarios.map(usuario => usuario.semestre)));
-
-      },
-      (error) => console.error('Error al obtener usuarios:', error)
-    );
-
+    this.fetchUsuarios();
     this.checkScreenSize();
     document.addEventListener('click', this.hideOptionsDropdown.bind(this));
   }
@@ -66,7 +53,25 @@ export class AlumnosListadoComponent implements OnInit {
   ngOnDestroy() {
     document.removeEventListener('click', this.hideOptionsDropdown.bind(this));
   }
-  // Escucha el cambio de tamaño de la ventana
+
+  private fetchUsuarios() {
+    this.authService.getUsuarios().subscribe({
+      next: (data) => {
+        this.usuarios = data;
+        this.filteredUsuarios = data;
+        this.initializeUniqueFilterValues();
+      },
+      error: (error) => console.error('Error al obtener usuarios:', error)
+    });
+  }
+
+  private initializeUniqueFilterValues() {
+    this.turnos = Array.from(new Set(this.usuarios.map(usuario => usuario.turno)));
+    this.grupos = Array.from(new Set(this.usuarios.map(usuario => usuario.grupo)));
+    this.especialidades = Array.from(new Set(this.usuarios.map(usuario => usuario.especialidad)));
+    this.semestres = Array.from(new Set(this.usuarios.map(usuario => usuario.semestre)));
+  }
+
   @HostListener('window:resize')
   onResize() {
     this.checkScreenSize();
@@ -76,68 +81,53 @@ export class AlumnosListadoComponent implements OnInit {
     this.applyFilters();
   }
 
-  // Aplica los filtros según los valores seleccionados
   applyFilters() {
-    this.filteredUsuarios = this.usuarios.filter(usuario => {
-      const matchesSearch =
-        usuario.nombre.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        usuario.apellido.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        usuario.numero_control.toLowerCase().includes(this.searchQuery.toLowerCase());
+    this.filteredUsuarios = this.usuarios.filter(usuario => 
+      this.matchesSearch(usuario) &&
+      this.matchesSelectedFilters(usuario)
+    );
+  }
+  
+  private matchesSelectedFilters(usuario: Usuario): boolean {
+    return (!this.selectedTurno || usuario.turno === this.selectedTurno) &&
+           (!this.selectedGrupo || usuario.grupo === this.selectedGrupo) &&
+           (!this.selectedEspecialidad || usuario.especialidad === this.selectedEspecialidad) &&
+           (!this.selectedSemestre || String(usuario.semestre) === String(this.selectedSemestre));
+  }
+  
 
-      const matchesTurno = this.selectedTurno ? usuario.turno === this.selectedTurno : true;
-      const matchesGrupo = this.selectedGrupo ? usuario.grupo === this.selectedGrupo : true;
-      const matchesEspecialidad = this.selectedEspecialidad ? usuario.especialidad === this.selectedEspecialidad : true;
-      const matchesSemestre = this.selectedSemestre ? usuario.semestre == this.selectedSemestre : true; // Filtro de semestre
-
-
-      return matchesSearch && matchesTurno && matchesGrupo && matchesEspecialidad && matchesSemestre;
-    });
+  private matchesSearch(usuario: Usuario): boolean {
+    const query = this.searchQuery.toLowerCase();
+    return usuario.nombre.toLowerCase().includes(query) ||
+           usuario.apellido.toLowerCase().includes(query) ||
+           usuario.numero_control.toLowerCase().includes(query);
   }
 
-  isModalOpen = false;
-  areFiltersVisible = false;
-
-  // Función para alternar entre modal y filtros según el tamaño de pantalla
   toggleFilters() {
     if (window.innerWidth <= 768) {
-      this.isModalOpen = !this.isModalOpen; // Pantallas pequeñas: alterna el modal
+      this.isModalOpen = !this.isModalOpen;
     } else {
-      this.areFiltersVisible = !this.areFiltersVisible; // Pantallas grandes: muestra/oculta filtros
+      this.areFiltersVisible = !this.areFiltersVisible;
     }
   }
 
-  // Verifica el tamaño de la pantalla y ajusta la visibilidad de los filtros
   private checkScreenSize() {
     if (window.innerWidth > 768) {
-      this.isModalOpen = false; // Oculta el modal si la pantalla es grande
+      this.isModalOpen = false;
     } else {
-      this.areFiltersVisible = false; // Oculta los filtros grandes si la pantalla es pequeña
+      this.areFiltersVisible = false;
     }
   }
 
-  // Variables para el estado de turno y los iconos/texto asociados
-  turnoMatutino = true; // Estado inicial
-  turnoIcono = 'fi fi-ss-clouds-sun';
-
-  // Alterna el turno y actualiza el icono y texto, también aplica el filtro
   toggleTurno() {
     this.turnoMatutino = !this.turnoMatutino;
-
-    // Cambia el ícono según el turno
-    if (this.turnoMatutino) {
-      this.turnoIcono = 'fi fi-ss-clouds-sun';
-      this.selectedTurno = 'Matutino'; // Asegúrate de que el valor del filtro se actualice
-    } else {
-      this.turnoIcono = 'fi fi-ss-clouds-moon';
-      this.selectedTurno = 'Vespertino'; // Asegúrate de que el valor del filtro se actualice
-    }
-
-    // Aplica los filtros después de cambiar el turno
+    this.selectedTurno = this.turnoMatutino ? 'Matutino' : 'Vespertino';
+    this.turnoIcono = this.turnoMatutino ? 'fi fi-ss-clouds-sun' : 'fi fi-ss-clouds-moon';
     this.applyFilters();
   }
 
-  toggleOptionsDropdown(event: Event, usuario: any) {
-    event.stopPropagation(); // Evita que el evento se propague
+  toggleOptionsDropdown(event: Event, usuario: Usuario) {
+    event.stopPropagation();
     this.showOptions = this.showOptions === usuario ? null : usuario;
   }
 
@@ -145,15 +135,44 @@ export class AlumnosListadoComponent implements OnInit {
     this.showOptions = null;
   }
 
-  editStudent(usuario: any) {
+  editStudent(usuario: Usuario) {
     console.log('Editar estudiante:', usuario);
   }
 
-  deleteStudent(usuario: any) {
+  deleteStudent(usuario: Usuario) {
     console.log('Eliminar estudiante:', usuario);
   }
 
-  copyStudent(usuario: any) {
+  copyStudent(usuario: Usuario) {
     console.log('Copiar estudiante:', usuario);
   }
+
+// Variables actuales
+correoData = { destinatario: '', nombre: '' };
+isAddStudentModalOpen = false;
+
+openAddStudentModal() {
+    this.isAddStudentModalOpen = true;
+}
+
+closeAddStudentModal() {
+    this.isAddStudentModalOpen = false;
+}
+
+
+
+enviarCorreo() {
+  const { destinatario, nombre } = this.correoData;
+
+  if (destinatario && nombre) {
+    this.emailService.enviarCorreo(destinatario, nombre)
+      .then(() => {
+        console.log("Correo enviado desde el componente");
+        this.closeAddStudentModal();
+      })
+      .catch((error) => console.error("Error al enviar el correo:", error));
+  } else {
+    console.error("Faltan datos para enviar el correo");
+  }
+}
 }

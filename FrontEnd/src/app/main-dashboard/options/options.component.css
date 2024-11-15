@@ -47,7 +47,7 @@
 
 .card-title {
     margin: 0;
-    font-size: 0.9rem; /* 1.4 veces el tamaño base */
+    font-size: 0.75rem; /* 1.4 veces el tamaño base */
     font-weight: bold;
 }
 
@@ -75,8 +75,8 @@
 
 .row {
     padding-top: 24px;
-    padding-right: calc(var(--bs-gutter-x)* 1);
-    padding-left: calc(var(--bs-gutter-x)* 1);
+    padding-right: calc(var(--bs-gutter-x)* 0.2);
+    padding-left: calc(var(--bs-gutter-x)* 0.2);
 }
 
 .cursor-pointer {
@@ -84,7 +84,7 @@
 }
 
 .student-ico {
-    font-size: 4rem;
+    font-size: 3.5rem;
 }
 
 .col-6 {
