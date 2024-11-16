@@ -12,6 +12,9 @@
     }
 }
 
+body{
+    
+}
 .sub_container_1 {
     margin-top: 24px;
 }
@@ -47,7 +50,7 @@
 
 .card-title {
     margin: 0;
-    font-size: 0.75rem; /* 1.4 veces el tamaño base */
+    font-size: 0.9rem; /* 1.4 veces el tamaño base */
     font-weight: bold;
 }
 
@@ -60,8 +63,7 @@
 
 .custom-card:hover {
     transform: scale(1.1);
-    color: #2c8adc;
-  
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
 }
 
 .custom-card::before {
@@ -75,8 +77,8 @@
 
 .row {
     padding-top: 24px;
-    padding-right: calc(var(--bs-gutter-x)* 0.2);
-    padding-left: calc(var(--bs-gutter-x)* 0.2);
+    padding-right: calc(var(--bs-gutter-x)* 1);
+    padding-left: calc(var(--bs-gutter-x)* 1);
 }
 
 .cursor-pointer {
@@ -84,10 +86,9 @@
 }
 
 .student-ico {
-    font-size: 3.5rem;
+    font-size: 4rem;
 }
 
 .col-6 {
     max-width: 217px;
 }
-

@@ -1,13 +1,22 @@
-
 <head>
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
 </head>
 
 <body>
-  <main class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card custom-card p-4 shadow" style="max-width: 400px; width: 100%;">
+  <main
+    class="container d-flex justify-content-center align-items-center vh-100"
+  >
+    <div
+      class="card custom-card p-4 shadow"
+      style="max-width: 500px; width: 100%"
+    >
       <form id="sign-in" (ngSubmit)="onLogin()" #loginForm="ngForm">
         <h5 class="text-center mb-4 custom-title">Inicio de sesión</h5>
 
@@ -15,9 +24,19 @@
         <label for="email" class="custom-label">Correo institucional</label>
 
         <div class="form-group custom-form-group">
-          <input type="email" id="email" [(ngModel)]="username" name="email" placeholder="correo institucional" required
-            class="form-control custom-input" />
-          <div *ngIf="errorMessage && !username" class="text-danger mt-1 custom-error">
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="username"
+            name="email"
+            placeholder="correo institucional"
+            required
+            class="form-control custom-input"
+          />
+          <div
+            *ngIf="errorMessage && !username"
+            class="text-danger mt-1 custom-error"
+          >
             El correo institucional es obligatorio.
           </div>
         </div>
@@ -26,18 +45,32 @@
         <label for="password" class="custom-label">Contraseña</label>
 
         <div class="form-group custom-form-group position-relative">
-          <input [type]="showPassword ? 'text' : 'password'" id="password" [(ngModel)]="password" name="password"
-            placeholder="contraseña" required class="form-control custom-input pr-5" />
-          <button type="button" class="custom-password-toggle-btn position-absolute"
-            (click)="togglePasswordVisibility()" style="top: 50%; right: 15px; transform: translateY(-50%);">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="contraseña"
+            required
+            class="form-control custom-input pr-5"
+          />
+          <button
+            type="button"
+            class="custom-password-toggle-btn position-absolute"
+            (click)="togglePasswordVisibility()"
+            style="top: 50%; right: 15px; transform: translateY(-50%)"
+          >
             <i [ngClass]="showPassword ? 'bx bx-show' : 'bx bx-hide'"></i>
           </button>
         </div>
 
-
         <!-- Checkbox de "Recordar inicio" -->
         <div class="form-check mb-4 custom-checkbox">
-          <input type="checkbox" id="check" class="form-check-input custom-check-input" />
+          <input
+            type="checkbox"
+            id="check"
+            class="form-check-input custom-check-input"
+          />
           <label class="form-check-label custom-check-label">
             Recordar inicio
           </label>
@@ -45,7 +78,11 @@
 
         <!-- Botón de acción (ícono de flecha) -->
         <div class="text-center custom-button">
-          <button type="submit" class="btn custom-btn" [disabled]="!password || !username">
+          <button
+            type="submit"
+            class="btn custom-btn"
+            [disabled]="!password || !username"
+          >
             <i class="bx bx-right-arrow-circle"></i> Iniciar Sesión
           </button>
         </div>
