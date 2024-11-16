@@ -4,6 +4,6 @@ import vtoken from "./Authorization/Vtoken.js";
 
 const Email = Router();
 
-Email.post('/Email/EmailVerify', email.enviarCorreo)
+Email.post('/Email/SendEmail', email.enviarCorreo)
 
 export default Email;

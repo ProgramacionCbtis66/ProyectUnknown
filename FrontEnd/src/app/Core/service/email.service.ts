@@ -11,9 +11,9 @@ export class EmailService {
 
   constructor() { }
 
-  async enviarCorreo(destinatario: string, nombre: string) {
+  async enviarCorreo(destinatario: string, nombre: string, tipo: string) {
     try {
-        const response = await fetch(`${this.ruta}/Email/EmailVerify`, {
+        const response = await fetch(`${this.ruta}/Email/SendEmail`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -21,7 +21,7 @@ export class EmailService {
             body: JSON.stringify({
                 destinatario,  // Destinatario del correo
                 nombre,        // Nombre del destinatario
-                tipo: "EmailVerify"  // Tipo de correo
+                tipo,  // Tipo de correo
             })
         });
 

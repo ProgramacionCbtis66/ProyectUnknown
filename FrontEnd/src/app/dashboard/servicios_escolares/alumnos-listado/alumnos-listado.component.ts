@@ -183,9 +183,10 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   // Función para enviar datos del nuevo alumno
   enviarCorreo() {
     const { correoInstitucional, nombre } = this.correoData;
+    const tipo = "EmailVerify"
   
     if (correoInstitucional && nombre) {
-      this.emailService.enviarCorreo(correoInstitucional, nombre)
+      this.emailService.enviarCorreo(correoInstitucional, nombre, tipo)
         .then(() => {
           console.log("Correo enviado desde el componente");
           this.closeAddStudentModal();
