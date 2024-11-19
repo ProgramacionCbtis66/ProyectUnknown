@@ -4,12 +4,16 @@ import vtoken from "./Authorization/Vtoken.js";
 
 const usr = Router();
 
-usr.get('/usr/listUsr',vtoken,usuario.listaUsuario);
+// Listar usuarios
+usr.get("/usr/listUsr", vtoken, usuario.listaUsuario);
 
-usr.post('/usr/login', usuario.login)
+// Iniciar sesión
+usr.post("/usr/login", usuario.login);
 
-usr.post('/usr/RegistrarAlumno', usuario.registrarAlumno);
+// Registrar un nuevo alumno
+usr.post("/usr/registrarAlumno", usuario.registrarAlumno);
 
-usr.post('/usr/ActualizarAlumno',usuario.actualizarAlumno)
+// Actualizar datos de un alumno (usando PUT y parámetro dinámico)
+usr.put("/usr/actualizarUsr/:id_usuario", usuario.actualizarUsuario);
 
 export default usr;

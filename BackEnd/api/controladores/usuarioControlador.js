@@ -2,215 +2,238 @@ import cnx from './conexion.js';
 import jwt from 'jsonwebtoken';
 import env from '../../enviroment/enviroment.js';
 
+const handleDatabaseError = (error, res, message) => {
+    console.error(error);
+    res.status(500).json({ error: message });
+};
+
+const executeQuery = async (conexion, query, params) => {
+    try {
+        const [result] = await conexion.execute(query, params);
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 const login = async (req, res) => {
     const { correo_institucional, password } = req.body;
-    console.log('Correo institucional:', correo_institucional, 'Contraseña:', password);
 
-    const sqlUserExists = `SELECT id_usuario AS id, nombre, apellido, rol, foto, fecha_nac FROM usuarios WHERE correo_institucional = ?`; // Consulta para verificar si el usuario existe
-    const sqlPasswordMatch = `SELECT id_usuario AS id, nombre, apellido, rol, foto, fecha_nac FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`; // Consulta para verificar la contraseña
-    const sqlAlumnoData = `SELECT numero_control, especialidad, semestre, turno, curp, grupo FROM alumnos WHERE id_usuario = ?`; // Consulta para obtener datos del alumno
+    const queries = {
+        userExists: `SELECT id_usuario AS id, nombre, apellido, rol, foto, fecha_nac FROM usuarios WHERE correo_institucional = ?`,
+        passwordMatch: `SELECT id_usuario AS id, nombre, apellido, rol, foto, fecha_nac FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`,
+        alumnoData: `SELECT numero_control, especialidad, semestre, turno, curp, grupo FROM alumnos WHERE id_usuario = ?`
+    };
+
     const conexion = await cnx();
-    let registro;
-    let foto;
-    let datosAlumno = null;
 
     try {
-        // Primero, verifica si el usuario existe
-        [registro] = await conexion.execute(sqlUserExists, [correo_institucional]);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: 'Error en la base de datos' });
-    }
-
-    // Si el usuario no existe, enviar un error 404
-    if (!registro || registro.length === 0) {
-        return res.status(404).json({ respuesta: 'Correo no encontrado' });
-    }
-
-    // Verificar la contraseña
-    try {
-        [registro] = await conexion.execute(sqlPasswordMatch, [correo_institucional, password]);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: 'Error en la base de datos' });
-    }
-
-    // Si la contraseña no coincide, enviar un error 401
-    if (!registro || registro.length === 0) {
-        return res.status(401).json({ respuesta: 'Contraseña incorrecta' });
-    } else {
-        if (registro[0].foto != null) {
-            foto = registro[0].foto.toString('utf8');
-            registro[0].foto = null;
+        // Verifica si el usuario existe
+        const user = await executeQuery(conexion, queries.userExists, [correo_institucional]);
+        if (!user.length) {
+            return res.status(404).json({ respuesta: 'Correo no encontrado' });
         }
-    }
 
-    const user = registro[0];
-
-    // Si el usuario es un alumno, obtener datos de la tabla "alumnos"
-    try {
-        [datosAlumno] = await conexion.execute(sqlAlumnoData, [user.id]);
-        if (datosAlumno && datosAlumno.length > 0) {
-            user.alumno = datosAlumno[0]; // Agregar los datos del alumno al objeto del usuario
+        // Verificar la contraseña
+        const validUser = await executeQuery(conexion, queries.passwordMatch, [correo_institucional, password]);
+        if (!validUser.length) {
+            return res.status(401).json({ respuesta: 'Contraseña incorrecta' });
         }
-        console.log('Datos del alumno:', datosAlumno?.[0] || 'No es un alumno o no tiene datos asociados');
+
+        const userData = validUser[0];
+        if (userData.foto) {
+            userData.foto = userData.foto.toString('utf8');
+        }
+
+        // Si el usuario es alumno, obtener datos adicionales
+        const alumnoData = await executeQuery(conexion, queries.alumnoData, [userData.id]);
+        if (alumnoData.length) {
+            userData.alumno = alumnoData[0];
+        }
+
+        // Generar el token
+        const token = jwt.sign(userData, env.key, { expiresIn: env.exp });
+
+        return res.json({ token, foto: userData.foto || null });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: 'Error al obtener los datos del alumno' });
+        handleDatabaseError(error, res, 'Error al procesar la solicitud de inicio de sesión');
+    } finally {
+        await conexion.end();
     }
-
-    // Generar el token con los datos del usuario y del alumno
-    const token = jwt.sign(user, env.key, { expiresIn: env.exp });
-    console.log('Datos del usuario antes de enviar respuesta:', user);
-
-    // Enviar los datos del usuario, foto y el token
-    res.json({ token: token, foto: foto });
 };
 
+const registrarUsuario = async (req, res) => {
+    const { correo_institucional, nombre, apellido, rol, password, numero_control, especialidad, semestre, grupo, turno, curp, departamento, telefono } = req.body;
 
-const registrarAlumno = async (req, res) => {
-    const { correo_institucional, nombre, rol, password, numero_de_control, especialidad, semestre } = req.body;
-
-    // Valida que los datos requeridos estén presentes
-    if (!correo_institucional || !nombre || !rol || !password) {
-        return res.status(400).json({ error: 'Todos los campos de usuario son obligatorios' });
+    // Validar campos obligatorios básicos
+    if (!correo_institucional || !nombre || !apellido || !rol || !password) {
+        return res.status(400).json({ error: 'Los campos correo_institucional, nombre, apellido, rol y password son obligatorios.' });
     }
 
-    // Valida que los campos adicionales del alumno estén presentes
-    if (!numero_de_control || !especialidad || !semestre) {
-        return res.status(400).json({ error: 'Los campos de alumno son obligatorios' });
-    }
-
-    const sqlCheckUserExists = `SELECT id_usuario FROM usuarios WHERE correo_institucional = ?`;
-    const sqlInsertUser = `INSERT INTO usuarios (correo_institucional, nombre, rol, contraseña) VALUES (?, ?, ?, ?)`;
-    const sqlInsertAlumno = `INSERT INTO alumnos (id_usuario, numero_control, especialidad, semestre) VALUES (?, ?, ?, ?)`;
+    // Queries dinámicas según el rol
+    const queries = {
+        checkUserExists: `SELECT id_usuario FROM usuarios WHERE correo_institucional = ?`,
+        insertUser: `INSERT INTO usuarios (correo_institucional, nombre, apellido, rol, contraseña) VALUES (?, ?, ?, ?, ?)`,
+        insertAlumno: `INSERT INTO alumnos (id_usuario, numero_control, especialidad, semestre, grupo, turno, curp) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        insertProfesor: `INSERT INTO profesores (id_usuario, departamento, especialidad, telefono) VALUES (?, ?, ?, ?)`
+    };
 
     const conexion = await cnx();
-    let registro;
 
     try {
-        // Verifica si el usuario ya existe
-        [registro] = await conexion.execute(sqlCheckUserExists, [correo_institucional]);
-
-        if (registro && registro.length > 0) {
-            return res.status(409).json({ error: 'El usuario ya existe' }); // Conflicto
+        // Verificar si el usuario ya existe
+        const userExists = await executeQuery(conexion, queries.checkUserExists, [correo_institucional]);
+        if (userExists.length) {
+            return res.status(409).json({ error: 'El usuario ya existe.' });
         }
 
-        // Inserta el nuevo usuario en la tabla de usuarios
-        const [resultadoUsuario] = await conexion.execute(sqlInsertUser, [correo_institucional, nombre, rol, password]);
-        const id_usuario = resultadoUsuario.insertId; // Obtiene el ID del usuario insertado
+        // Insertar en la tabla "usuarios"
+        const [userResult] = await conexion.execute(queries.insertUser, [correo_institucional, nombre, apellido, rol, password]);
+        const userId = userResult.insertId;
 
-        // Inserta los datos adicionales en la tabla de alumnos
-        await conexion.execute(sqlInsertAlumno, [id_usuario, numero_de_control, especialidad, semestre]);
-
-        res.status(201).json({ mensaje: 'Alumno registrado exitosamente' }); // Creado
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: 'Error en la base de datos' });
-    }
-}
-
-const listaUsuario = async (req, res) => {
-    const sql = `
-        SELECT 
-            u.id_usuario AS id, u.nombre, u.apellido, u.rol, u.foto,
-            a.numero_control, a.especialidad, a.semestre, a.grupo, a.turno
-        FROM usuarios u
-        JOIN alumnos a ON u.id_usuario = a.id_usuario
-        WHERE u.rol = 'Alumno';
-    `;
-    const conexion = await cnx();
-    let registro;
-    try {
-        [registro] = await conexion.execute(sql);
-        if (!registro || registro.length === 0) {
-            return res.status(404).json({ error: 'No hay registros' });
-        } else {
-            for (let i = 0; i < registro.length; i++) {
-                if (registro[i].foto != null) {
-                    registro[i].foto = registro[i].foto.toString('utf8');
-                }
+        // Insertar en la tabla correspondiente según el rol
+        if (rol === 'Alumno') {
+            if (!numero_control || !especialidad || !semestre || !grupo || !turno || !curp) {
+                return res.status(400).json({ error: 'Faltan datos específicos para registrar un alumno.' });
             }
-            res.json(registro);
+            await conexion.execute(queries.insertAlumno, [userId, numero_control, especialidad, semestre, grupo, turno, curp]);
+        } else if (rol === 'Profesor') {
+            if (!departamento || !especialidad || !telefono) {
+                return res.status(400).json({ error: 'Faltan datos específicos para registrar un profesor.' });
+            }
+            await conexion.execute(queries.insertProfesor, [userId, departamento, especialidad, telefono]);
+        } else if (rol === 'Administrador') {
+            // No se requiere inserción adicional, ya que solo se registra en "usuarios"
+        } else {
+            return res.status(400).json({ error: 'Rol no válido.' });
         }
+
+        res.status(201).json({ mensaje: `${rol} registrado exitosamente.` });
     } catch (error) {
-        console.log(error);
-    }
-};
-
-const actualizarAlumno = async (req, res) => {
-    const { id_usuario } = req.params; // ID del usuario que se va a actualizar
-    const {
-        correo_institucional,
-        nombre,
-        apellido,
-        semestre,
-        grupo,
-        especialidad,
-        numero_control,
-        turno,
-        curp
-    } = req.body;
-
-    if (!id_usuario) {
-        return res.status(400).json({ error: 'Se requiere el ID del usuario para actualizar.' });
-    }
-
-    const sqlUsuario = `
-        UPDATE usuarios
-        SET 
-            correo_institucional = COALESCE(?, correo_institucional),
-            nombre = COALESCE(?, nombre),
-            apellido = COALESCE(?, apellido)
-        WHERE id_usuario = ?
-    `;
-
-    const sqlAlumno = `
-        UPDATE alumnos
-        SET 
-            semestre = COALESCE(?, semestre),
-            grupo = COALESCE(?, grupo),
-            especialidad = COALESCE(?, especialidad),
-            numero_control = COALESCE(?, numero_control),
-            turno = COALESCE(?, turno),
-            curp = COALESCE(?, curp)
-        WHERE id_usuario = ?
-    `;
-
-    const conexion = await cnx();
-    try {
-        await conexion.beginTransaction();
-
-        // Actualizar la tabla usuarios
-        await conexion.execute(sqlUsuario, [
-            correo_institucional || null,
-            nombre || null,
-            apellido || null,
-            id_usuario
-        ]);
-
-        // Actualizar la tabla alumnos
-        await conexion.execute(sqlAlumno, [
-            semestre || null,
-            grupo || null,
-            especialidad || null,
-            numero_control || null,
-            turno || null,
-            curp || null,
-            id_usuario
-        ]);
-
-        await conexion.commit();
-        res.json({ message: 'Usuario y detalles de alumno actualizados correctamente' });
-    } catch (error) {
-        await conexion.rollback();
-        console.error(error);
-        res.status(500).json({ error: 'Error al actualizar el usuario y el alumno' });
+        handleDatabaseError(error, res, 'Error al registrar el usuario.');
     } finally {
         await conexion.end();
     }
 };
 
 
-export default { login, listaUsuario, registrarAlumno, actualizarAlumno };
+const listaUsuario = async (req, res) => {
+    const query = `
+        SELECT 
+            u.id_usuario AS id, u.nombre, u.apellido, u.rol, u.foto,
+            a.numero_control, a.especialidad, a.semestre, a.grupo, a.turno
+        FROM usuarios u
+        JOIN alumnos a ON u.id_usuario = a.id_usuario
+        WHERE u.rol = 'Alumno'
+    `;
 
+    const conexion = await cnx();
+
+    try {
+        const users = await executeQuery(conexion, query);
+        if (!users.length) {
+            return res.status(404).json({ error: 'No hay registros' });
+        }
+
+        users.forEach(user => {
+            if (user.foto) user.foto = user.foto.toString('utf8');
+        });
+
+        res.json(users);
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al obtener la lista de usuarios');
+    } finally {
+        await conexion.end();
+    }
+};
+
+const actualizarUsuario = async (req, res) => {
+    const { id_usuario } = req.params;
+    const { rol, ...datos } = req.body;
+
+    if (!id_usuario || !rol) {
+        return res.status(400).json({ success: false, error: 'Se requiere el ID del usuario y el rol para actualizar.' });
+    }
+
+    // Mapeo de campos permitidos según el rol
+    const roleFields = {
+        Alumno: ['semestre', 'grupo', 'especialidad', 'numero_control', 'turno', 'curp'],
+        Profesor: ['departamento', 'especialidad', 'telefono']
+        // Agrega más roles si es necesario
+    };
+
+    if (!roleFields[rol]) {
+        return res.status(400).json({ success: false, error: `El rol "${rol}" no es válido.` });
+    }
+
+    // Inicializar variables para las consultas
+    const paramsUsuarios = [];
+    const updateFieldsUsuarios = [];
+    const paramsRolEspecifico = [];
+    const updateFieldsRolEspecifico = [];
+
+    // Función para añadir campos dinámicamente
+    const addField = (field, value, updateFields, params) => {
+        if (value !== undefined) {
+            updateFields.push(`${field} = ?`);
+            params.push(value);
+        }
+    };
+
+    // Agregar campos para la tabla "usuarios"
+    addField('correo_institucional', datos.correo_institucional, updateFieldsUsuarios, paramsUsuarios);
+    addField('nombre', datos.nombre, updateFieldsUsuarios, paramsUsuarios);
+    addField('apellido', datos.apellido, updateFieldsUsuarios, paramsUsuarios);
+
+    // Agregar campos específicos para el rol
+    roleFields[rol].forEach(field => addField(field, datos[field], updateFieldsRolEspecifico, paramsRolEspecifico));
+
+    // Validar si hay algo que actualizar
+    if (updateFieldsUsuarios.length === 0 && updateFieldsRolEspecifico.length === 0) {
+        return res.status(400).json({ success: false, error: 'No se proporcionaron datos para actualizar.' });
+    }
+
+    // Preparar las consultas SQL
+    const queryUser = `UPDATE usuarios SET ${updateFieldsUsuarios.join(', ')} WHERE id_usuario = ?`;
+    const queryRolEspecifico = `UPDATE ${rol.toLowerCase()}s SET ${updateFieldsRolEspecifico.join(', ')} WHERE id_usuario = ?`;
+
+    const conexion = await cnx();
+
+    try {
+        await conexion.beginTransaction();
+
+        // Actualizar tabla "usuarios" si hay datos
+        if (paramsUsuarios.length > 0) {
+            paramsUsuarios.push(id_usuario); // Agregar el ID al final
+            await conexion.execute(queryUser, paramsUsuarios);
+        }
+
+        // Actualizar tabla específica según el rol si hay datos
+        if (paramsRolEspecifico.length > 0) {
+            paramsRolEspecifico.push(id_usuario); // Agregar el ID al final
+            await conexion.execute(queryRolEspecifico, paramsRolEspecifico);
+        }
+
+        await conexion.commit();
+        res.json({
+            success: true,
+            message: `Usuario y datos del rol "${rol}" actualizados correctamente.`,
+            updatedFields: {
+                usuarios: updateFieldsUsuarios.map(field => field.split(' ')[0]),
+                [rol.toLowerCase()]: updateFieldsRolEspecifico.map(field => field.split(' ')[0])
+            }
+        });
+    } catch (error) {
+        await conexion.rollback();
+        console.error(error);
+        res.status(500).json({ success: false, error: `Error al actualizar el usuario y los datos del rol "${rol}".` });
+    } finally {
+        await conexion.end();
+    }
+};
+
+
+
+
+
+export default { login, listaUsuario, registrarUsuario, actualizarUsuario };
