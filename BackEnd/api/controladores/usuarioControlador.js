@@ -201,13 +201,57 @@ const actualizarUsuario = async (req, res) => {
     }
 };
 
+const eliminarUsuario = async (req, res) => {
+    const { id_usuario } = req.params;
+
+    if (!id_usuario) {
+        return res.status(400).json({ error: 'El ID del usuario es obligatorio.' });
+    }
+
+    const conexion = await cnx();
+
+    try {
+        // Iniciar transacción
+        await conexion.beginTransaction();
+
+        // Verificar si el usuario existe
+        const [usuarioExiste] = await conexion.execute(`SELECT id_usuario FROM usuarios WHERE id_usuario = ?`, [id_usuario]);
+        if (!usuarioExiste.length) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+
+        // Eliminar datos relacionados
+        await conexion.execute(`DELETE FROM tareas_alumnos WHERE id_alumno IN (SELECT id_alumno FROM alumnos WHERE id_usuario = ?)`, [id_usuario]);
+        await conexion.execute(`DELETE FROM asistencias WHERE id_alumno_clase IN (SELECT id_alumno_clase FROM alumnos_clases WHERE id_alumno IN (SELECT id_alumno FROM alumnos WHERE id_usuario = ?))`, [id_usuario]);
+        await conexion.execute(`DELETE FROM alumnos_clases WHERE id_alumno IN (SELECT id_alumno FROM alumnos WHERE id_usuario = ?)`, [id_usuario]);
+        await conexion.execute(`DELETE FROM alumnos WHERE id_usuario = ?`, [id_usuario]);
+        await conexion.execute(`DELETE FROM tareas WHERE id_clase IN (SELECT id_clase FROM clases WHERE id_profesor IN (SELECT id_profesor FROM profesores WHERE id_usuario = ?))`, [id_usuario]);
+        await conexion.execute(`DELETE FROM clases WHERE id_profesor IN (SELECT id_profesor FROM profesores WHERE id_usuario = ?)`, [id_usuario]);
+        await conexion.execute(`DELETE FROM profesores WHERE id_usuario = ?`, [id_usuario]);
+
+        // Finalmente, eliminar el usuario
+        await conexion.execute(`DELETE FROM usuarios WHERE id_usuario = ?`, [id_usuario]);
+
+        // Confirmar transacción
+        await conexion.commit();
+
+        res.status(200).json({ mensaje: 'Usuario eliminado correctamente.' });
+    } catch (error) {
+        // Revertir transacción en caso de error
+        await conexion.rollback();
+        handleDatabaseError(error, res, 'Error al eliminar el usuario y sus datos relacionados.');
+    } finally {
+        await conexion.end();
+    }
+}
+
 const listaUsuarios = async (req, res) => {
     const { rol } = req.query; // Opción para filtrar por rol si se proporciona en la solicitud
 
     // Construcción dinámica de la consulta
     const query = `
         SELECT 
-            u.id_usuario AS id, u.nombre, u.apellido, u.rol, u.foto,
+            u.id_usuario AS id, u.nombre, u.apellido, u.rol, u.foto, u.correo_institucional,
             CASE 
                 WHEN u.rol = 'Alumno' THEN JSON_OBJECT(
                     'numero_control', a.numero_control,
@@ -251,4 +295,4 @@ const listaUsuarios = async (req, res) => {
 };
 
 
-export default { login, listaUsuarios, registrarUsuario, actualizarUsuario };
+export default { login, listaUsuarios, registrarUsuario, actualizarUsuario, eliminarUsuario };

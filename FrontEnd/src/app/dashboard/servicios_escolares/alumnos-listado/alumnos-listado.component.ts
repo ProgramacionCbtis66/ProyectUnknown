@@ -1,13 +1,16 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../Core/service/auth.service';
 import { EmailService } from '../../../Core/service/email.service';
+import { UsuarioService } from 'src/app/Core/service/usuario.service';
+
 
 interface Usuario {
+  id: number;
   nombre: string;
   apellido: string;
   rol: string;
   foto?: string;
-  correo: string;
+  correo_institucional: string;
   detalles?: {
     numero_control: string;
     especialidad: string;
@@ -60,10 +63,25 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     curp: '',
   };
   isAddStudentModalOpen = false;
+  isEditStudentModalOpen = false; // Controla la visibilidad del modal de edición
+  selectedStudent: any = {
+    nombre: '',
+    apellido: '',
+    correo_institucional: '',
+    detalles: {
+      numero_control: '',
+      semestre: '',
+      especialidad: '',
+      turno: '',
+      grupo: ''
+    }
+  };
+
 
   constructor(
     private readonly authService: AuthService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private usuarioService: UsuarioService
   ) {}
   
   @HostListener('window:resize')
@@ -192,12 +210,43 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   }
 
   editStudent(usuario: Usuario): void {
-    console.log('Editar estudiante:', usuario);
+    this.selectedStudent = { ...usuario }; // Clonar el objeto usuario para evitar modificarlo directamente
+    this.isEditStudentModalOpen = true; // Abrir el modal
   }
+  
+  closeEditStudentModal(): void {
+    this.isEditStudentModalOpen = false; // Cerrar el modal
+    this.selectedStudent = null; // Limpiar la selección
+  }
+  
 
   deleteStudent(usuario: Usuario): void {
-    console.log('Eliminar estudiante:', usuario);
+    if (!usuario) return;
+  
+    const usuarioId = usuario.id;
+  
+    this.usuarioService.deleteUsuario(usuarioId).subscribe({
+      next: () => {
+        console.log(`Usuario eliminado: ID ${usuarioId}`);
+        const { correo_institucional, nombre } = usuario;
+        const tipo = 'UserDelete';
+  
+        if (correo_institucional && nombre) {
+          this.emailService
+            .enviarCorreo(correo_institucional, nombre, tipo)
+            .then(() => console.log('Correo enviado correctamente.'))
+            .catch((error) => console.error('Error al enviar el correo:', error));
+        } else {
+          console.warn('Datos incompletos para enviar correo:', { correo_institucional, nombre });
+        }
+  
+        this.fetchUsuarios(); // Refresca la lista de usuarios
+        this.closeEditStudentModal(); // Cierra el modal
+      },
+      error: (err) => console.error('Error al eliminar usuario:', err),
+    });
   }
+  
 
   copyStudent(usuario: Usuario): void {
     console.log('Copiar estudiante:', usuario);
@@ -211,7 +260,7 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     this.isAddStudentModalOpen = false;
   }
 
-  enviarCorreo(): void {
+  addStudent(): void {
     const { correoInstitucional, nombre } = this.correoData;
     const tipo = 'EmailVerify';
 
@@ -227,4 +276,49 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
       console.error('Faltan datos para enviar el correo');
     }
   }
+
+  updateStudent(): void {
+    if (!this.selectedStudent) return;
+  
+    // Aplanar los datos de selectedStudent
+    const usuarioActualizado = {
+      id: this.selectedStudent.id,
+      rol: this.selectedStudent.rol,
+      nombre: this.selectedStudent.nombre,
+      apellido: this.selectedStudent.apellido,
+      numero_control: this.selectedStudent.detalles?.numero_control,
+      semestre: this.selectedStudent.detalles?.semestre,
+      especialidad: this.selectedStudent.detalles?.especialidad,
+      turno: this.selectedStudent.detalles?.turno,
+      grupo: this.selectedStudent.detalles?.grupo,
+    };
+  
+    // Llamar al servicio para actualizar el usuario
+    this.usuarioService.updateUsuario(usuarioActualizado).subscribe({
+      next: () => {
+        console.log('Usuario actualizado:', usuarioActualizado);
+        const { correo_institucional, nombre } = this.selectedStudent;
+        const tipo = 'UserUpdateNotification';
+    
+        if (correo_institucional && nombre) {
+          this.emailService
+            .enviarCorreo(correo_institucional, nombre, tipo)
+            .then(() => {
+              console.log('Correo enviado desde el componente');
+              this.closeAddStudentModal();
+            })
+            .catch((error) => console.error('Error al enviar el correo:', error));
+        } else {
+          console.error('Faltan datos para enviar el correo');
+          console.log(correo_institucional, nombre);
+        }
+        this.fetchUsuarios(); // Actualizar la lista de usuarios
+        this.closeEditStudentModal();
+      },
+      error: (err) => console.error('Error al actualizar usuario:', err),
+    });
+  }
+  
+  
+
 }

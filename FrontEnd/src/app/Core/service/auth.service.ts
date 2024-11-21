@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SesionService } from 'src/app/Core/service/sesion.service';
 
 interface Usuario {
+  id: number;
   detalle: any;
   grupo: string;
   nombre: string;
@@ -19,7 +20,7 @@ interface Usuario {
   especialidad: string;
   semestre: number; // Asegúrate de que sea número
   turno: string; // Asegúrate de que sea 'Matutino' o 'Vespertino'
-  correo: string;
+  correo_institucional: string;
 }
 
 @Injectable({

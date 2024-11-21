@@ -14,6 +14,9 @@ usr.post("/usr/login", usuario.login);
 usr.post("/usr/registrarUsr", usuario.registrarUsuario);
 
 // Actualizar datos de un alumno (usando PUT y parámetro dinámico)
-usr.put("/usr/actualizarUsr/:id_usuario", usuario.actualizarUsuario);
+usr.put("/usr/actualizarUsr/:id_usuario", vtoken, usuario.actualizarUsuario);
+
+usr.delete("/usr/eliminarUsr/:id_usuario", usuario.eliminarUsuario);
+
 
 export default usr;

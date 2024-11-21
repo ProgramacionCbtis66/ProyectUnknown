@@ -1,95 +1,300 @@
 <section class="student-list-section">
   <div class="container search">
     <h2 class="title">Lista de Alumnos</h2>
-    <input type="text" class="form-control search-bar" placeholder="Buscar por nombre, apellido o número de control"
-      [(ngModel)]="searchQuery" (input)="onSearch()" />
+    <input
+      type="text"
+      class="form-control search-bar"
+      placeholder="Buscar por nombre, apellido o número de control"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+    />
 
     <div class="filters-larges-container">
       <!-- Botón para añadir alumno nuevo -->
       <button class="filter-toggle" (click)="openAddStudentModal()">
         <i class="fi fi-br-plus"></i>
       </button>
+              <!-- Modal para editar estudiante -->
+              <div
+              *ngIf="isEditStudentModalOpen"
+              class="modal-overlay"
+              (click)="closeEditStudentModal()"
+            >
+              <div class="modal-content" (click)="$event.stopPropagation()">
+                <div class="modal-header">
+                  <h2>Editar Estudiante</h2>
+                  <button class="close-btn" (click)="closeEditStudentModal()">
+                    ×
+                  </button>
+                </div>
+                <form (ngSubmit)="updateStudent()" class="form-grid">
+                  <!-- Nombre -->
+                  <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input
+                      id="nombre"
+                      type="text"
+                      [(ngModel)]="selectedStudent.nombre"
+                      name="nombre"
+                      required
+                    />
+                  </div>
+    
+                  <!-- Apellido -->
+                  <div class="form-group">
+                    <label for="apellido">Apellido:</label>
+                    <input
+                      id="apellido"
+                      type="text"
+                      [(ngModel)]="selectedStudent.apellido"
+                      name="apellido"
+                      required
+                    />
+                  </div>
+    
+                  <!-- Número de Control -->
+                  <div class="form-group">
+                    <label for="numero_control">Número de Control:</label>
+                    <input
+                      id="numero_control"
+                      type="text"
+                      [(ngModel)]="selectedStudent.detalles.numero_control"
+                      name="numero_control"
+                      required
+                    />
+                  </div>
+    
+                  <!-- Semestre -->
+                  <div class="form-group">
+                    <label for="semestre">Semestre:</label>
+                    <input
+                      id="semestre"
+                      type="text"
+                      [(ngModel)]="selectedStudent.detalles.semestre"
+                      name="semestre"
+                      required
+                    />
+                  </div>
+    
+                  <!-- Especialidad -->
+                  <div class="form-group">
+                    <label for="especialidad">Especialidad:</label>
+                    <input
+                      id="especialidad"
+                      type="text"
+                      [(ngModel)]="selectedStudent.detalles.especialidad"
+                      name="especialidad"
+                      required
+                    />
+                  </div>
+    
+                  <!-- Turno -->
+                  <div class="form-group">
+                    <label for="turno">Turno:</label>
+                    <select
+                      id="turno"
+                      [(ngModel)]="selectedStudent.detalles.turno"
+                      name="turno"
+                      required
+                    >
+                      <option value="Matutino">Matutino</option>
+                      <option value="Vespertino">Vespertino</option>
+                    </select>
+                  </div>
+    
+                  <!-- Grupo -->
+                  <div class="form-group">
+                    <label for="grupo">Grupo:</label>
+                    <input
+                      id="grupo"
+                      type="text"
+                      [(ngModel)]="selectedStudent.detalles.grupo"
+                      name="grupo"
+                      required
+                    />
+                  </div>
+    
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                      Actualizar
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="closeEditStudentModal()"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
 
-<!-- Modal para ingresar datos del nuevo alumno -->
-<div *ngIf="isAddStudentModalOpen" class="modal-overlay" (click)="closeAddStudentModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <h2>Enviar Correo</h2>
-    <form (ngSubmit)="enviarCorreo()">
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="nombre">Nombre:</label>
-          <input type="text" id="nombre" [(ngModel)]="correoData.nombre" name="nombre" required>
-        </div>
-        <div class="form-group">
-          <label for="apellido">Apellido:</label>
-          <input type="text" id="apellido" [(ngModel)]="correoData.apellido" name="apellido" required>
-        </div>
-        <div class="form-group">
-          <label for="correoInstitucional">Correo:</label>
-          <input type="email" id="correoInstitucional" [(ngModel)]="correoData.correoInstitucional" name="correoInstitucional" required>
-        </div>
-        <div class="form-group">
-          <label for="contrasena">Contraseña:</label>
-          <input type="password" id="contrasena" [(ngModel)]="correoData.contrasena" name="contrasena" required>
-        </div>
-        <div class="form-group">
-          <label for="semestre">Semestre:</label>
-          <input type="number" id="semestre" [(ngModel)]="correoData.semestre" name="semestre" required>
-        </div>
-        <div class="form-group">
-          <label for="grupo">Grupo:</label>
-          <input type="text" id="grupo" [(ngModel)]="correoData.grupo" name="grupo" required>
-        </div>
-        <div class="form-group">
-          <label for="especialidad">Especialidad:</label>
-          <input type="text" id="especialidad" [(ngModel)]="correoData.especialidad" name="especialidad" required>
-        </div>
-        <div class="form-group">
-          <label for="numeroControl">Número de Control:</label>
-          <input type="text" id="numeroControl" [(ngModel)]="correoData.numeroControl" name="numeroControl" required>
-        </div>
-        <div class="form-group">
-          <label for="turno">Turno:</label>
-          <select id="turno" [(ngModel)]="correoData.turno" name="turno" required>
-            <option value="Matutino">Matutino</option>
-            <option value="Vespertino">Vespertino</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="curp">CURP:</label>
-          <input type="text" id="curp" [(ngModel)]="correoData.curp" name="curp" required>
+      <!-- Modal para ingresar datos del nuevo alumno -->
+      <div
+        *ngIf="isAddStudentModalOpen"
+        class="modal-overlay"
+        (click)="closeAddStudentModal()"
+      >
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <h2>Enviar Correo</h2>
+          <form (ngSubmit)="addStudent()">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  [(ngModel)]="correoData.nombre"
+                  name="nombre"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="apellido">Apellido:</label>
+                <input
+                  type="text"
+                  id="apellido"
+                  [(ngModel)]="correoData.apellido"
+                  name="apellido"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="correoInstitucional">Correo:</label>
+                <input
+                  type="email"
+                  id="correoInstitucional"
+                  [(ngModel)]="correoData.correoInstitucional"
+                  name="correoInstitucional"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="contrasena">Contraseña:</label>
+                <input
+                  type="password"
+                  id="contrasena"
+                  [(ngModel)]="correoData.contrasena"
+                  name="contrasena"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="semestre">Semestre:</label>
+                <input
+                  type="number"
+                  id="semestre"
+                  [(ngModel)]="correoData.semestre"
+                  name="semestre"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="grupo">Grupo:</label>
+                <input
+                  type="text"
+                  id="grupo"
+                  [(ngModel)]="correoData.grupo"
+                  name="grupo"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="especialidad">Especialidad:</label>
+                <input
+                  type="text"
+                  id="especialidad"
+                  [(ngModel)]="correoData.especialidad"
+                  name="especialidad"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="numeroControl">Número de Control:</label>
+                <input
+                  type="text"
+                  id="numeroControl"
+                  [(ngModel)]="correoData.numeroControl"
+                  name="numeroControl"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="turno">Turno:</label>
+                <select
+                  id="turno"
+                  [(ngModel)]="correoData.turno"
+                  name="turno"
+                  required
+                >
+                  <option value="Matutino">Matutino</option>
+                  <option value="Vespertino">Vespertino</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="curp">CURP:</label>
+                <input
+                  type="text"
+                  id="curp"
+                  [(ngModel)]="correoData.curp"
+                  name="curp"
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit">Enviar Correo</button>
+            <button type="button" (click)="closeAddStudentModal()">
+              Cancelar
+            </button>
+          </form>
         </div>
       </div>
-      <button type="submit">Enviar Correo</button>
-      <button type="button" (click)="closeAddStudentModal()">Cancelar</button>
-    </form>
-  </div>
-</div>
-
-
 
       <!-- Botón de filtros (funciona en todas las pantallas) -->
-      <button class="filter-toggle" (click)="toggleFilters()" aria-label="Abrir filtros">
+      <button
+        class="filter-toggle"
+        (click)="toggleFilters()"
+        aria-label="Abrir filtros"
+      >
         <i class="fi fi-bs-filters"></i>
       </button>
 
       <!-- Filtros en pantalla grande -->
-      <div class="filters large-screen-filters" [class.show]="uiState.areFiltersVisible">
+      <div
+        class="filters large-screen-filters"
+        [class.show]="uiState.areFiltersVisible"
+      >
         <!-- Botón para cambiar turno -->
         <button (click)="toggleTurno()" class="turno-toggle">
           <i [class]="uiState.turnoIcono"></i>
         </button>
         <select [(ngModel)]="selectedFilters.grupo" (change)="applyFilters()">
           <option value="">Todos los grupos</option>
-          <option *ngFor="let grupo of filterOptions.grupos">{{ grupo }}</option>
+          <option *ngFor="let grupo of filterOptions.grupos">
+            {{ grupo }}
+          </option>
         </select>
-        <select [(ngModel)]="selectedFilters.especialidad" (change)="applyFilters()">
+        <select
+          [(ngModel)]="selectedFilters.especialidad"
+          (change)="applyFilters()"
+        >
           <option value="">Todas las especialidades</option>
-          <option *ngFor="let especialidad of filterOptions.especialidades">{{ especialidad }}</option>
+          <option *ngFor="let especialidad of filterOptions.especialidades">
+            {{ especialidad }}
+          </option>
         </select>
-        <select [(ngModel)]="selectedFilters.semestre" (change)="applyFilters()">
+        <select
+          [(ngModel)]="selectedFilters.semestre"
+          (change)="applyFilters()"
+        >
           <option value="">Todos los semestres</option>
-          <option *ngFor="let semestre of filterOptions.semestres" [value]="semestre">{{ semestre }}</option>
+          <option
+            *ngFor="let semestre of filterOptions.semestres"
+            [value]="semestre"
+          >
+            {{ semestre }}
+          </option>
         </select>
       </div>
     </div>
@@ -106,15 +311,27 @@
         </button>
         <select [(ngModel)]="selectedFilters.grupo" (change)="applyFilters()">
           <option value="">Todos los grupos</option>
-          <option *ngFor="let grupo of filterOptions.grupos">{{ grupo }}</option>
+          <option *ngFor="let grupo of filterOptions.grupos">
+            {{ grupo }}
+          </option>
         </select>
-        <select [(ngModel)]="selectedFilters.especialidad" (change)="applyFilters()">
+        <select
+          [(ngModel)]="selectedFilters.especialidad"
+          (change)="applyFilters()"
+        >
           <option value="">Todas las especialidades</option>
-          <option *ngFor="let especialidad of filterOptions.especialidades">{{ especialidad }}</option>
+          <option *ngFor="let especialidad of filterOptions.especialidades">
+            {{ especialidad }}
+          </option>
         </select>
-        <select [(ngModel)]="selectedFilters.semestre" (change)="applyFilters()">
+        <select
+          [(ngModel)]="selectedFilters.semestre"
+          (change)="applyFilters()"
+        >
           <option value="">Todos los semestres</option>
-          <option *ngFor="let semestre of filterOptions.semestres">{{ semestre }}</option>
+          <option *ngFor="let semestre of filterOptions.semestres">
+            {{ semestre }}
+          </option>
         </select>
       </div>
     </div>
@@ -122,15 +339,24 @@
 
   <div class="container">
     <div class="students-list">
-      <div *ngFor="let usuario of filteredUsuarios" class="student-card" (mouseleave)="hideOptionsDropdown()">
+      <div
+        *ngFor="let usuario of filteredUsuarios"
+        class="student-card"
+        (mouseleave)="hideOptionsDropdown()"
+      >
         <div class="student-info">
-          <img [src]="usuario.foto || 'ruta/a/imagen_default.jpg'" alt="Foto de {{ usuario.nombre }}"
-            class="student-photo" />
+          <img
+            [src]="usuario.foto || 'ruta/a/imagen_default.jpg'"
+            alt="Foto de {{ usuario.nombre }}"
+            class="student-photo"
+          />
           <div class="info">
             <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
             <p>
-              Num: {{ usuario.detalles?.numero_control }} &nbsp;&nbsp; Semestre: {{ usuario.detalles?.semestre }}° &nbsp;&nbsp;
-              {{ usuario.detalles?.especialidad }} &nbsp;&nbsp; {{ usuario.detalles?.turno }}
+              Num: {{ usuario.detalles?.numero_control }} &nbsp;&nbsp; Semestre:
+              {{ usuario.detalles?.semestre }}° &nbsp;&nbsp;
+              {{ usuario.detalles?.especialidad }} &nbsp;&nbsp;
+              {{ usuario.detalles?.turno }}
             </p>
           </div>
         </div>
@@ -139,7 +365,10 @@
         </div>
 
         <!-- Gota con tres puntos o menú de opciones -->
-        <div class="options-dropdown" (click)="toggleOptionsDropdown($event, usuario)">
+        <div
+          class="options-dropdown"
+          (click)="toggleOptionsDropdown($event, usuario)"
+        >
           <ng-container *ngIf="showOptions !== usuario">
             <!-- Icono de tres puntos -->
             <i class="fi fi-br-menu-dots"></i>

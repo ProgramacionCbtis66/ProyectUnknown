@@ -1,50 +1,57 @@
-import nodemailer from 'nodemailer';
-import env from '../../enviroment/enviroment.js';
+import nodemailer from "nodemailer";
+import env from "../../enviroment/enviroment.js";
 
 const enviarCorreo = (req, res) => {
-    console.log("Datos recibidos:", req.body);
-    const emailData = req.body;
+  console.log("Datos recibidos:", req.body);
+  const emailData = req.body;
 
-    if (!emailData.destinatario || !emailData.tipo) {
-        return res.status(400).send({ error: "Destinatario o tipo de correo no definido" });
-    }
+  if (!emailData.destinatario || !emailData.tipo) {
+    return res
+      .status(400)
+      .send({ error: "Destinatario o tipo de correo no definido" });
+  }
 
-    try {
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: env.correoKey,
-                pass: env.pwdKey,
-            },
-        });
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: env.correoKey,
+        pass: env.pwdKey,
+      },
+    });
 
-        const mailOptions = MailOptions(emailData.tipo, emailData);
+    const mailOptions = MailOptions(emailData.tipo, emailData);
 
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error("Error al enviar el correo:", error);
-                return res.status(500).send({ error: "No se pudo enviar el correo", detalles: error.message });
-            }
-            console.log("Correo enviado:", info.response);
-            res.send({ msg: "Correo enviado satisfactoriamente" });
-        });
-    } catch (err) {
-        console.error("Error en enviarCorreo:", err.message);
-        res.status(500).send({ error: "Error interno del servidor" });
-    }
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error al enviar el correo:", error);
+        return res
+          .status(500)
+          .send({
+            error: "No se pudo enviar el correo",
+            detalles: error.message,
+          });
+      }
+      console.log("Correo enviado:", info.response);
+      res.send({ msg: "Correo enviado satisfactoriamente" });
+    });
+  } catch (err) {
+    console.error("Error en enviarCorreo:", err.message);
+    res.status(500).send({ error: "Error interno del servidor" });
+  }
 };
 
 function MailOptions(tipo, emailData) {
-    let mailOptions;
+  let mailOptions;
 
-    switch (tipo) {
-        case "EmailVerify":
-            mailOptions = {
-                from: `ADAE <${env.correoKey}>`,
-                to: emailData.destinatario,
-                subject: "Bienvenido a ADAE",
-                text: `Hola ${emailData.nombre}, ¡Gracias por registrarte en ADAE! Estamos felices de darte la bienvenida.`,
-                html: `
+  switch (tipo) {
+    case "EmailVerify":
+      mailOptions = {
+        from: `ADAE <${env.correoKey}>`,
+        to: emailData.destinatario,
+        subject: "Bienvenido a ADAE",
+        text: `Hola ${emailData.nombre}, ¡Gracias por registrarte en ADAE! Estamos felices de darte la bienvenida.`,
+        html: `
                    <html>
                         <head>
                             <!-- Importar fuente Poppins desde Google Fonts -->
@@ -73,17 +80,17 @@ function MailOptions(tipo, emailData) {
                             </div>
                         </body>
                     </html>
-                `
-            };
-            break;
+                `,
+      };
+      break;
 
-        case "PasswordReset":
-            mailOptions = {
-                from: `ADAE <${env.correoKey}>`,
-                to: emailData.destinatario,
-                subject: "Solicitud de cambio de contraseña",
-                text: `Hola ${emailData.nombre}, hemos recibido una solicitud para cambiar tu contraseña. Si no fuiste tú, ignora este correo. Si deseas continuar, sigue las instrucciones a continuación.`,
-                html: `
+    case "PasswordReset":
+      mailOptions = {
+        from: `ADAE <${env.correoKey}>`,
+        to: emailData.destinatario,
+        subject: "Solicitud de cambio de contraseña",
+        text: `Hola ${emailData.nombre}, hemos recibido una solicitud para cambiar tu contraseña. Si no fuiste tú, ignora este correo. Si deseas continuar, sigue las instrucciones a continuación.`,
+        html: `
                        <html>
                             <head>
                                 <!-- Importar fuente Poppins desde Google Fonts -->
@@ -115,17 +122,17 @@ function MailOptions(tipo, emailData) {
                                 </div>
                             </body>d
                         </html>
-                    `
-            };
-            break;
+                    `,
+      };
+      break;
 
-        case "UserUpdateNotification":
-            mailOptions = {
-                from: `ADAE <${env.correoKey}>`,
-                to: emailData.destinatario,
-                subject: "Actualización exitosa de tus datos",
-                text: `Hola ${emailData.nombre}, queremos informarte que los datos de tu cuenta han sido actualizados exitosamente. Si no reconoces esta acción, por favor contáctanos de inmediato.`,
-                html: `
+    case "UserUpdateNotification":
+      mailOptions = {
+        from: `ADAE <${env.correoKey}>`,
+        to: emailData.destinatario,
+        subject: "Actualización exitosa de tus datos",
+        text: `Hola ${emailData.nombre}, queremos informarte que los datos de tu cuenta han sido actualizados exitosamente. Si no reconoces esta acción, por favor contáctanos de inmediato.`,
+        html: `
            <html>
                 <head>
                     <!-- Importar fuente Poppins desde Google Fonts -->
@@ -154,17 +161,55 @@ function MailOptions(tipo, emailData) {
                     </div>
                 </body>
             </html>
-        `
-            };
-            break;
+        `,
+      };
+      break;
 
-        case "NewTaskAssigned":
-            mailOptions = {
-                from: `ADAE <${env.correoKey}>`,
-                to: emailData.destinatario,
-                subject: "Nueva tarea asignada en tu materia",
-                text: `Hola ${emailData.nombre}, se te ha asignado una nueva tarea en la materia ${emailData.materia} por el profesor ${emailData.profesor}. Ingresa a la plataforma para ver los detalles completos.`,
-                html: `
+    case "UserDelete":
+      mailOptions = {
+        from: `ADAE <${env.correoKey}>`,
+        to: emailData.destinatario,
+        subject: "Cuenta Eliminada",
+        text: `Hola ${emailData.nombre}, queremos informarte que su cuenta ha sido eliminada de la base de datos de ADAE.`,
+        html: `
+               <html>
+                    <head>
+                        <!-- Importar fuente Poppins desde Google Fonts -->
+                        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+                    </head>
+                    <body style="font-family: 'Poppins', Arial, sans-serif; margin: 0; padding: 20px; background-color:#f1f2f4;">
+                        <div style="width: 400px; min-width: 400px; max-width: 400px; margin: auto; border: none; border-radius: 15px; overflow: hidden;">
+                            <!-- Encabezado -->
+                            <div style="background-color: #252527; padding: 20px; text-align: center;">
+                                <h2 style="color: #ffffff; margin: 0; font-size: 2rem;">ADAE</h2>
+                            </div>
+                            
+                            <!-- Cuerpo -->
+                            <div style="padding:30px 40px; color: #333; background-color: #ffffff;">
+                                <h3 style="margin-top: 0; font-size: 2rem;">Cuenta Eliminada</h3>
+                                <p>Estimado(a) <strong>${emailData.nombre}</strong>,</p>
+                                <p>Queremos informarte que su cuenta en <strong>ADAE</strong> han sido eliminada exitosamente.</p>
+                            </div>
+                            
+                            <!-- Pie de página -->
+                            <div style="background-color: #FAFAFA; padding: 10px; text-align: center; font-size: 12px; color: #6c757d;">
+                                <p style="margin: 20px;">&copy; 2024 ADAE. Todos los derechos reservados.</p>
+                                <p>Si necesitas ayuda, no dudes en escribirnos a <a href="mailto:soporte@adae.com" style="color: #007bff;">soporte@adae.com</a>.</p>
+                            </div>
+                        </div>
+                    </body>
+                </html>
+            `,
+      };
+      break;
+
+    case "NewTaskAssigned":
+      mailOptions = {
+        from: `ADAE <${env.correoKey}>`,
+        to: emailData.destinatario,
+        subject: "Nueva tarea asignada en tu materia",
+        text: `Hola ${emailData.nombre}, se te ha asignado una nueva tarea en la materia ${emailData.materia} por el profesor ${emailData.profesor}. Ingresa a la plataforma para ver los detalles completos.`,
+        html: `
            <html>
                 <head>
                     <!-- Importar fuente Poppins desde Google Fonts -->
@@ -198,17 +243,17 @@ function MailOptions(tipo, emailData) {
                     </div>
                 </body>
             </html>
-        `
-            };
-            break;
+        `,
+      };
+      break;
 
-            case "PendingTaskNotification":
-                mailOptions = {
-                    from: `ADAE <${env.correoKey}>`,
-                    to: emailData.destinatario,
-                    subject: "Tarea pendiente por entregar",
-                    text: `Hola ${emailData.nombre}, recuerda que tienes una tarea pendiente en la materia ${emailData.materia}. La fecha de entrega es el ${emailData.fechaEntrega}. Ingresa a la plataforma para completar y entregar la tarea.`,
-                    html: `
+    case "PendingTaskNotification":
+      mailOptions = {
+        from: `ADAE <${env.correoKey}>`,
+        to: emailData.destinatario,
+        subject: "Tarea pendiente por entregar",
+        text: `Hola ${emailData.nombre}, recuerda que tienes una tarea pendiente en la materia ${emailData.materia}. La fecha de entrega es el ${emailData.fechaEntrega}. Ingresa a la plataforma para completar y entregar la tarea.`,
+        html: `
                        <html>
                             <head>
                                 <!-- Importar fuente Poppins desde Google Fonts -->
@@ -241,11 +286,11 @@ function MailOptions(tipo, emailData) {
                                 </div>
                             </body>
                         </html>
-                    `
-                };
-                break;
-                case "TaskGradedNotification":
-    mailOptions = {
+                    `,
+      };
+      break;
+    case "TaskGradedNotification":
+      mailOptions = {
         from: `ADAE <${env.correoKey}>`,
         to: emailData.destinatario,
         subject: "Tu tarea ha sido calificada",
@@ -283,12 +328,12 @@ function MailOptions(tipo, emailData) {
                     </div>
                 </body>
             </html>
-        `
-    };
-    break;
+        `,
+      };
+      break;
 
     case "ProfessorCommentsNotification":
-    mailOptions = {
+      mailOptions = {
         from: `ADAE <${env.correoKey}>`,
         to: emailData.destinatario,
         subject: "Comentarios del Profesor sobre tu tarea",
@@ -328,21 +373,15 @@ function MailOptions(tipo, emailData) {
                     </div>
                 </body>
             </html>
-        `
-    };
-    break;
+        `,
+      };
+      break;
 
+    default:
+      throw new Error(`El tipo de correo '${tipo}' no está definido`);
+  }
 
-
-            
-
-
-
-        default:
-            throw new Error(`El tipo de correo '${tipo}' no está definido`);
-    }
-
-    return mailOptions;
+  return mailOptions;
 }
 
 export default { enviarCorreo };
