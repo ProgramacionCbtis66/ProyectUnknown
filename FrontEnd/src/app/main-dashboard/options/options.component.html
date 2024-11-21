@@ -35,6 +35,7 @@
       <div
         class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
         (click)="goToAlumnos()"
+        *ngIf="sesion._rol == 'Administrador'"
       >
         <div class="custom-card">
           <i class="fi fi-ss-student student-ico"></i>
@@ -62,6 +63,7 @@
       <div
         class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
         (click)="goToClases()"
+        *ngIf="sesion._rol == 'Alumno'  "
       >
         <div class="custom-card">
           <i class="fi fi-ss-graduation-cap student-ico"></i>
@@ -69,11 +71,15 @@
           <!-- Clases -->
         </div>
       </div>
-      <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+      <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+      class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+      (click)="goToMakeClases()"
+      *ngIf="sesion._rol == 'Administrador'"
+      >
         <div class="custom-card">
-          <i class="fi fi-ss-square-plus student-ico"></i>
-          coming soon
-          <!-- Vacio -->
+          <i class="fi fi-ss-graduation-cap student-ico"></i>
+          <h5 class="card-title">Crear Clases</h5>
+          <!-- Crear Clases -->
         </div>
       </div>
       <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">

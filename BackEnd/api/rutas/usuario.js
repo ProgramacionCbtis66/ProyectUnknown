@@ -5,13 +5,13 @@ import vtoken from "./Authorization/Vtoken.js";
 const usr = Router();
 
 // Listar usuarios
-usr.get("/usr/listUsr", vtoken, usuario.listaUsuario);
+usr.get("/usr/listUsr", vtoken, usuario.listaUsuarios);
 
 // Iniciar sesión
 usr.post("/usr/login", usuario.login);
 
-// Registrar un nuevo alumno
-usr.post("/usr/registrarAlumno", usuario.registrarAlumno);
+// Registrar un nuevo usuario (Alumno, Profesor, Administrativo)
+usr.post("/usr/registrarUsr", usuario.registrarUsuario);
 
 // Actualizar datos de un alumno (usando PUT y parámetro dinámico)
 usr.put("/usr/actualizarUsr/:id_usuario", usuario.actualizarUsuario);

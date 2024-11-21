@@ -3,22 +3,24 @@ import { AuthService } from '../../../Core/service/auth.service';
 import { EmailService } from '../../../Core/service/email.service';
 
 interface Usuario {
-  grupo: string;
   nombre: string;
   apellido: string;
   rol: string;
   foto?: string;
-  numero_control: string;
-  especialidad: string;
-  semestre: number;
-  turno: string;
   correo: string;
+  detalles?: {
+    numero_control: string;
+    especialidad: string;
+    semestre: number;
+    turno: string;
+    grupo: string;
+  };
 }
 
 @Component({
   selector: 'app-alumnos-listado',
   templateUrl: './alumnos-listado.component.html',
-  styleUrls: ['./alumnos-listado.component.css']
+  styleUrls: ['./alumnos-listado.component.css'],
 })
 export class AlumnosListadoComponent implements OnInit, OnDestroy {
   usuarios: Usuario[] = [];
@@ -29,25 +31,22 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     turno: '',
     grupo: '',
     especialidad: '',
-    semestre: '' as number | ''
+    semestre: '' as number | '',
   };
   filterOptions = {
     turnos: [] as string[],
     grupos: [] as string[],
     especialidades: [] as string[],
-    semestres: [] as number[]
+    semestres: [] as number[],
   };
 
   uiState = {
     isModalOpen: false,
     areFiltersVisible: false,
     turnoMatutino: true,
-    turnoIcono: 'fi fi-ss-clouds-sun'
+    turnoIcono: 'fi fi-ss-clouds-sun',
   };
 
-
-
-  // Declaración de datos para el nuevo alumno
   correoData = {
     nombre: '',
     apellido: '',
@@ -58,77 +57,105 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     especialidad: '',
     numeroControl: '',
     turno: '',
-    curp: ''
+    curp: '',
   };
   isAddStudentModalOpen = false;
 
   constructor(
     private readonly authService: AuthService,
     private emailService: EmailService
-  ) { }
+  ) {}
+  
+  @HostListener('window:resize')
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.fetchUsuarios();
     this.checkScreenSize();
     document.addEventListener('click', this.hideOptionsDropdown.bind(this));
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     document.removeEventListener('click', this.hideOptionsDropdown.bind(this));
   }
 
-  private fetchUsuarios() {
+  private fetchUsuarios(): void {
     this.authService.getUsuarios().subscribe({
-      next: (data) => {
+      next: (data: Usuario[]) => {
+        console.log('Datos recibidos:', data);
         this.usuarios = data;
         this.filteredUsuarios = data;
         this.initializeFilterOptions();
       },
-      error: (error) => console.error('Error al obtener usuarios:', error)
+      error: (error) => console.error('Error al obtener usuarios:', error),
     });
   }
 
-  private initializeFilterOptions() {
-    this.filterOptions.turnos = this.getUniqueValues('turno');
-    this.filterOptions.grupos = this.getUniqueValues('grupo');
-    this.filterOptions.especialidades = this.getUniqueValues('especialidad');
-    this.filterOptions.semestres = this.getUniqueValues('semestre');
+  private initializeFilterOptions(): void {
+    this.filterOptions.turnos = this.getUniqueValues('detalles.turno');
+    this.filterOptions.grupos = this.getUniqueValues('detalles.grupo');
+    this.filterOptions.especialidades = this.getUniqueValues(
+      'detalles.especialidad'
+    );
+    this.filterOptions.semestres = this.getUniqueValues('detalles.semestre');
   }
 
-  private getUniqueValues(key: keyof Usuario): any[] {
-    return Array.from(new Set(this.usuarios.map(usuario => usuario[key])));
+  private getUniqueValues(key: string): any[] {
+    return Array.from(
+      new Set(
+        this.usuarios
+          .map((usuario) => {
+            const keys = key.split('.');
+            return keys.reduce((obj, k) => obj?.[k], usuario) || null;
+          })
+          .filter((value) => value !== null)
+      )
+    );
   }
 
-  @HostListener('window:resize')
-  onResize() {
+
+  onResize(): void {
     this.checkScreenSize();
   }
 
-  onSearch() {
+  onSearch(): void {
     this.applyFilters();
   }
 
-  applyFilters() {
-    this.filteredUsuarios = this.usuarios.filter(usuario =>
-      this.matchesSearch(usuario) && this.matchesSelectedFilters(usuario)
+  applyFilters(): void {
+    this.filteredUsuarios = this.usuarios.filter(
+      (usuario) =>
+        this.matchesSearch(usuario) && this.matchesSelectedFilters(usuario)
     );
   }
 
   private matchesSelectedFilters(usuario: Usuario): boolean {
-    return (!this.selectedFilters.turno || usuario.turno === this.selectedFilters.turno) &&
-      (!this.selectedFilters.grupo || usuario.grupo === this.selectedFilters.grupo) &&
-      (!this.selectedFilters.especialidad || usuario.especialidad === this.selectedFilters.especialidad) &&
-      (!this.selectedFilters.semestre || String(usuario.semestre) === String(this.selectedFilters.semestre));
+    const { detalles } = usuario;
+    if (!detalles) return false;
+
+    return (
+      (!this.selectedFilters.turno ||
+        detalles.turno === this.selectedFilters.turno) &&
+      (!this.selectedFilters.grupo ||
+        detalles.grupo === this.selectedFilters.grupo) &&
+      (!this.selectedFilters.especialidad ||
+        detalles.especialidad === this.selectedFilters.especialidad) &&
+      (!this.selectedFilters.semestre ||
+        String(detalles.semestre) === String(this.selectedFilters.semestre))
+    );
   }
 
   private matchesSearch(usuario: Usuario): boolean {
     const query = this.searchQuery.toLowerCase();
-    return usuario.nombre.toLowerCase().includes(query) ||
-      usuario.apellido.toLowerCase().includes(query) ||
-      usuario.numero_control.toLowerCase().includes(query);
+    const { nombre, apellido, detalles } = usuario;
+
+    return (
+      nombre.toLowerCase().includes(query) ||
+      apellido.toLowerCase().includes(query) ||
+      (detalles?.numero_control?.toLowerCase()?.includes(query) ?? false)
+    );
   }
 
-  toggleFilters() {
+  toggleFilters(): void {
     if (window.innerWidth <= 768) {
       this.uiState.isModalOpen = !this.uiState.isModalOpen;
     } else {
@@ -136,7 +163,7 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     }
   }
 
-  private checkScreenSize() {
+  private checkScreenSize(): void {
     if (window.innerWidth > 768) {
       this.uiState.isModalOpen = false;
     } else {
@@ -144,57 +171,60 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleTurno() {
+  toggleTurno(): void {
     this.uiState.turnoMatutino = !this.uiState.turnoMatutino;
-    this.selectedFilters.turno = this.uiState.turnoMatutino ? 'Matutino' : 'Vespertino';
-    this.uiState.turnoIcono = this.uiState.turnoMatutino ? 'fi fi-ss-clouds-sun' : 'fi fi-ss-clouds-moon';
+    this.selectedFilters.turno = this.uiState.turnoMatutino
+      ? 'Matutino'
+      : 'Vespertino';
+    this.uiState.turnoIcono = this.uiState.turnoMatutino
+      ? 'fi fi-ss-clouds-sun'
+      : 'fi fi-ss-clouds-moon';
     this.applyFilters();
   }
 
-  toggleOptionsDropdown(event: Event, usuario: Usuario) {
+  toggleOptionsDropdown(event: Event, usuario: Usuario): void {
     event.stopPropagation();
     this.showOptions = this.showOptions === usuario ? null : usuario;
   }
 
-  hideOptionsDropdown() {
+  hideOptionsDropdown(): void {
     this.showOptions = null;
   }
 
-  editStudent(usuario: Usuario) {
+  editStudent(usuario: Usuario): void {
     console.log('Editar estudiante:', usuario);
   }
 
-  deleteStudent(usuario: Usuario) {
+  deleteStudent(usuario: Usuario): void {
     console.log('Eliminar estudiante:', usuario);
   }
 
-  copyStudent(usuario: Usuario) {
+  copyStudent(usuario: Usuario): void {
     console.log('Copiar estudiante:', usuario);
   }
 
-  openAddStudentModal() {
+  openAddStudentModal(): void {
     this.isAddStudentModalOpen = true;
   }
 
-  closeAddStudentModal() {
+  closeAddStudentModal(): void {
     this.isAddStudentModalOpen = false;
   }
 
-  // Función para enviar datos del nuevo alumno
-  enviarCorreo() {
+  enviarCorreo(): void {
     const { correoInstitucional, nombre } = this.correoData;
-    const tipo = "EmailVerify"
-  
+    const tipo = 'EmailVerify';
+
     if (correoInstitucional && nombre) {
-      this.emailService.enviarCorreo(correoInstitucional, nombre, tipo)
+      this.emailService
+        .enviarCorreo(correoInstitucional, nombre, tipo)
         .then(() => {
-          console.log("Correo enviado desde el componente");
+          console.log('Correo enviado desde el componente');
           this.closeAddStudentModal();
         })
-        .catch((error) => console.error("Error al enviar el correo:", error));
+        .catch((error) => console.error('Error al enviar el correo:', error));
     } else {
-      console.error("Faltan datos para enviar el correo");
+      console.error('Faltan datos para enviar el correo');
     }
   }
-  
 }

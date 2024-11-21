@@ -116,37 +116,6 @@ const registrarUsuario = async (req, res) => {
     }
 };
 
-
-const listaUsuario = async (req, res) => {
-    const query = `
-        SELECT 
-            u.id_usuario AS id, u.nombre, u.apellido, u.rol, u.foto,
-            a.numero_control, a.especialidad, a.semestre, a.grupo, a.turno
-        FROM usuarios u
-        JOIN alumnos a ON u.id_usuario = a.id_usuario
-        WHERE u.rol = 'Alumno'
-    `;
-
-    const conexion = await cnx();
-
-    try {
-        const users = await executeQuery(conexion, query);
-        if (!users.length) {
-            return res.status(404).json({ error: 'No hay registros' });
-        }
-
-        users.forEach(user => {
-            if (user.foto) user.foto = user.foto.toString('utf8');
-        });
-
-        res.json(users);
-    } catch (error) {
-        handleDatabaseError(error, res, 'Error al obtener la lista de usuarios');
-    } finally {
-        await conexion.end();
-    }
-};
-
 const actualizarUsuario = async (req, res) => {
     const { id_usuario } = req.params;
     const { rol, ...datos } = req.body;
@@ -232,8 +201,54 @@ const actualizarUsuario = async (req, res) => {
     }
 };
 
+const listaUsuarios = async (req, res) => {
+    const { rol } = req.query; // Opción para filtrar por rol si se proporciona en la solicitud
+
+    // Construcción dinámica de la consulta
+    const query = `
+        SELECT 
+            u.id_usuario AS id, u.nombre, u.apellido, u.rol, u.foto,
+            CASE 
+                WHEN u.rol = 'Alumno' THEN JSON_OBJECT(
+                    'numero_control', a.numero_control,
+                    'especialidad', a.especialidad,
+                    'semestre', a.semestre,
+                    'grupo', a.grupo,
+                    'turno', a.turno
+                )
+                WHEN u.rol = 'Profesor' THEN JSON_OBJECT(
+                    'departamento', p.departamento,
+                    'especialidad', p.especialidad,
+                    'telefono', p.telefono
+                )
+                ELSE NULL
+            END AS detalles
+        FROM usuarios u
+        LEFT JOIN alumnos a ON u.id_usuario = a.id_usuario
+        LEFT JOIN profesores p ON u.id_usuario = p.id_usuario
+        ${rol ? `WHERE u.rol = '${rol}'` : ''}
+    `;
+
+    const conexion = await cnx();
+
+    try {
+        const users = await executeQuery(conexion, query);
+        if (!users.length) {
+            return res.status(404).json({ error: 'No hay registros' });
+        }
+
+        // Convertir las fotos (si existen) a formato de cadena
+        users.forEach(user => {
+            if (user.foto) user.foto = user.foto.toString('utf8');
+        });
+
+        res.json(users); // se envia la respuesta en json
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al obtener la lista de usuarios');
+    } finally {
+        await conexion.end();
+    }
+};
 
 
-
-
-export default { login, listaUsuario, registrarUsuario, actualizarUsuario };
+export default { login, listaUsuarios, registrarUsuario, actualizarUsuario };

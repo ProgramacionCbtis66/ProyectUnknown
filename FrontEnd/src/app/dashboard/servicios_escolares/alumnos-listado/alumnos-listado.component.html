@@ -129,13 +129,13 @@
           <div class="info">
             <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
             <p>
-              Num: {{ usuario.numero_control }} &nbsp;&nbsp; Semestre: {{ usuario.semestre }}° &nbsp;&nbsp;
-              {{ usuario.especialidad }} &nbsp;&nbsp; {{ usuario.turno }}
+              Num: {{ usuario.detalles?.numero_control }} &nbsp;&nbsp; Semestre: {{ usuario.detalles?.semestre }}° &nbsp;&nbsp;
+              {{ usuario.detalles?.especialidad }} &nbsp;&nbsp; {{ usuario.detalles?.turno }}
             </p>
           </div>
         </div>
         <div class="student-group">
-          <span class="group-icon">{{ usuario.grupo }}</span>
+          <span class="group-icon">{{ usuario.detalles?.grupo }}</span>
         </div>
 
         <!-- Gota con tres puntos o menú de opciones -->

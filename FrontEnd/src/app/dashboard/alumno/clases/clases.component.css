@@ -1,83 +1,94 @@
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
+
+
 body {
   font-family: 'Poppins', sans-serif;
 }
 
 .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 350px);
-  grid-auto-rows: 270px;
-  gap: 24px;
-  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
 }
 
-.card-custom {
-  background-color: #333;
-  color: #fff;
-  border-radius: 50px;
-  padding: 20px;
-  padding-top: 8px;
-  padding-inline: 8px;
+.clases {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.profile{
-  background-color: rgb(77, 77, 77);
-  height: 80px;
-  padding: 10px;
-  border-radius: 50px;
+.card {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.profile-circle {
-  width: 55px; /* Reduced from 50px */
-  height: 55px; /* Reduced from 50px */
-  margin-inline: 10px;
-  aspect-ratio: 1;
-  background-color: #ffffff;
-  border-radius: 50%;
+.card-header {
+  margin-bottom: 15px;
 }
 
-.student-name {
-  font-weight: bold;
-  font-size: 0.9rem; /* Reduced from 1.1rem */
-  margin-right: 10px;
+.card-header h3 {
+  margin: 0;
+  color: #007bff;
 }
 
-.subject-title {
-  font-weight: bold;
-  margin-top: 10px; /* Reduced from 15px */
-  font-size: 0.85rem; /* Reduced to make text smaller */
+.card-body h4 {
+  margin-top: 0;
 }
 
-.task-item {
-  background-color: #555;
-  padding: 7px; /* Reduced from 10px */
-  margin-inline: 15px;
+.card-body ul {
+  padding-left: 20px;
+}
+
+.card-body li {
+  margin-bottom: 10px;
+}
+
+.btn-addclass{
+  height: 40px;
+  width: 40px;
   border-radius: 20px;
+  border: none;
+  background-color: #333;
+  color: white;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 7px; /* Reduced from 10px */
-  font-size: 0.8rem; /* Reduced text size */
+  justify-content: center;
+  transition-duration: 0.3s;
 }
 
-.status-indicator {
-  width: 20px; /* Reduced from 15px */
-  height: 20px; /* Reduced from 15px */
-  border-radius: 50%;
-  font-weight: 100; /* Sets font to thin */
+.btn-addclass:hover{
+  transform: scale(1.15);
+  background-color: #454444;
 }
 
-.status-red {
-  background-color: #ff4d4d;
+.btn-addclass i{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
 }
 
-.status-orange {
-  background-color: #ffa500;
+.container-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
 
-.status-green {
-  background-color: #4caf50;
+.asignacion{
+  color: rgb(43, 169, 232);
+}
+
+.entrega{
+  color: rgb(175, 26, 26);
+}
+
+small i {
+  margin-left: 12px;
 }

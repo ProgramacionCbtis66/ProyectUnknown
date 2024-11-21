@@ -8,6 +8,19 @@ import decode from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { SesionService } from 'src/app/Core/service/sesion.service';
 
+interface Usuario {
+  detalle: any;
+  grupo: string;
+  nombre: string;
+  apellido: string;
+  rol: string;
+  foto?: string;
+  numero_control: string; // Verifica este campo en la respuesta
+  especialidad: string;
+  semestre: number; // Asegúrate de que sea número
+  turno: string; // Asegúrate de que sea 'Matutino' o 'Vespertino'
+  correo: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -126,9 +139,10 @@ export class AuthService {
   //metodo para la lista jeje luego lo muevo para organizarlo bien
 
   // Nuevo método para obtener usuarios
-  getUsuarios(): Observable<any[]> {
-    return this.http.get<any[]>("http://localhost:4000/apiAdae/usr/listUsr/");
+  getUsuarios(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>("http://localhost:4000/apiAdae/usr/listUsr?rol=Alumno");
   }
+  
 
   updateAlumno(id: number, data: any): Observable<any> {
     return this.http.put("http://localhost:4000/apiAdae/usr/ActualizarAlumno", data);

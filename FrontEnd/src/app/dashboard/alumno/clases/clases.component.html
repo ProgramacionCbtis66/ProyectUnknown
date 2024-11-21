@@ -1,32 +1,95 @@
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
-
-
 <div class="container">
-  <div class="card-custom text-center" *ngFor="let clase of clases">
-    <div class="d-flex align-items-center profile">
-      <div class="profile-circle mr-3"></div>
-      <div class="student-name">{{ clase.nombreProfesor }}</div>
+  <div class="container-header">
+    <h2>Clases</h2>
+    <button
+      type="button"
+      class="btn-addclass"
+      data-bs-toggle="modal"
+      data-bs-target="#crearClaseModal"
+    >
+      <i class="fi fi-br-plus"></i>
+    </button>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="crearClaseModal"
+      tabindex="-1"
+      aria-labelledby="crearClaseModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="crearClaseModalLabel">Crear Clase</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="crearClase()">
+              <div class="mb-3">
+                <label for="nombreClase" class="form-label">Nombre de la Clase:</label>
+                <input
+                  type="text"
+                  id="nombreClase"
+                  class="form-control"
+                  [(ngModel)]="nombreClase"
+                  name="nombreClase"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="idProfesor" class="form-label">ID del Profesor:</label>
+                <input
+                  type="number"
+                  id="idProfesor"
+                  class="form-control"
+                  [(ngModel)]="idProfesor"
+                  name="idProfesor"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-success">Crear Clase</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="subject-title">{{ clase.nombreClase }}</div>
-  
-    <div class="task-item">
-      <span>Tarea: Derivada de Riemman</span>
-      <div class="status-indicator status-red"></div>
-    </div>
-  
-    <div class="task-item">
-      <span>Tarea: Derivada de Riemman</span>
-      <div class="status-indicator status-orange"></div>
-    </div>
-  
-    <div class="task-item">
-      <span>Tarea: Derivada de Riemman</span>
-      <div class="status-indicator status-green"></div>
+  </div>
+
+  <div class="clases">
+    <div class="card" *ngFor="let clase of clases">
+      <div class="card-header">
+        <h3>{{ clase.nombre_clase }}</h3>
+        <p><strong>Profesor:</strong> {{ clase.profesor_nombre }}</p>
+      </div>
+      <div class="card-body">
+        <h4>Tareas</h4>
+        <div *ngIf="clase.tareas.length; else noTareas">
+          <ul>
+            <li *ngFor="let tarea of clase.tareas; let i = index">
+              <div (click)="toggleDescripcion(clase.id, i)" style="cursor: pointer;">
+                <strong>{{ tarea.titulo }}</strong>
+                <br />
+                <small>
+                  <i class="fi fi-ss-calendar student-ico asignacion"></i> {{ tarea.fecha_asignacion | date: 'dd/MM/yyyy' }}
+                  <i class="fi fi-ss-calendar student-ico entrega"></i> {{ tarea.fecha_entrega | date: 'dd/MM/yyyy' }}
+                </small>
+              </div>
+              <p *ngIf="isDescripcionVisible(clase.id, i)" class="tarea-descripcion">
+                {{ tarea.descripcion }}
+              </p>
+            </li>
+          </ul>
+        </div>
+        <ng-template #noTareas>
+          <p>No hay tareas asignadas a esta clase.</p>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
