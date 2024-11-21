@@ -119,6 +119,120 @@ const agregarTarea = async (req, res) => {
     }
 };
 
+const obtenerTareasPendientes = async (req, res) => {
+    const { id_alumno } = req.params;
+
+    // Validar el campo obligatorio
+    if (!id_alumno) {
+        return res.status(400).json({
+            error: 'El campo id_alumno es obligatorio.',
+        });
+    }
+
+    // Consultas SQL
+    const queries = {
+        checkAlumnoExists: `SELECT id_alumno FROM alumnos WHERE id_alumno = ?`,
+        getTareasPendientes: `
+            SELECT 
+                t.id_tarea, 
+                t.titulo, 
+                t.descripcion, 
+                t.fecha_asignacion, 
+                t.fecha_entrega 
+            FROM tareas t
+            JOIN tareas_alumnos ta ON ta.id_tarea = t.id_tarea
+            WHERE ta.id_alumno = ? AND ta.estado = 'Pendiente'
+        `,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Verificar si el alumno existe
+        const alumnoExists = await executeQuery(conexion, queries.checkAlumnoExists, [id_alumno]);
+        if (!alumnoExists.length) {
+            return res.status(404).json({
+                error: `El alumno con id ${id_alumno} no existe.`,
+            });
+        }
+
+        // Obtener las tareas pendientes del alumno
+        const [tareasPendientes] = await conexion.execute(queries.getTareasPendientes, [id_alumno]);
+
+        if (!tareasPendientes.length) {
+            return res.status(404).json({
+                mensaje: 'No tienes tareas pendientes.',
+            });
+        }
+
+        res.status(200).json({
+            tareas: tareasPendientes.map((tarea) => ({
+                id_tarea: tarea.id_tarea,
+                titulo: tarea.titulo,
+                descripcion: tarea.descripcion,
+                fecha_asignacion: tarea.fecha_asignacion,
+                fecha_entrega: tarea.fecha_entrega,
+            })),
+        });
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al obtener las tareas pendientes del alumno.');
+    } finally {
+        await conexion.end();
+    }
+};
+
+const actualizarEstadoYCalificacion = async (req, res) => {
+    const { id_tarea, id_alumno, estado, calificacion } = req.body;
+
+    // Validar campos obligatorios
+    if (!id_tarea || !id_alumno || !estado) {
+        return res.status(400).json({
+            error: 'Los campos id_tarea, id_alumno y estado son obligatorios.',
+        });
+    }
+
+    // Validar calificación si se proporciona
+    if (calificacion && (typeof calificacion !== 'number' || calificacion < 0 || calificacion > 10)) {
+        return res.status(400).json({
+            error: 'La calificación debe ser un número entre 0 y 10.',
+        });
+    }
+
+    // Consultas SQL
+    const queries = {
+        checkTareaAlumnoExists: `SELECT * FROM tareas_alumnos WHERE id_tarea = ? AND id_alumno = ?`,
+        updateEstadoYCalificacion: `UPDATE tareas_alumnos SET estado = ?, calificacion = ? WHERE id_tarea = ? AND id_alumno = ?`,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Verificar si la tarea del alumno existe
+        const tareaAlumnoExists = await executeQuery(conexion, queries.checkTareaAlumnoExists, [id_tarea, id_alumno]);
+        if (!tareaAlumnoExists.length) {
+            return res.status(404).json({
+                error: 'La tarea o el alumno especificado no existe.',
+            });
+        }
+
+        // Actualizar estado y calificación de la tarea
+        await conexion.execute(queries.updateEstadoYCalificacion, [
+            estado,
+            calificacion || null,  // Si no se pasa calificación, se mantiene como NULL
+            id_tarea,
+            id_alumno,
+        ]);
+
+        res.status(200).json({
+            mensaje: 'Estado y calificación actualizados exitosamente.',
+        });
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al actualizar el estado y la calificación.');
+    } finally {
+        await conexion.end();
+    }
+};
+
 
 const asociarAlumnosAClase = async (req, res) => {
     const { id_clase, alumnos } = req.body;
@@ -241,4 +355,4 @@ const ListClases = async (req, res) => {
 
 
 
-export default {crearClase, agregarTarea, asociarAlumnosAClase, ListClases};
+export default {crearClase, agregarTarea, asociarAlumnosAClase, ListClases, obtenerTareasPendientes, actualizarEstadoYCalificacion };
