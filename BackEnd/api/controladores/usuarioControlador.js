@@ -22,7 +22,7 @@ const login = async (req, res) => {
     const queries = {
         userExists: `SELECT id_usuario AS id, nombre, apellido, rol, foto, fecha_nac FROM usuarios WHERE correo_institucional = ?`,
         passwordMatch: `SELECT id_usuario AS id, nombre, apellido, rol, foto, fecha_nac FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`,
-        alumnoData: `SELECT numero_control, especialidad, semestre, turno, curp, grupo FROM alumnos WHERE id_usuario = ?`
+        alumnoData: `SELECT id_alumno, numero_control, especialidad, semestre, turno, curp, grupo FROM alumnos WHERE id_usuario = ?`
     };
 
     const conexion = await cnx();
@@ -63,7 +63,22 @@ const login = async (req, res) => {
 };
 
 const registrarUsuario = async (req, res) => {
-    const { correo_institucional, nombre, apellido, rol, password, numero_control, especialidad, semestre, grupo, turno, curp, departamento, telefono } = req.body;
+    const { 
+        correo_institucional, 
+        nombre, 
+        apellido, 
+        rol, 
+        password, 
+        numero_control, 
+        especialidad, 
+        semestre, 
+        grupo, 
+        turno, 
+        curp, 
+        departamento, 
+        telefono, 
+        foto 
+    } = req.body;
 
     // Validar campos obligatorios básicos
     if (!correo_institucional || !nombre || !apellido || !rol || !password) {
@@ -73,7 +88,7 @@ const registrarUsuario = async (req, res) => {
     // Queries dinámicas según el rol
     const queries = {
         checkUserExists: `SELECT id_usuario FROM usuarios WHERE correo_institucional = ?`,
-        insertUser: `INSERT INTO usuarios (correo_institucional, nombre, apellido, rol, contraseña) VALUES (?, ?, ?, ?, ?)`,
+        insertUser: `INSERT INTO usuarios (correo_institucional, nombre, apellido, rol, contraseña, foto) VALUES (?, ?, ?, ?, ?, ?)`,
         insertAlumno: `INSERT INTO alumnos (id_usuario, numero_control, especialidad, semestre, grupo, turno, curp) VALUES (?, ?, ?, ?, ?, ?, ?)`,
         insertProfesor: `INSERT INTO profesores (id_usuario, departamento, especialidad, telefono) VALUES (?, ?, ?, ?)`
     };
@@ -88,7 +103,14 @@ const registrarUsuario = async (req, res) => {
         }
 
         // Insertar en la tabla "usuarios"
-        const [userResult] = await conexion.execute(queries.insertUser, [correo_institucional, nombre, apellido, rol, password]);
+        const [userResult] = await conexion.execute(queries.insertUser, [
+            correo_institucional, 
+            nombre, 
+            apellido, 
+            rol, 
+            password, 
+            foto || null // Si no se proporciona foto, guarda `null`
+        ]);
         const userId = userResult.insertId;
 
         // Insertar en la tabla correspondiente según el rol
@@ -115,6 +137,7 @@ const registrarUsuario = async (req, res) => {
         await conexion.end();
     }
 };
+
 
 const actualizarUsuario = async (req, res) => {
     const { id_usuario } = req.params;
@@ -254,6 +277,7 @@ const listaUsuarios = async (req, res) => {
             u.id_usuario AS id, u.nombre, u.apellido, u.rol, u.foto, u.correo_institucional,
             CASE 
                 WHEN u.rol = 'Alumno' THEN JSON_OBJECT(
+                    'id_alumno', a.id_alumno,
                     'numero_control', a.numero_control,
                     'especialidad', a.especialidad,
                     'semestre', a.semestre,
@@ -261,6 +285,7 @@ const listaUsuarios = async (req, res) => {
                     'turno', a.turno
                 )
                 WHEN u.rol = 'Profesor' THEN JSON_OBJECT(
+                    'id_profesor', p.id_profesor,
                     'departamento', p.departamento,
                     'especialidad', p.especialidad,
                     'telefono', p.telefono

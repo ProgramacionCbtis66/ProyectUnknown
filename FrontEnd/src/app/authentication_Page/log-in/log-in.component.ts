@@ -36,14 +36,12 @@ export class LogInComponent implements OnInit {
 
     try {
       const response = await firstValueFrom(this.authService.login(userData));
-      console.log("Respuesta de login:", response); // <-- Depuración 
 
       localStorage.setItem("adae", response.token);
       localStorage.setItem("fotoPerfil", response.foto);
       this.sesion._foto = response.foto;
 
       const decodedToken = this.authService.decodifica();
-      console.log("Token decodificado:", decodedToken, "Imagen: ", response.foto); // <-- Depuración
 
       this.sesion._usuario = decodedToken.nombre;
       this.sesion._apellido = decodedToken.apellido;
@@ -58,6 +56,7 @@ export class LogInComponent implements OnInit {
         this.sesion._turno = alumno.turno;
         this.sesion._curp = alumno.curp;
         this.sesion._grupo = alumno.grupo;
+        this.sesion._id_alumno = alumno.id_alumno;
       }
 
       // Comparar la fecha de nacimiento con la fecha actual para la felicitación

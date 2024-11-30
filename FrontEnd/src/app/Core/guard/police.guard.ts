@@ -17,7 +17,8 @@ export class PoliceGuard implements CanActivate {
       'segurity_user', 
       'notifications_user', 
       'connected_devices_user', 
-      'Main_Dashboard/clases'
+      'Main_Dashboard/clases',
+      'Main_Dashboard/clases-dashboard',
     ],
     Profesor: [
       'Main_Dashboard', 
@@ -26,7 +27,8 @@ export class PoliceGuard implements CanActivate {
       'segurity_user', 
       'notifications_user', 
       'connected_devices_user',
-      'Main_Dashboard/clases'
+      'Main_Dashboard/clases',
+      'Main_Dashboard/clases-dashboard',
     ],
     Administrador: [
       'Main_Dashboard', 
@@ -52,7 +54,6 @@ export class PoliceGuard implements CanActivate {
   
     if (this.autentificacion.isAuth()) {
       const user = this.autentificacion.decodifica();
-      console.log('Usuario decodificado:', user);
   
       if (user && user.rol) {
         const rutasPermitidas = this.rutasPermitidasPorRol[user.rol];

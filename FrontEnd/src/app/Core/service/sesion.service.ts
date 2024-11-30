@@ -23,7 +23,8 @@ export class SesionService {
   private semestre = new BehaviorSubject<number | null>(null);
   private turno = new BehaviorSubject<string>('No disponible');
   private curp = new BehaviorSubject<string>('No disponible');
-  private grupo = new BehaviorSubject<string>('No disponible')
+  private grupo = new BehaviorSubject<string>('No disponible');
+  private id_alumno = new BehaviorSubject<number | null>(null);
 
   // Métodos para usuario, apellido, rol y foto
   get _usuario(): string { return this.nombre.value; }
@@ -39,6 +40,9 @@ export class SesionService {
   set _rol(value: string) { this.rol.next(value); }
 
   // Nuevos métodos para los campos del alumno
+  get _id_alumno(): number | null { return this.id_alumno.value; }
+  set _id_alumno(value: number | null) { this.id_alumno.next(value); }
+
   get _numeroControl(): string { return this.numeroControl.value; }
   set _numeroControl(value: string) { this.numeroControl.next(value); }
 

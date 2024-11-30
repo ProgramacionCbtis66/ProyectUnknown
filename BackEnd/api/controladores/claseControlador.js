@@ -353,6 +353,215 @@ const ListClases = async (req, res) => {
     }
 };
 
+const ListClasesByAlumno = async (req, res) => {
+    const { id_alumno } = req.params;
+
+    if (!id_alumno) {
+        return res.status(400).json({ mensaje: 'Se requiere el ID del alumno.' });
+    }
+
+    const queries = {
+        // Obtener las clases del alumno
+        getClasesByAlumno: `
+            SELECT 
+                c.id_clase, 
+                c.nombre_clase, 
+                p.id_profesor, 
+                CONCAT(u.nombre, ' ', u.apellido) AS profesor_nombre
+            FROM alumnos_clases ac
+            JOIN clases c ON ac.id_clase = c.id_clase
+            JOIN profesores p ON c.id_profesor = p.id_profesor
+            JOIN usuarios u ON p.id_usuario = u.id_usuario
+            WHERE ac.id_alumno = ?
+        `,
+        // Obtener las tareas de una clase
+        getTareasByClase: `
+            SELECT 
+                t.id_tarea, 
+                t.titulo, 
+                t.descripcion, 
+                t.fecha_asignacion, 
+                t.fecha_entrega 
+            FROM tareas t
+            WHERE t.id_clase = ?
+        `,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Obtener las clases del alumno
+        const [clases] = await conexion.execute(queries.getClasesByAlumno, [id_alumno]);
+
+        if (!clases.length) {
+            return res.status(404).json({ mensaje: 'El alumno no está inscrito en ninguna clase.' });
+        }
+
+        // Iterar sobre las clases y obtener sus tareas
+        const resultado = [];
+        for (const clase of clases) {
+            const [tareas] = await conexion.execute(queries.getTareasByClase, [clase.id_clase]);
+
+            resultado.push({
+                id_clase: clase.id_clase,
+                nombre_clase: clase.nombre_clase,
+                id_profesor: clase.id_profesor,
+                profesor_nombre: clase.profesor_nombre,
+                tareas: tareas.map((tarea) => ({
+                    id_tarea: tarea.id_tarea,
+                    titulo: tarea.titulo,
+                    descripcion: tarea.descripcion,
+                    fecha_asignacion: tarea.fecha_asignacion,
+                    fecha_entrega: tarea.fecha_entrega,
+                })),
+            });
+        }
+
+        res.status(200).json(resultado);
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al cargar las clases del alumno.');
+    } finally {
+        await conexion.end();
+    }
+};
+
+const ListClasesByProfesor = async (req, res) => {
+    const { id_profesor } = req.params;
+
+    if (!id_profesor) {
+        return res.status(400).json({ mensaje: 'Se requiere el ID del profesor.' });
+    }
+
+    const queries = {
+        // Obtener las clases asignadas al profesor
+        getClasesByProfesor: `
+            SELECT 
+                c.id_clase, 
+                c.nombre_clase, 
+                CONCAT(u.nombre, ' ', u.apellido) AS profesor_nombre
+            FROM clases c
+            JOIN profesores p ON c.id_profesor = p.id_profesor
+            JOIN usuarios u ON p.id_usuario = u.id_usuario
+            WHERE p.id_profesor = ?
+        `,
+        // Obtener tareas asignadas a una clase
+        getTareasByClase: `
+            SELECT 
+                t.id_tarea, 
+                t.titulo, 
+                t.descripcion, 
+                t.fecha_asignacion, 
+                t.fecha_entrega 
+            FROM tareas t
+            WHERE t.id_clase = ?
+        `,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Obtener las clases asignadas al profesor
+        const [clases] = await conexion.execute(queries.getClasesByProfesor, [id_profesor]);
+
+        if (!clases.length) {
+            return res.status(404).json({ mensaje: 'No se encontraron clases para este profesor.' });
+        }
+
+        // Iterar sobre las clases y obtener sus tareas
+        const resultado = [];
+        for (const clase of clases) {
+            const [tareas] = await conexion.execute(queries.getTareasByClase, [clase.id_clase]);
+
+            resultado.push({
+                id_clase: clase.id_clase,
+                nombre_clase: clase.nombre_clase,
+                profesor_nombre: clase.profesor_nombre,
+                tareas: tareas.map((tarea) => ({
+                    id_tarea: tarea.id_tarea,
+                    titulo: tarea.titulo,
+                    descripcion: tarea.descripcion,
+                    fecha_asignacion: tarea.fecha_asignacion,
+                    fecha_entrega: tarea.fecha_entrega,
+                })),
+            });
+        }
+
+        res.status(200).json(resultado);
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al cargar las clases del profesor.');
+    } finally {
+        await conexion.end();
+    }
+};
+
+const DeleteClaseById = async (req, res) => {
+    const { id_clase } = req.params;
+
+    if (!id_clase) {
+        return res.status(400).json({ mensaje: 'Se requiere el ID de la clase.' });
+    }
+
+    const queries = {
+        deleteAsistenciasByClase: `
+            DELETE asistencias
+            FROM asistencias
+            JOIN alumnos_clases ON asistencias.id_alumno_clase = alumnos_clases.id_alumno_clase
+            WHERE alumnos_clases.id_clase = ?
+        `,
+        deleteTareasAlumnosByClase: `
+            DELETE tareas_alumnos
+            FROM tareas_alumnos
+            JOIN tareas ON tareas_alumnos.id_tarea = tareas.id_tarea
+            WHERE tareas.id_clase = ?
+        `,
+        deleteTareasByClase: `
+            DELETE FROM tareas
+            WHERE id_clase = ?
+        `,
+        deleteAlumnosClasesByClase: `
+            DELETE FROM alumnos_clases
+            WHERE id_clase = ?
+        `,
+        deleteClase: `
+            DELETE FROM clases
+            WHERE id_clase = ?
+        `,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        await conexion.beginTransaction();
+
+        // Eliminar asistencias relacionadas con la clase
+        await conexion.execute(queries.deleteAsistenciasByClase, [id_clase]);
+
+        // Eliminar tareas de alumnos relacionadas con la clase
+        await conexion.execute(queries.deleteTareasAlumnosByClase, [id_clase]);
+
+        // Eliminar tareas relacionadas con la clase
+        await conexion.execute(queries.deleteTareasByClase, [id_clase]);
+
+        // Eliminar relaciones de alumnos con la clase
+        await conexion.execute(queries.deleteAlumnosClasesByClase, [id_clase]);
+
+        // Eliminar la clase
+        const [result] = await conexion.execute(queries.deleteClase, [id_clase]);
+
+        if (result.affectedRows === 0) {
+            await conexion.rollback();
+            return res.status(404).json({ mensaje: 'Clase no encontrada.' });
+        }
+
+        await conexion.commit();
+        res.status(200).json({ mensaje: 'Clase eliminada correctamente.' });
+    } catch (error) {
+        await conexion.rollback();
+        handleDatabaseError(error, res, 'Error al eliminar la clase.');
+    } finally {
+        await conexion.end();
+    }
+};
 
 
-export default {crearClase, agregarTarea, asociarAlumnosAClase, ListClases, obtenerTareasPendientes, actualizarEstadoYCalificacion };
+export default {crearClase, agregarTarea, asociarAlumnosAClase, ListClases, obtenerTareasPendientes, actualizarEstadoYCalificacion, ListClasesByAlumno, ListClasesByProfesor, DeleteClaseById };

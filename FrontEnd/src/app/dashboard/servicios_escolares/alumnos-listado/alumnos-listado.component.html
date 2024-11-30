@@ -137,7 +137,7 @@
         (click)="closeAddStudentModal()"
       >
         <div class="modal-content" (click)="$event.stopPropagation()">
-          <h2>Enviar Correo</h2>
+          <h2>Añadir nuevo alumno</h2>
           <form (ngSubmit)="addStudent()">
             <div class="form-grid">
               <div class="form-group">
@@ -145,7 +145,7 @@
                 <input
                   type="text"
                   id="nombre"
-                  [(ngModel)]="correoData.nombre"
+                  [(ngModel)]="nuevoAlumno.nombre"
                   name="nombre"
                   required
                 />
@@ -155,7 +155,7 @@
                 <input
                   type="text"
                   id="apellido"
-                  [(ngModel)]="correoData.apellido"
+                  [(ngModel)]="nuevoAlumno.apellido"
                   name="apellido"
                   required
                 />
@@ -165,7 +165,7 @@
                 <input
                   type="email"
                   id="correoInstitucional"
-                  [(ngModel)]="correoData.correoInstitucional"
+                  [(ngModel)]="nuevoAlumno.correo_institucional"
                   name="correoInstitucional"
                   required
                 />
@@ -175,7 +175,7 @@
                 <input
                   type="password"
                   id="contrasena"
-                  [(ngModel)]="correoData.contrasena"
+                  [(ngModel)]="nuevoAlumno.password"
                   name="contrasena"
                   required
                 />
@@ -185,7 +185,7 @@
                 <input
                   type="number"
                   id="semestre"
-                  [(ngModel)]="correoData.semestre"
+                  [(ngModel)]="nuevoAlumno.semestre"
                   name="semestre"
                   required
                 />
@@ -195,7 +195,7 @@
                 <input
                   type="text"
                   id="grupo"
-                  [(ngModel)]="correoData.grupo"
+                  [(ngModel)]="nuevoAlumno.grupo"
                   name="grupo"
                   required
                 />
@@ -205,7 +205,7 @@
                 <input
                   type="text"
                   id="especialidad"
-                  [(ngModel)]="correoData.especialidad"
+                  [(ngModel)]="nuevoAlumno.especialidad"
                   name="especialidad"
                   required
                 />
@@ -215,7 +215,7 @@
                 <input
                   type="text"
                   id="numeroControl"
-                  [(ngModel)]="correoData.numeroControl"
+                  [(ngModel)]="nuevoAlumno.numero_control"
                   name="numeroControl"
                   required
                 />
@@ -224,7 +224,7 @@
                 <label for="turno">Turno:</label>
                 <select
                   id="turno"
-                  [(ngModel)]="correoData.turno"
+                  [(ngModel)]="nuevoAlumno.turno"
                   name="turno"
                   required
                 >
@@ -237,7 +237,7 @@
                 <input
                   type="text"
                   id="curp"
-                  [(ngModel)]="correoData.curp"
+                  [(ngModel)]="nuevoAlumno.curp"
                   name="curp"
                   required
                 />

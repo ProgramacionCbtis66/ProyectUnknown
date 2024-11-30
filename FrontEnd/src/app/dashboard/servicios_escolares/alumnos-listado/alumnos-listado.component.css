@@ -222,24 +222,13 @@
 
 /* Gota de opciones */
 .options-dropdown {
-  position: absolute;
-  top: 50%;
-  right: 1rem;
-  transform: translateY(-50%);
-  background-color: #2b2b2b;
-  color: white;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
   opacity: 0;
   transition-duration: 0.4s;
 }
 
 .options-dropdown i {
+  background-color: #2b2b2b;
+  border-radius: 50%;
   color: white;
   width: 15px;
   height: 20px;
@@ -258,22 +247,27 @@
   top: 50%;
   right: 1rem;
   transform: translateY(-50%);
-  background-color: #2b2b2b;
   color: white;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  padding: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   transition: opacity 0.4s, transform 0.4s;
 }
 
 .options-dropdown i {
+  display: flex;
+  left: 500px;
+  justify-content: center;
+align-items: center;  cursor: pointer;
+  background-color: #2b2b2b;
+  border-radius: 50%;
   color: white;
-  width: 15px;
-  height: 20px;
+  width: 35px;
+  height: 35px;
+  aspect-ratio: 1;
 }
 
 /* Estilo del menú de opciones */

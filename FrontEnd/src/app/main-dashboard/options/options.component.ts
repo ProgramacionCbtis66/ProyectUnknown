@@ -29,7 +29,7 @@ export class OptionsComponent {
   }
 
   goToClases() {
-    this.router.navigate(['/Main_Dashboard/clases']);
+    this.router.navigate(['/Main_Dashboard/clases-dashboard']);
   }
 
   goToMakeClases() {

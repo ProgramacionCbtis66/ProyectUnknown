@@ -16,10 +16,10 @@ interface Usuario {
   apellido: string;
   rol: string;
   foto?: string;
-  numero_control: string; // Verifica este campo en la respuesta
+  numero_control: string;
   especialidad: string;
-  semestre: number; // Asegúrate de que sea número
-  turno: string; // Asegúrate de que sea 'Matutino' o 'Vespertino'
+  semestre: number;
+  turno: string;
   correo_institucional: string;
 }
 
@@ -29,7 +29,7 @@ interface Usuario {
 export class AuthService {
 
   private ruta = environment.HTTPS; // URL base del servidor
-  private usr = environment.autorization; // URL de autorización
+  private usr = environment.autorization; // Autorización desde el environment
   public estatus: boolean = true; // Estado de autenticación
 
   constructor(
@@ -37,12 +37,11 @@ export class AuthService {
     private jwt: JwtHelperService,
     private toastr: ToastrService,
     protected sesion: SesionService
-
   ) { 
     this.restaurarSesion(); // Restauramos la sesión al cargar el servicio
   }
 
-  // Cierra la sesion del usuario
+  // Cierra la sesión del usuario
   public cerrarSesion(): void {
     localStorage.removeItem("adae"); // Elimina el token
     this.limpiarSesion(); // Limpia los datos de la sesión en memoria
@@ -60,17 +59,17 @@ export class AuthService {
 
         // Establecer datos del alumno si existen en el token
         if (decodedToken.alumno) {
-            const alumno = decodedToken.alumno; // Accede a los datos del alumno dentro del token
+            const alumno = decodedToken.alumno;
             this.sesion._numeroControl = alumno.numero_control;
             this.sesion._especialidad = alumno.especialidad;
             this.sesion._semestre = alumno.semestre;
             this.sesion._turno = alumno.turno;
             this.sesion._curp = alumno.curp;
             this.sesion._grupo = alumno.grupo;
+            this.sesion._id_alumno = alumno.id_alumno;
         }
     }
-}
-
+  }
 
   // Método para limpiar la sesión al cerrar sesión
   limpiarSesion(): void {
@@ -89,8 +88,8 @@ export class AuthService {
 
   // Método para iniciar sesión
   public login(user: any): Observable<any> {
-    return this.http.post('http://localhost:4000/apiAdae/usr/login/', user)
-      .pipe(catchError(this.handleError.bind(this))); // Manejo de errores
+    return this.http.post(`${this.ruta}/usr/login/`, user) // Se usa `this.ruta`
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
   // Verifica si el usuario está autenticado
@@ -110,7 +109,7 @@ export class AuthService {
     if (token) {
       return decode(token); // Decodifica el token si no es nulo
     }
-    return null; // Retorna null si no hay token
+    return null;
   }
 
   // Continúa la sesión aumentando la expiración del token
@@ -135,17 +134,5 @@ export class AuthService {
       return true;
     }
     return false;
-  }
-
-  //metodo para la lista jeje luego lo muevo para organizarlo bien
-
-  // Nuevo método para obtener usuarios
-  getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>("http://localhost:4000/apiAdae/usr/listUsr?rol=Alumno");
-  }
-  
-
-  updateAlumno(id: number, data: any): Observable<any> {
-    return this.http.put("http://localhost:4000/apiAdae/usr/ActualizarAlumno", data);
   }
 }

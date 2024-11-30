@@ -23,6 +23,7 @@ import { AlumnosRegistrosComponent } from './dashboard/servicios_escolares/alumn
 import { AlumnosGruposComponent } from './dashboard/servicios_escolares/alumnos-grupos/alumnos-grupos.component';
 import { ClasesComponent } from './dashboard/alumno/clases/clases.component';
 import { OptionsComponent } from './main-dashboard/options/options.component';
+import { ClassDashboardComponent } from './main-dashboard/class-dashboard/class-dashboard.component';
 
 
 const routes: Routes = [
@@ -44,6 +45,7 @@ const routes: Routes = [
       { path: 'alumnos-listado', component: AlumnosListadoComponent, canActivate: [PoliceGuard] },
       { path: 'servicios-menu', component: ServiciosMenuComponent, canActivate: [PoliceGuard] },
       { path: 'alumnos-clases-registro', component: AlumnosClasesComponent, canActivate: [PoliceGuard] },
+      { path: 'clases-dashboard',component:ClassDashboardComponent, canActivate: [PoliceGuard]},
       { path: 'alumnos-registros', component: AlumnosRegistrosComponent, canActivate: [PoliceGuard] },
       { path: 'alumnos-grupos', component: AlumnosGruposComponent, canActivate: [PoliceGuard] },
       { path: 'clases', component: ClasesComponent, canActivate: [PoliceGuard] },

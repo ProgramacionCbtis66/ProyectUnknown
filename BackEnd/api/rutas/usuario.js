@@ -5,7 +5,7 @@ import vtoken from "./Authorization/Vtoken.js";
 const usr = Router();
 
 // Listar usuarios
-usr.get("/usr/listUsr", vtoken, usuario.listaUsuarios);
+usr.get("/usr/listUsr", usuario.listaUsuarios);
 
 // Iniciar sesión
 usr.post("/usr/login", usuario.login);
