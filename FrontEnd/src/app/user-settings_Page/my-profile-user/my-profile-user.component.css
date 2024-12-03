@@ -1,100 +1,223 @@
-.Profile {
-  background-color: #3e3e3e;
-  height: 300px;
-  border-radius: 20px;
-  align-items: center;
-  /* Alinea la imagen y el texto verticalmente */
-  padding: 20px;
-  /* Añade un poco de espacio interno */
-  margin-top: 24px;
-  margin-bottom: 24px;
-  overflow: hidden;
-  /* Evita que el efecto hover de los li salga del borde redondeado */
-  flex-direction: row;
-  display: flex;
-
+/* Variables y configuración inicial */
+:root {
+  --primary-bg: #1a1a2e;
+  --card-bg: rgba(255, 255, 255, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent-color: #4f46e5;
+  --gradient-1: linear-gradient(135deg, #4f46e5, #7c3aed);
+  --gradient-2: linear-gradient(45deg, #3b82f6, #2563eb);
+  --shadow-1: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-2: 0 4px 16px rgba(31, 41, 55, 0.1);
+  --border-radius: 24px;
 }
 
-.Notifications {
-  background-color: #3e3e3e;
-  height: 300px;
-  border-radius: 20px;
-  padding: 20px;
-  margin-top: 24px;
-  margin-bottom: 24px;
-  overflow: hidden;
-  /* Evita que el efecto hover de los li salga del borde redondeado */
-
+/* Estilos base y animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.widgets {
-  background-color: #3e3e3e;
-  height: 624px;
-  border-radius: 20px;
-  padding: 20px;
-  margin-top: 24px;
-  margin-bottom: 24px;
-  overflow: hidden;
-  /* Evita que el efecto hover de los li salga del borde redondeado */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.container {
+  min-height: 100vh;
+  background: var(--primary-bg);
+  padding: 2rem;
+  color: var(--text-primary);
   position: relative;
-
 }
 
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* Cambia de right a left para mover la barra al lado izquierdo */
-  width: 45px;
-  /* Ancho de la barra */
-  height: 100%;
-  /* Altura de la barra */
-  background-color: #333;
-  /* Color de la barra */
-}
-
-.widgets::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  /* Coloca la barra en la parte inferior */
-  left: 0;
+.container > img {
   width: 100%;
-  /* Ancho de la barra para que ocupe todo el div */
-  height: 45px;
-  /* Altura de la barra */
-  background-color: #333;
-  /* Color de la barra */
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* Banner estilizado */
+.banner {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.banner-pattern {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.6),
+    rgba(124, 58, 237, 0.6)
+  );
+  backdrop-filter: blur(8px);
+  border-radius: var(--border-radius);
+  z-index: 1;
+}
+
+/* Layout principal */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-top: 2rem; /* Cambiado de -4rem a 2rem */
+  position: relative;
+  z-index: 2;
+  animation: fadeIn 1s ease-out 0.3s backwards;
+}
+
+/* Tarjetas base */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  box-shadow: var(--shadow-1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-2);
+}
+
+/* Perfil */
+.profile-card {
+  background: var(--gradient-2);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 .profile-pic {
-  margin-left: 45px;
-  margin-right: 25px;
-  
-  width: 150px;
-   height:150px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-2);
+  transition: transform 0.3s ease;
 }
 
-.InfoProfile{
-  flex-direction: column;
-  color: white;
+.profile-pic:hover {
+  transform: scale(1.05);
 }
 
-.container {}
+.profile-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #fff, #e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-/*Datos Alumnos*/
+/* Asistencias */
+.attendance-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--accent-color) 100%,
+    rgba(255, 255, 255, 0.1) 0%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem auto;
+  position: relative;
+  animation: pulse 2s infinite;
+}
 
-.alumno-info-grid {
+.percentage {
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Detalles de la cuenta */
+.details-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño */
-  gap: 0.5rem; /* Espacio entre los elementos */
-  padding: 1rem;
+  gap: 1.5rem;
 }
 
-.alumno-info-grid p {
-  margin: 0;
-  padding: 0.5rem;
-  background-color: #333;
-  border-radius: 10px;
+.detail-item {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.detail-item:hover {
+  transform: translateX(10px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.value {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .container > img {
+    height: 150px;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .banner {
+    height: 150px;
+  }
+}
+
+/* Efectos de hover y focus */
+.card:focus-within {
+  box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* Animación de carga */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.loading {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
 }
