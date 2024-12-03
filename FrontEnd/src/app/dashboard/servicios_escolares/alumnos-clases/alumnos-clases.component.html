@@ -1,98 +1,126 @@
-<div class="container">
-  <div class="container-header">
+<!-- src/app/components/alumnos-clases/alumnos-clases.component.html -->
+
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Clases</h2>
     <button
       type="button"
-      class="btn-addclass"
+      class="btn btn-success"
       data-bs-toggle="modal"
       data-bs-target="#crearClaseModal"
+      aria-label="Agregar Clase"
     >
-      <i class="fi fi-br-plus"></i>
+      <i class="fi fi-br-plus me-2"></i> Agregar Clase
     </button>
+  </div>
 
-    <!-- Modal para crear clase -->
-    <div
-      class="modal fade"
-      id="crearClaseModal"
-      tabindex="-1"
-      aria-labelledby="crearClaseModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
+  <!-- Modal para crear clase -->
+  <div
+    class="modal fade"
+    id="crearClaseModal"
+    tabindex="-1"
+    aria-labelledby="crearClaseModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form (ngSubmit)="crearClase()">
           <div class="modal-header">
             <h5 class="modal-title" id="crearClaseModalLabel">Crear Clase</h5>
             <button
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
-              aria-label="Close"
+              aria-label="Cerrar"
             ></button>
           </div>
           <div class="modal-body">
-            <form (ngSubmit)="crearClase()">
-              <div class="mb-3">
-                <label for="nombreClase" class="form-label"
-                  >Nombre de la Clase:</label
+            <div class="mb-3">
+              <label for="nombreClase" class="form-label">Nombre de la Clase:</label>
+              <input
+                type="text"
+                id="nombreClase"
+                class="form-control"
+                [(ngModel)]="nombreClase"
+                name="nombreClase"
+                required
+                placeholder="Ingresa el nombre de la clase"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="idProfesor" class="form-label">Profesor:</label>
+              <select
+                id="idProfesor"
+                class="form-select"
+                [(ngModel)]="idProfesor"
+                name="idProfesor"
+                required
+              >
+                <option value="" disabled selected>Selecciona un profesor</option>
+                <option
+                  *ngFor="let profesor of profesores"
+                  [value]="profesor.id_profesor"
                 >
-                <input
-                  type="text"
-                  id="nombreClase"
-                  class="form-control"
-                  [(ngModel)]="nombreClase"
-                  name="nombreClase"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="idProfesor" class="form-label">Profesor:</label>
-                <select
-                  id="idProfesor"
-                  class="form-select"
-                  [(ngModel)]="idProfesor"
-                  name="idProfesor"
-                  required
-                >
-                  <option
-                    *ngFor="let profesor of profesores"
-                    [value]="profesor.id_profesor"
-                  >
-                    {{ profesor.nombre }}
-                  </option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-success">Crear Clase</button>
-            </form>
+                  {{ profesor.nombre_completo }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Crear Clase</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <!-- Listado de clases -->
-  <div class="clases">
-    <div class="card" *ngFor="let clase of clases">
-      <div class="card-header">
-        <h3>{{ clase.nombre_clase }}</h3>
-        <p><strong>Profesor:</strong> {{ clase.profesor_nombre }}</p>
-      </div>
-      <div class="card-body">
-        <h4>Opciones</h4>
-        <div class="Opciones">
-          <button
-            class="class-option"
-            data-bs-toggle="modal"
-            data-bs-target="#agregarAlumnoModal"
-            (click)="abrirModalAgregarAlumnos(clase.id_clase)"
-          >
-            <i class="fi fi-ss-user-add"></i>
-          </button>
-          <button class="class-option" (click)="eliminarClase(clase.id_clase)">
-            <i class="fi fi-ss-trash"></i>
-          </button>
-          <button class="class-option">
-            <i class="fi fi-ss-pencil"></i>
-          </button>
+  <div class="row">
+    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let clase of clases">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title mb-0">{{ clase.nombre_clase }}</h5>
+            <small class="text-muted">Profesor: {{ clase.profesor_nombre }}</small>
+          </div>
+          <div class="btn-group" role="group" aria-label="Opciones de Clase">
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#agregarAlumnoModal"
+              (click)="abrirModalAgregarAlumnos(clase.id_clase)"
+              aria-label="Agregar Alumnos"
+            >
+              <i class="fi fi-ss-user-add"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="eliminarClase(clase.id_clase)"
+              aria-label="Eliminar Clase"
+            >
+              <i class="fi fi-ss-trash"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              aria-label="Editar Clase"
+            >
+              <i class="fi fi-ss-pencil"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Puedes agregar más contenido en el body de la tarjeta si lo deseas -->
+        <div class="card-body">
+          <!-- Contenido adicional de la clase -->
         </div>
       </div>
     </div>
@@ -117,39 +145,41 @@
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
-          aria-label="Close"
+          aria-label="Cerrar"
         ></button>
       </div>
       <div class="modal-body">
-        <div class="mb-3">
-          <label for="filtroGrupo" class="form-label">Filtrar por Grupo:</label>
-          <select
-            id="filtroGrupo"
-            class="form-select"
-            [(ngModel)]="filtroGrupo"
-            (change)="filtrarAlumnos()"
-          >
-            <option value="">Todos</option>
-            <option *ngFor="let grupo of grupos" [value]="grupo">
-              {{ grupo }}
-            </option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="filtroSemestre" class="form-label"
-            >Filtrar por Semestre:</label
-          >
-          <select
-            id="filtroSemestre"
-            class="form-select"
-            [(ngModel)]="filtroSemestre"
-            (change)="filtrarAlumnos()"
-          >
-            <option value="">Todos</option>
-            <option *ngFor="let semestre of semestres" [value]="semestre">
-              {{ semestre }}
-            </option>
-          </select>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="filtroGrupo" class="form-label">Filtrar por Grupo:</label>
+            <select
+              id="filtroGrupo"
+              class="form-select"
+              [(ngModel)]="filtroGrupo"
+              (change)="filtrarAlumnos()"
+              name="filtroGrupo"
+            >
+              <option value="">Todos</option>
+              <option *ngFor="let grupo of grupos" [value]="grupo">
+                {{ grupo }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="filtroSemestre" class="form-label">Filtrar por Semestre:</label>
+            <select
+              id="filtroSemestre"
+              class="form-select"
+              [(ngModel)]="filtroSemestre"
+              (change)="filtrarAlumnos()"
+              name="filtroSemestre"
+            >
+              <option value="">Todos</option>
+              <option *ngFor="let semestre of semestres" [value]="semestre">
+                {{ semestre }}
+              </option>
+            </select>
+          </div>
         </div>
         <ul class="list-group">
           <li
@@ -157,12 +187,28 @@
             class="list-group-item d-flex justify-content-between align-items-center"
           >
             {{ alumno.nombre }}
-            <input type="checkbox" [(ngModel)]="alumno.seleccionado" />
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [(ngModel)]="alumno.seleccionado"
+                name="seleccionado-{{ alumno.id }}"
+                id="seleccionado-{{ alumno.id }}"
+                aria-label="Seleccionar Alumno"
+              />
+              <label class="form-check-label" for="seleccionado-{{ alumno.id }}">
+                Seleccionar
+              </label>
+            </div>
           </li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
           Cerrar
         </button>
         <button
