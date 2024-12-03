@@ -1,6 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ClasesService } from 'src/app/Core/service/clases.service';
 import { UsuarioService } from 'src/app/Core/service/usuario.service';
+
+  // Interfaces definidas dentro del mismo archivo
+  interface Clase {
+    id_clase: number;
+    nombre_clase: string;
+    profesor_nombre: string;
+    id_profesor: number;
+  }
+
+  interface Profesor {
+    id_profesor: number;
+    nombre_completo: string;
+  }
+
+  interface Alumno {
+    id: number;
+    nombre: string;
+    grupo: string;
+    semestre: number;
+    seleccionado?: boolean;
+  }
 
 @Component({
   selector: 'app-alumnos-clases',
@@ -8,22 +30,29 @@ import { UsuarioService } from 'src/app/Core/service/usuario.service';
   styleUrls: ['./alumnos-clases.component.css'],
 })
 export class AlumnosClasesComponent implements OnInit {
+
   // Variables para manejar las clases
-  clases: any[] = [];
-  profesores: any[] = [];
+  clases: Clase[] = [];
+  profesores: Profesor[] = [];
   nombreClase: string = '';
   idProfesor: number | null = null;
 
   // Variables para manejar los alumnos
-  usuarios: any[] = [];
-  filteredUsuarios: any[] = [];
+  usuarios: Alumno[] = [];
+  filteredUsuarios: Alumno[] = [];
   filtroGrupo: string = '';
-  filtroSemestre: number | '' = '';
+  filtroSemestre: number | null = null;
   grupos: string[] = [];
   semestres: number[] = [];
   idClaseSeleccionada: number | null = null;
 
-  constructor(private clasesService: ClasesService, private usuarioService: UsuarioService) {}
+  // Subscripciones
+  private subscriptions: Subscription = new Subscription();
+
+  constructor(
+    private clasesService: ClasesService,
+    private usuarioService: UsuarioService
+  ) {}
 
   ngOnInit(): void {
     this.cargarClases();
@@ -31,43 +60,46 @@ export class AlumnosClasesComponent implements OnInit {
     this.cargarAlumnos();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   // Métodos para manejar clases
   cargarClases(): void {
-    this.clasesService.obtenerClases().subscribe((data) => {
-      this.clases = data;
+    const clasesSub = this.clasesService.obtenerClases().subscribe({
+      next: (data: Clase[]) => {
+        this.clases = data;
+      },
+      error: (err) => {
+        console.error('Error al cargar las clases:', err);
+        alert('No se pudieron cargar las clases. Intenta nuevamente más tarde.');
+      },
     });
+    this.subscriptions.add(clasesSub);
   }
 
   crearClase(): void {
-    if (!this.nombreClase || !this.idProfesor) {
+    if (!this.nombreClase.trim() || this.idProfesor === null) {
       alert('Por favor, completa todos los campos.');
       return;
     }
 
-    const nuevaClase = {
-      nombre_clase: this.nombreClase,
+    const nuevaClase: any = {
+      nombre_clase: this.nombreClase.trim(),
       id_profesor: this.idProfesor,
     };
-    
-    console.log('Datos enviados:', nuevaClase);
+
     this.clasesService.crearClase(nuevaClase).subscribe({
       next: () => {
         alert('Clase creada con éxito.');
+        this.resetCrearClaseForm();
         this.cargarClases();
       },
       error: (err) => {
         console.error('Error al crear la clase:', err);
-        if (err.status === 400) {
-          alert('Datos inválidos. Por favor, revisa la información enviada.');
-        } else if (err.status === 500) {
-          alert('Error interno del servidor. Intenta nuevamente más tarde.');
-        } else {
-          alert('Error desconocido. Revisa la consola para más detalles.');
-        }
+        this.handleError(err, 'crear clase');
       },
     });
-    
-    
   }
 
   eliminarClase(idClase: number): void {
@@ -85,32 +117,44 @@ export class AlumnosClasesComponent implements OnInit {
     }
   }
 
-  // Métodos para manejar alumnos
+  // Métodos para manejar profesores y alumnos
   cargarProfesores(): void {
-    this.usuarioService.getProfesores().subscribe((data) => {
-      console.log(data);
-      this.profesores = data
-        .filter((profesor) => profesor.detalle && profesor.detalle.id_profesor) // Filtrar los profesores con "detalle"
-        .map((profesor) => ({
-          id_profesor: profesor.detalle.id_profesor,
-          nombre: `${profesor.nombre} ${profesor.apellido}`,
-        }));
-        
+    const profesoresSub = this.usuarioService.getProfesores().subscribe({
+      next: (data: any[]) => { // Si conoces la estructura exacta, puedes mejorar el tipo
+        this.profesores = data
+          .filter((profesor) => profesor.detalle && profesor.detalle.id_profesor)
+          .map((profesor) => ({
+            id_profesor: profesor.detalle.id_profesor,
+            nombre_completo: `${profesor.nombre} ${profesor.apellido}`,
+          }));
+      },
+      error: (err) => {
+        console.error('Error al cargar los profesores:', err);
+        alert('No se pudieron cargar los profesores. Intenta nuevamente más tarde.');
+      },
     });
+    this.subscriptions.add(profesoresSub);
   }
 
   cargarAlumnos(): void {
-    this.usuarioService.getAlumnos().subscribe((data) => {
-      this.usuarios = data;
-      this.filteredUsuarios = [...data];
-      this.grupos = [...new Set(data.map((u) => u.grupo))];
-      this.semestres = [...new Set(data.map((u) => u.semestre))];
+    const alumnosSub = this.usuarioService.getAlumnos().subscribe({
+      next: (data: Alumno[]) => {
+        this.usuarios = data;
+        this.filteredUsuarios = [...data];
+        this.grupos = Array.from(new Set(data.map((u) => u.grupo))).sort();
+        this.semestres = Array.from(new Set(data.map((u) => u.semestre))).sort((a, b) => a - b);
+      },
+      error: (err) => {
+        console.error('Error al cargar los alumnos:', err);
+        alert('No se pudieron cargar los alumnos. Intenta nuevamente más tarde.');
+      },
     });
+    this.subscriptions.add(alumnosSub);
   }
 
   abrirModalAgregarAlumnos(idClase: number): void {
     this.idClaseSeleccionada = idClase;
-    this.filteredUsuarios = [...this.usuarios]; // Resetear filtro
+    this.resetFiltrosAlumnos();
   }
 
   filtrarAlumnos(): void {
@@ -126,16 +170,50 @@ export class AlumnosClasesComponent implements OnInit {
       .filter((alumno) => alumno.seleccionado)
       .map((alumno) => alumno.id);
 
-    if (this.idClaseSeleccionada) {
-      this.clasesService.asociarAlumnosAClase(this.idClaseSeleccionada, idsSeleccionados).subscribe({
+    if (this.idClaseSeleccionada === null) {
+      alert('No se ha seleccionado una clase.');
+      return;
+    }
+
+    if (idsSeleccionados.length === 0) {
+      alert('No has seleccionado ningún alumno.');
+      return;
+    }
+
+    this.clasesService
+      .asociarAlumnosAClase(this.idClaseSeleccionada, idsSeleccionados)
+      .subscribe({
         next: () => {
           alert('Alumnos agregados correctamente.');
+          // Opcional: Actualizar la lista de clases o realizar otra acción
         },
         error: (err) => {
           console.error('Error al agregar alumnos:', err);
           alert('Ocurrió un error al agregar los alumnos.');
         },
       });
+  }
+
+  // Métodos auxiliares
+  private resetCrearClaseForm(): void {
+    this.nombreClase = '';
+    this.idProfesor = null;
+    // Opcional: Cerrar el modal programáticamente si lo deseas
+  }
+
+  private resetFiltrosAlumnos(): void {
+    this.filtroGrupo = '';
+    this.filtroSemestre = null;
+    this.filteredUsuarios = [...this.usuarios];
+  }
+
+  private handleError(error: any, context: string): void {
+    if (error.status === 400) {
+      alert(`Datos inválidos al ${context}. Por favor, revisa la información enviada.`);
+    } else if (error.status === 500) {
+      alert('Error interno del servidor. Intenta nuevamente más tarde.');
+    } else {
+      alert('Error desconocido. Revisa la consola para más detalles.');
     }
   }
 }
