@@ -14,121 +14,137 @@
       <button class="filter-toggle" (click)="openAddStudentModal()">
         <i class="fi fi-br-plus"></i>
       </button>
-              <!-- Modal para editar estudiante -->
-              <div
-              *ngIf="isEditStudentModalOpen"
-              class="modal-overlay"
-              (click)="closeEditStudentModal()"
-            >
-              <div class="modal-content" (click)="$event.stopPropagation()">
-                <div class="modal-header">
-                  <h2>Editar Estudiante</h2>
-                  <button class="close-btn" (click)="closeEditStudentModal()">
-                    ×
-                  </button>
-                </div>
-                <form (ngSubmit)="updateStudent()" class="form-grid">
-                  <!-- Nombre -->
-                  <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input
-                      id="nombre"
-                      type="text"
-                      [(ngModel)]="selectedStudent.nombre"
-                      name="nombre"
-                      required
-                    />
-                  </div>
-    
-                  <!-- Apellido -->
-                  <div class="form-group">
-                    <label for="apellido">Apellido:</label>
-                    <input
-                      id="apellido"
-                      type="text"
-                      [(ngModel)]="selectedStudent.apellido"
-                      name="apellido"
-                      required
-                    />
-                  </div>
-    
-                  <!-- Número de Control -->
-                  <div class="form-group">
-                    <label for="numero_control">Número de Control:</label>
-                    <input
-                      id="numero_control"
-                      type="text"
-                      [(ngModel)]="selectedStudent.detalles.numero_control"
-                      name="numero_control"
-                      required
-                    />
-                  </div>
-    
-                  <!-- Semestre -->
-                  <div class="form-group">
-                    <label for="semestre">Semestre:</label>
-                    <input
-                      id="semestre"
-                      type="text"
-                      [(ngModel)]="selectedStudent.detalles.semestre"
-                      name="semestre"
-                      required
-                    />
-                  </div>
-    
-                  <!-- Especialidad -->
-                  <div class="form-group">
-                    <label for="especialidad">Especialidad:</label>
-                    <input
-                      id="especialidad"
-                      type="text"
-                      [(ngModel)]="selectedStudent.detalles.especialidad"
-                      name="especialidad"
-                      required
-                    />
-                  </div>
-    
-                  <!-- Turno -->
-                  <div class="form-group">
-                    <label for="turno">Turno:</label>
-                    <select
-                      id="turno"
-                      [(ngModel)]="selectedStudent.detalles.turno"
-                      name="turno"
-                      required
-                    >
-                      <option value="Matutino">Matutino</option>
-                      <option value="Vespertino">Vespertino</option>
-                    </select>
-                  </div>
-    
-                  <!-- Grupo -->
-                  <div class="form-group">
-                    <label for="grupo">Grupo:</label>
-                    <input
-                      id="grupo"
-                      type="text"
-                      [(ngModel)]="selectedStudent.detalles.grupo"
-                      name="grupo"
-                      required
-                    />
-                  </div>
-    
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">
-                      Actualizar
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      (click)="closeEditStudentModal()"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </form>
-              </div>
+      <!-- Modal para editar estudiante -->
+      <div
+        *ngIf="isEditStudentModalOpen"
+        class="modal-overlay"
+        (click)="closeEditStudentModal()"
+      >
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h2>Editar Estudiante</h2>
+            <button class="close-btn" (click)="closeEditStudentModal()">
+              ×
+            </button>
+          </div>
+          <form (ngSubmit)="updateStudent()" class="form-grid">
+            <!-- Nombre -->
+            <div class="form-group">
+              <label for="nombre">Nombre:</label>
+              <input
+                id="nombre"
+                type="text"
+                [(ngModel)]="selectedStudent.nombre"
+                name="nombre"
+                required
+              />
             </div>
+
+            <!-- Apellido -->
+            <div class="form-group">
+              <label for="apellido">Apellido:</label>
+              <input
+                id="apellido"
+                type="text"
+                [(ngModel)]="selectedStudent.apellido"
+                name="apellido"
+                required
+              />
+            </div>
+
+            <!-- Número de Control -->
+            <div class="form-group">
+              <label for="numero_control">Número de Control:</label>
+              <input
+                id="numero_control"
+                type="text"
+                [(ngModel)]="selectedStudent.detalles.numero_control"
+                name="numero_control"
+                required
+              />
+            </div>
+
+            <!-- Semestre -->
+            <div class="form-group">
+              <label for="semestre">Semestre:</label>
+              <input
+                id="semestre"
+                type="number"
+                [(ngModel)]="selectedStudent.detalles.semestre"
+                name="semestre"
+                required
+              />
+            </div>
+
+            <!-- Especialidad -->
+            <div class="form-group">
+              <label for="especialidad">Especialidad:</label>
+              <input
+                id="especialidad"
+                type="text"
+                [(ngModel)]="selectedStudent.detalles.especialidad"
+                name="especialidad"
+                required
+              />
+            </div>
+
+            <!-- Turno -->
+            <div class="form-group">
+              <label for="turno">Turno:</label>
+              <select
+                id="turno"
+                [(ngModel)]="selectedStudent.detalles.turno"
+                name="turno"
+                required
+              >
+                <option value="Matutino">Matutino</option>
+                <option value="Vespertino">Vespertino</option>
+              </select>
+            </div>
+
+            <!-- Grupo -->
+            <div class="form-group">
+              <label for="grupo">Grupo:</label>
+              <input
+                id="grupo"
+                type="text"
+                [(ngModel)]="selectedStudent.detalles.grupo"
+                name="grupo"
+                required
+              />
+            </div>
+
+            <!-- Foto de Perfil -->
+            <div class="form-group">
+              <label for="foto">Foto de Perfil:</label>
+              <input
+                type="file"
+                id="foto"
+                accept="image/*"
+                (change)="onPhotoSelected($event)"
+              />
+              <!-- Vista previa de la foto -->
+              <img
+                *ngIf="selectedStudent.foto"
+                [src]="selectedStudent.foto"
+                alt="Foto de {{ selectedStudent.nombre }}"
+                class="preview-photo-small"
+              />
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="closeEditStudentModal()"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
 
       <!-- Modal para ingresar datos del nuevo alumno -->
       <div

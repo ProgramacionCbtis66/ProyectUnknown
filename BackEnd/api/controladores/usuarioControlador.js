@@ -141,7 +141,7 @@ const registrarUsuario = async (req, res) => {
 
 const actualizarUsuario = async (req, res) => {
     const { id_usuario } = req.params;
-    const { rol, ...datos } = req.body;
+    const { rol, foto, ...datos } = req.body; // Extraemos 'foto' del cuerpo de la solicitud
 
     if (!id_usuario || !rol) {
         return res.status(400).json({ success: false, error: 'Se requiere el ID del usuario y el rol para actualizar.' });
@@ -166,7 +166,7 @@ const actualizarUsuario = async (req, res) => {
 
     // Función para añadir campos dinámicamente
     const addField = (field, value, updateFields, params) => {
-        if (value !== undefined) {
+        if (value !== undefined && value !== null) { // Asegurarse de que el valor no sea undefined o null
             updateFields.push(`${field} = ?`);
             params.push(value);
         }
@@ -177,6 +177,11 @@ const actualizarUsuario = async (req, res) => {
     addField('nombre', datos.nombre, updateFieldsUsuarios, paramsUsuarios);
     addField('apellido', datos.apellido, updateFieldsUsuarios, paramsUsuarios);
 
+    // Agregar la foto si está presente
+    if (foto) {
+        addField('foto', foto, updateFieldsUsuarios, paramsUsuarios);
+    }
+
     // Agregar campos específicos para el rol
     roleFields[rol].forEach(field => addField(field, datos[field], updateFieldsRolEspecifico, paramsRolEspecifico));
 
@@ -186,8 +191,16 @@ const actualizarUsuario = async (req, res) => {
     }
 
     // Preparar las consultas SQL
-    const queryUser = `UPDATE usuarios SET ${updateFieldsUsuarios.join(', ')} WHERE id_usuario = ?`;
-    const queryRolEspecifico = `UPDATE ${rol.toLowerCase()}s SET ${updateFieldsRolEspecifico.join(', ')} WHERE id_usuario = ?`;
+    let queryUser = '';
+    let queryRolEspecifico = '';
+
+    if (updateFieldsUsuarios.length > 0) {
+        queryUser = `UPDATE usuarios SET ${updateFieldsUsuarios.join(', ')} WHERE id_usuario = ?`;
+    }
+
+    if (updateFieldsRolEspecifico.length > 0) {
+        queryRolEspecifico = `UPDATE ${rol.toLowerCase()}s SET ${updateFieldsRolEspecifico.join(', ')} WHERE id_usuario = ?`;
+    }
 
     const conexion = await cnx();
 
@@ -195,18 +208,19 @@ const actualizarUsuario = async (req, res) => {
         await conexion.beginTransaction();
 
         // Actualizar tabla "usuarios" si hay datos
-        if (paramsUsuarios.length > 0) {
+        if (updateFieldsUsuarios.length > 0) {
             paramsUsuarios.push(id_usuario); // Agregar el ID al final
             await conexion.execute(queryUser, paramsUsuarios);
         }
 
         // Actualizar tabla específica según el rol si hay datos
-        if (paramsRolEspecifico.length > 0) {
+        if (updateFieldsRolEspecifico.length > 0) {
             paramsRolEspecifico.push(id_usuario); // Agregar el ID al final
             await conexion.execute(queryRolEspecifico, paramsRolEspecifico);
         }
 
         await conexion.commit();
+
         res.json({
             success: true,
             message: `Usuario y datos del rol "${rol}" actualizados correctamente.`,
@@ -223,6 +237,7 @@ const actualizarUsuario = async (req, res) => {
         await conexion.end();
     }
 };
+
 
 const eliminarUsuario = async (req, res) => {
     const { id_usuario } = req.params;

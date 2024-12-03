@@ -464,6 +464,21 @@ button[type="button"] {
   background-color: #5a6268;
 }
 
+/* alumnos-listado.component.css */
+
+/* Estilos existentes... */
+
+/* Vista previa de la foto más pequeña */
+.preview-photo-small {
+  width: 80px; /* Ajusta según tus necesidades */
+  height: 80px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;

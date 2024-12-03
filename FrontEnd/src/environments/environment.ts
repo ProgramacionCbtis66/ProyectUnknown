@@ -4,7 +4,8 @@
 import { HttpHeaders } from '@angular/common/http';
 export const environment = {
   production: false,
-  HTTPS: 'http://168.238.36.50:4000/apiAdae',
+  // HTTPS: 'https://160.238.36.50:4000/apiAdae',
+  HTTPS: 'http://localhost:4000/apiAdae',
   autorization: {
     headers: new HttpHeaders({ 
       'Content-Type': 'application/json',
