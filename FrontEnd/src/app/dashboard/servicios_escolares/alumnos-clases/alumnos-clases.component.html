@@ -53,6 +53,7 @@
                 id="idProfesor"
                 class="form-select"
                 [(ngModel)]="idProfesor"
+                (change)="onProfesorChange($event)"
                 name="idProfesor"
                 required
               >
@@ -63,6 +64,7 @@
                 >
                   {{ profesor.nombre_completo }}
                 </option>
+                <option *ngIf="profesores.length === 0" disabled>No hay profesores disponibles</option>
               </select>
             </div>
           </div>

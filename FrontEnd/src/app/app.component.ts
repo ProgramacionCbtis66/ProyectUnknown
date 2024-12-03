@@ -39,15 +39,15 @@ export class AppComponent {
 
   // Método para redirigir al dashboard correspondiente
   redirigirAlDashboard() {
-    if (this.sesion._rol !== 'Sin Rol Actual') {
+    if (this.sesion._rol !== 'No disponible') {
       const user = this.sesion._rol;
 
       if (user === 'Alumno') {
-        this.router.navigate(['/Main_Dashboard/alumnos']);
+        this.router.navigate(['/Main_Dashboard/options']);
       } else if (user === 'Profesor') {
-        this.router.navigate(['/Main_Dashboard/docentes']);
+        this.router.navigate(['/Main_Dashboard/options']);
       } else if (user === 'Administrador') {
-        this.router.navigate(['/Main_Dashboard/administradores']);
+        this.router.navigate(['/Main_Dashboard/options']);
       }
 
     } else {

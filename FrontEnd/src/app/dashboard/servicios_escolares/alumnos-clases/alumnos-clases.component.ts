@@ -24,6 +24,22 @@ import { UsuarioService } from 'src/app/Core/service/usuario.service';
     seleccionado?: boolean;
   }
 
+  interface GetUsuario {
+  id: number;
+  id_profesor: number;
+  detalle: any;
+  grupo: string;
+  nombre: string;
+  apellido: string;
+  rol: string;
+  foto?: string;
+  numero_control: string;
+  especialidad: string;
+  semestre: number;
+  turno: string;
+  correo_institucional: string;
+}
+
 @Component({
   selector: 'app-alumnos-clases',
   templateUrl: './alumnos-clases.component.html',
@@ -62,6 +78,10 @@ export class AlumnosClasesComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  onProfesorChange(event: any): void {
+    console.log('Profesor seleccionado ID:', this.idProfesor);
   }
 
   // Métodos para manejar clases
@@ -120,13 +140,17 @@ export class AlumnosClasesComponent implements OnInit {
   // Métodos para manejar profesores y alumnos
   cargarProfesores(): void {
     const profesoresSub = this.usuarioService.getProfesores().subscribe({
-      next: (data: any[]) => { // Si conoces la estructura exacta, puedes mejorar el tipo
+      next: (data: GetUsuario[]) => { // Usar la interfaz correcta
+        console.log('Datos originales de profesores:', data); // Para depuración
+  
         this.profesores = data
-          .filter((profesor) => profesor.detalle && profesor.detalle.id_profesor)
+          .filter((profesor) => profesor.id_profesor) // Filtrar directamente
           .map((profesor) => ({
-            id_profesor: profesor.detalle.id_profesor,
+            id_profesor: profesor.id_profesor, // Acceder directamente
             nombre_completo: `${profesor.nombre} ${profesor.apellido}`,
           }));
+  
+        console.log('Profesores mapeados:', this.profesores); // Para depuración
       },
       error: (err) => {
         console.error('Error al cargar los profesores:', err);
@@ -135,6 +159,7 @@ export class AlumnosClasesComponent implements OnInit {
     });
     this.subscriptions.add(profesoresSub);
   }
+  
 
   cargarAlumnos(): void {
     const alumnosSub = this.usuarioService.getAlumnos().subscribe({
