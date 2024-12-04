@@ -1,121 +1,108 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
 
-html{
-    background-color: #3e3e3e;
-    font-family: 'Poppins', sans-serif;
+html {
+   background-color: #3e3e3e;
+   font-family: 'Poppins', sans-serif;
 }
 
-body{
-    font-family: 'Poppins', sans-serif;
-    
+body {
+   font-family: 'Poppins', sans-serif;
 }
 
-/* Estilos para el layout */
 .layout {
-    display: flex;
-    height: 100vh; /* Para que ocupe toda la altura de la ventana */
+   display: flex;
+   min-height: 100vh;
 }
 
-/* Estilos para la barra lateral */
 .sidebar {
-    max-width:200px ;
-    min-width: 240px; /* Puedes ajustar el ancho de la barra lateral */
-    background-color: #353535;
-    color: white;
-    display: flex;
-    flex-direction: column;
+   max-width: 200px;
+   min-width: 240px;
+   background-color: #353535;
+   color: white;
+   display: flex;
+   flex-direction: column;
+   height: auto;
 }
 
-/* Estilos para el contenedor principal */
 .main_container {
-    flex-grow: 1; /* Ocupa todo el espacio restante */
-    padding: 20px;
-    background-color: #f1f1f1;
-    overflow-y: auto; /* Habilita el scroll si el contenido excede la altura */
+   flex: 1;
+   min-height: 100vh;
+   background-color: #fbfbfd;
+   color: #333;
+   animation: fadeIn 1.5s ease forwards;
+   overflow-y: auto;
+   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
-
 
 .sidebar_header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0 120px 0;
-    color: #ffffff;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin: 20px 0 120px 0;
+   color: #ffffff;
 }
 
 .sidebar_menu ul {
-    list-style: none;
-    padding: 0;
-    width: 100%;
+   list-style: none;
+   padding: 0;
+   width: 100%;
 }
 
 .sidebar_menu li {
-    width: 100%;
-    margin-bottom: 15px;
-    position: relative;
+   width: 100%;
+   margin-bottom: 15px;
+   position: relative;
 }
 
 .sidebar_menu a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 1rem;
-    padding: 10px 20px;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
+   display: flex;
+   align-items: center;
+   text-decoration: none;
+   color: #ffffff;
+   font-size: 1rem;
+   padding: 10px 20px;
+   border-radius: 10px;
+   transition: background-color 0.3s ease;
 }
 
 .highlight {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 5px;
-    height: 75%;
-    background-color: #ffffff;
-    opacity: 0;
-    transition: opacity 0.8s ease;
+   position: absolute;
+   left: 0;
+   top: 50%;
+   transform: translateY(-50%);
+   width: 5px;
+   height: 75%;
+   background-color: #ffffff;
+   opacity: 0;
+   transition: opacity 0.8s ease;
 }
 
 .sidebar_menu a:hover .highlight {
-    opacity: 1;
+   opacity: 1;
 }
 
 .sidebar_menu a:hover {
-    background-color: #525252;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+   background-color: #525252;
+   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.main_container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    background-color: #fbfbfd;
-    color: #333;
-    animation: fadeIn 1.5s ease forwards;
-    overflow-y: auto;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Ajustes para tamaños de pantalla */
 @media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
+   .sidebar {
+       display: none;
+   }
 
-    #user_name_dashboard {
-        font-size: calc(2vw + 3vh);
-    }
+   #user_name_dashboard {
+       font-size: calc(2vw + 3vh);
+   }
 
-    #rol_user_dashboard {
-        font-size: calc(1.5vw + 2vh);
-    }
+   #rol_user_dashboard {
+       font-size: calc(1.5vw + 2vh);
+   }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-    .profile-pic {
-        max-width: 120px;
-        max-height: 120px;
-    }
+   .profile-pic {
+       max-width: 120px;
+       max-height: 120px;
+   }
 }
