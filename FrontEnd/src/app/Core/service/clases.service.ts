@@ -33,8 +33,8 @@ export class ClasesService {
   }
 
   // Asociar alumnos a una clase
-  asociarAlumnosAClase(id_clase: number, ids_alumnos: number[]): Observable<any> {
-    const payload = { id_clase, ids_alumnos };
+  asociarAlumnosAClase(id_clase: number, alumnos: number[]): Observable<any> {
+    const payload = { id_clase, alumnos };
     return this.http.post(`${this.baseUrl}/class/asociarAlumnosAClase`, payload);
   }
 

@@ -24,7 +24,7 @@ interface Usuario {
 interface GetUsuario {
   id: number;
   id_profesor: number;
-  detalle: any;
+  detalles: any;
   grupo: string;
   nombre: string;
   apellido: string;

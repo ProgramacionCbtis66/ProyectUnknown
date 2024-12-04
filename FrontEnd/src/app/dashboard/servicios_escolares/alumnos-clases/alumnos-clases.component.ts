@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import Notiflix from 'notiflix';
 import { ClasesService } from 'src/app/Core/service/clases.service';
 import { UsuarioService } from 'src/app/Core/service/usuario.service';
 
@@ -17,6 +18,7 @@ import { UsuarioService } from 'src/app/Core/service/usuario.service';
   }
 
   interface Alumno {
+    detalles?:{}
     id: number;
     nombre: string;
     grupo: string;
@@ -27,7 +29,7 @@ import { UsuarioService } from 'src/app/Core/service/usuario.service';
   interface GetUsuario {
   id: number;
   id_profesor: number;
-  detalle: any;
+  detalles: any;
   grupo: string;
   nombre: string;
   apellido: string;
@@ -100,7 +102,7 @@ export class AlumnosClasesComponent implements OnInit {
 
   crearClase(): void {
     if (!this.nombreClase.trim() || this.idProfesor === null) {
-      alert('Por favor, completa todos los campos.');
+      Notiflix.Notify.failure('Profavor Completa los campos');
       return;
     }
 
@@ -111,7 +113,7 @@ export class AlumnosClasesComponent implements OnInit {
 
     this.clasesService.crearClase(nuevaClase).subscribe({
       next: () => {
-        alert('Clase creada con éxito.');
+        Notiflix.Notify.success('Clase creada con exito');
         this.resetCrearClaseForm();
         this.cargarClases();
       },
@@ -144,9 +146,9 @@ export class AlumnosClasesComponent implements OnInit {
         console.log('Datos originales de profesores:', data); // Para depuración
   
         this.profesores = data
-          .filter((profesor) => profesor.id_profesor) // Filtrar directamente
+          .filter((profesor) => profesor.detalles?.id_profesor) // Filtrar directamente
           .map((profesor) => ({
-            id_profesor: profesor.id_profesor, // Acceder directamente
+            id_profesor: profesor.detalles?.id_profesor, // Acceder directamente
             nombre_completo: `${profesor.nombre} ${profesor.apellido}`,
           }));
   
@@ -160,22 +162,41 @@ export class AlumnosClasesComponent implements OnInit {
     this.subscriptions.add(profesoresSub);
   }
   
-
   cargarAlumnos(): void {
     const alumnosSub = this.usuarioService.getAlumnos().subscribe({
-      next: (data: Alumno[]) => {
-        this.usuarios = data;
-        this.filteredUsuarios = [...data];
-        this.grupos = Array.from(new Set(data.map((u) => u.grupo))).sort();
-        this.semestres = Array.from(new Set(data.map((u) => u.semestre))).sort((a, b) => a - b);
+      next: (data: GetUsuario[]) => { // Asegúrate de usar la interfaz correcta
+        console.log('Datos originales de alumnos:', data); // Para depuración
+  
+        this.usuarios = data
+          .filter((alumno) => alumno.detalles?.id_alumno) // Filtrar alumnos que tengan el ID válido
+          .map((alumno) => ({
+            id: alumno.detalles.id_alumno, // Asignar al campo 'id' del Alumno
+            nombre: `${alumno.nombre} ${alumno.apellido}`,
+            grupo: alumno.detalles.grupo,
+            semestre: alumno.detalles.semestre,
+            // Añade otros campos relevantes según tu interfaz
+          }));
+  
+        this.filteredUsuarios = [...this.usuarios]; // Inicializar filteredUsuarios con los alumnos filtrados
+  
+        // Obtener valores únicos para grupos y semestres
+        this.grupos = [...new Set(this.usuarios.map(u => u.grupo))].sort();
+        this.semestres = [...new Set(this.usuarios.map(u => u.semestre))].sort((a, b) => a - b);
+  
+        console.log('Alumnos mapeados:', this.usuarios); // Para depuración
+        console.log('Grupos únicos:', this.grupos);
+        console.log('Semestres únicos:', this.semestres);
       },
       error: (err) => {
         console.error('Error al cargar los alumnos:', err);
         alert('No se pudieron cargar los alumnos. Intenta nuevamente más tarde.');
       },
     });
+  
     this.subscriptions.add(alumnosSub);
   }
+  
+  
 
   abrirModalAgregarAlumnos(idClase: number): void {
     this.idClaseSeleccionada = idClase;
@@ -185,7 +206,7 @@ export class AlumnosClasesComponent implements OnInit {
   filtrarAlumnos(): void {
     this.filteredUsuarios = this.usuarios.filter((u) => {
       const coincideGrupo = this.filtroGrupo ? u.grupo === this.filtroGrupo : true;
-      const coincideSemestre = this.filtroSemestre ? u.semestre === this.filtroSemestre : true;
+      const coincideSemestre = this.filtroSemestre ? u.semestre == this.filtroSemestre : true;
       return coincideGrupo && coincideSemestre;
     });
   }
@@ -204,7 +225,7 @@ export class AlumnosClasesComponent implements OnInit {
       alert('No has seleccionado ningún alumno.');
       return;
     }
-
+    console.log(idsSeleccionados, this.idClaseSeleccionada);
     this.clasesService
       .asociarAlumnosAClase(this.idClaseSeleccionada, idsSeleccionados)
       .subscribe({

@@ -253,6 +253,7 @@
   color: white;
   width: 35px;
   height: 35px;
+  aspect-ratio: 1;
 }
 
 .options-dropdown .options-menu {
