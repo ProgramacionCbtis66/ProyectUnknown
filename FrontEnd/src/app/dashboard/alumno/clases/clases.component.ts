@@ -1,13 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClasesService } from '../../../Core/service/clases.service';
-import Notiflix from 'notiflix';
-
-interface Clase {
-  nombreClase: string;
-  nombreProfesor: string;
-  foto: string;
-  tareas: string[];
-}
+import { ActivatedRoute } from '@angular/router';  // Importamos ActivatedRoute
 
 @Component({
   selector: 'app-clases',
@@ -15,11 +7,21 @@ interface Clase {
   styleUrls: ['./clases.component.css']
 })
 export class ClasesComponent implements OnInit {
+  claseId: any;  // Variable para almacenar el ID de la clase
 
-
-  constructor(private dataService: ClasesService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      const numericId = +id!;  // Usamos '!' para indicar que no es nulo
+      if (!isNaN(numericId)) {
+        this.claseId = numericId;
+        console.log('ID de clase:', this.claseId);
+      } else {
+        console.log('El parámetro "id" no es un número válido.');
+      }
+    });
   }
-
+  
 }

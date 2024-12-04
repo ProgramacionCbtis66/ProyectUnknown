@@ -43,6 +43,9 @@ export class LogInComponent implements OnInit {
 
       const decodedToken = this.authService.decodifica();
 
+      console.log(decodedToken);
+      
+
       this.sesion._usuario = decodedToken.nombre;
       this.sesion._apellido = decodedToken.apellido;
       this.sesion._rol = decodedToken.rol;
@@ -57,6 +60,10 @@ export class LogInComponent implements OnInit {
         this.sesion._curp = alumno.curp;
         this.sesion._grupo = alumno.grupo;
         this.sesion._id_alumno = alumno.id_alumno;
+      }
+      if (decodedToken.rol === 'Profesor' && decodedToken.profesor) {
+        const profesor = decodedToken.profesor; // Accede a los datos del alumno dentro del token
+        this.sesion._id_profesor = profesor.id_profesor;
       }
 
       // Comparar la fecha de nacimiento con la fecha actual para la felicitación

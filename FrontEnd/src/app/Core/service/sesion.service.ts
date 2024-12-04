@@ -26,6 +26,10 @@ export class SesionService {
   private grupo = new BehaviorSubject<string>('No disponible');
   private id_alumno = new BehaviorSubject<number | null>(null);
 
+  // Información del profesor
+  private id_profesor = new BehaviorSubject<number | null>(null);
+
+
   // Métodos para usuario, apellido, rol y foto
   get _usuario(): string { return this.nombre.value; }
   set _usuario(value: string) { this.nombre.next(value); }
@@ -60,6 +64,12 @@ export class SesionService {
 
   get _grupo(): string { return this.grupo.value; }
   set _grupo(value: string) { this.grupo.next(value); }
+
+  // Nuevos métodos para los campos del profesor
+  get _id_profesor(): number | null { return this.id_profesor.value; }
+  set _id_profesor(value: number | null) { this.id_profesor.next(value); }
+
+
 
   extraerBase64 = async (foto: any) => new Promise((resolve, reject) => {
     try {

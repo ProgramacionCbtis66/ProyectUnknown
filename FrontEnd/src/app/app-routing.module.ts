@@ -48,20 +48,20 @@ const routes: Routes = [
       { path: 'clases-dashboard',component:ClassDashboardComponent, canActivate: [PoliceGuard]},
       { path: 'alumnos-registros', component: AlumnosRegistrosComponent, canActivate: [PoliceGuard] },
       { path: 'alumnos-grupos', component: AlumnosGruposComponent, canActivate: [PoliceGuard] },
-      { path: 'clases', component: ClasesComponent, canActivate: [PoliceGuard] },
+      { path: 'clase/:id', component: ClasesComponent},
       { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard] },
       { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
       { path: "notifications_user", component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
       { path: "options", component: OptionsComponent, canActivate: [PoliceGuard] },
       { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
-      { path: '', redirectTo: '', pathMatch: 'full' } // Redirección a una vista por defecto
+      { path: '', redirectTo: 'options', pathMatch: 'full' } // Redirección a una vista por defecto
     ]
   },
 
   { path: "terminos-condiciones", component: TerminosCondicionesComponent },
   { path: "sobre-nosotros", component: SobreNosotrosComponent },
   { path: "politica-privacidad", component: PoliticaPrivacidadComponent },
-  { path: '**', redirectTo: '', pathMatch: 'full' } // Ruta por defecto
+  { path: '**', redirectTo: 'options', pathMatch: 'full' } // Ruta por defecto
 ];
 
 

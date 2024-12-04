@@ -1,94 +1,38 @@
-@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css');
-@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
-
-
-body {
-  font-family: 'Poppins', sans-serif;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.clases {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.card {
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 300px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-  margin-bottom: 15px;
-}
-
-.card-header h3 {
-  margin: 0;
-  color: #007bff;
-}
-
-.card-body h4 {
-  margin-top: 0;
-}
-
-.card-body ul {
-  padding-left: 20px;
-}
-
-.card-body li {
-  margin-bottom: 10px;
-}
-
-.btn-addclass{
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  border: none;
+.banner{
   background-color: #333;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition-duration: 0.3s;
+  max-width: 2098px;
+  height: 200px;
+  padding: 50px;
+  margin-inline: 100px;
+  border-radius: 20px;
 }
 
-.btn-addclass:hover{
-  transform: scale(1.15);
-  background-color: #454444;
+.tareas-container{
+  padding-inline: 100px;
 }
 
-.btn-addclass i{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  width: 40px;
+.card{
+margin-block: 25px;
+height: 90px;
+transition-duration: 0.2s;
 }
 
-.container-header{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 30px;
+.card p {
+  margin-top: 10px;
+  margin-inline-start: 50px;
 }
 
-.asignacion{
-  color: rgb(43, 169, 232);
+.card:hover{
+  transform: scale(1.05);
 }
 
-.entrega{
-  color: rgb(175, 26, 26);
-}
-
-small i {
-  margin-left: 12px;
+.add-comentario{
+  padding: 20px;
+  color: white;
+  margin-top: 20px;
+  background-color: #333;
+  width: 300px;
+  height: 400px;
+  border-radius: 20px;
 }

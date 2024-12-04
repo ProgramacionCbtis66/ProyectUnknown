@@ -21,6 +21,11 @@ export class ClasesService {
     return this.http.get(`${this.baseUrl}/class/ListClasesByAlumno/${id_alumno}`);
   }
 
+  // Obtener clases por profesor
+  obtenerClasesPorProfesor(id_profesor: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/class/ListClasesByProfesor/${id_profesor}`);
+  }
+
   // Crear una nueva clase
   crearClase(clase: { nombre_clase: string; id_profesor: number }): Observable<any> {
     return this.http.post(`${this.baseUrl}/class/crearClase`, clase);
