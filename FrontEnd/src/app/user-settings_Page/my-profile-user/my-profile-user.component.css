@@ -1,223 +1,255 @@
-/* Variables y configuración inicial */
+/* Variables */
 :root {
-  --primary-bg: #1a1a2e;
-  --card-bg: rgba(255, 255, 255, 0.1);
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --accent-color: #4f46e5;
-  --gradient-1: linear-gradient(135deg, #4f46e5, #7c3aed);
-  --gradient-2: linear-gradient(45deg, #3b82f6, #2563eb);
-  --shadow-1: 0 8px 32px rgba(0, 0, 0, 0.2);
-  --shadow-2: 0 4px 16px rgba(31, 41, 55, 0.1);
-  --border-radius: 24px;
+  --primary-color: #4F46E5;
+  --success-color: #22C55E;
+  --warning-color: #F59E0B;
+  --danger-color: #EF4444;
+  --background-color: #F3F4F6;
+  --card-bg: #FFFFFF;
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
 }
 
-/* Estilos base y animaciones */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.container {
+/* Contenedor principal */
+.dashboard-container {
   min-height: 100vh;
-  background: var(--primary-bg);
+  background-color: var(--background-color);
   padding: 2rem;
-  color: var(--text-primary);
-  position: relative;
 }
 
-.container > img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+.profile-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Card de Perfil */
+.profile-card {
+  background: var(--card-bg);
   border-radius: var(--border-radius);
-  animation: fadeIn 0.8s ease-out;
-}
-
-/* Banner estilizado */
-.banner {
-  height: 200px;
-  position: relative;
-  overflow: hidden;
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
   margin-bottom: 2rem;
 }
 
-.banner-pattern {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(79, 70, 229, 0.6),
-    rgba(124, 58, 237, 0.6)
-  );
-  backdrop-filter: blur(8px);
-  border-radius: var(--border-radius);
-  z-index: 1;
-}
-
-/* Layout principal */
-.main-content {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 2rem;
-  margin-top: 2rem; /* Cambiado de -4rem a 2rem */
-  position: relative;
-  z-index: 2;
-  animation: fadeIn 1s ease-out 0.3s backwards;
-}
-
-/* Tarjetas base */
-.card {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  border-radius: var(--border-radius);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2rem;
-  box-shadow: var(--shadow-1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-2);
-}
-
-/* Perfil */
-.profile-card {
-  background: var(--gradient-2);
-}
-
-.profile-header {
+.profile-info-container {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 
-.profile-pic {
+.profile-image-wrapper {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  box-shadow: var(--shadow-2);
-  transition: transform 0.3s ease;
+  overflow: hidden;
+  border: 4px solid var(--background-color);
 }
 
-.profile-pic:hover {
-  transform: scale(1.05);
+.profile-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.profile-info h2 {
+.profile-details h1 {
+  margin: 0;
+  color: var(--text-primary);
   font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(to right, #fff, #e0e0e0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
-/* Asistencias */
+.role-tag {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0.5rem 0;
+}
+
+.role-tag.student { background: var(--primary-color); color: white; }
+.role-tag.teacher { background: var(--success-color); color: white; }
+.role-tag.admin { background: var(--warning-color); color: white; }
+
+.specialty {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Grid de Cards */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.data-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease;
+}
+
+.data-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.data-card h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Círculo de Asistencia */
+.attendance-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
 .attendance-circle {
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  background: conic-gradient(
-    var(--accent-color) 100%,
-    rgba(255, 255, 255, 0.1) 0%
-  );
+  position: relative;
+  background: rgb(32, 158, 106);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2rem auto;
+  transition: all 0.3s ease;
+}
+
+.attendance-circle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--success-color) calc(var(--percentage) * 1%),
+    #e5e7eb 0deg
+  );
+}
+
+.circle-content {
   position: relative;
-  animation: pulse 2s infinite;
+  width: 150px;
+  height: 150px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
 }
 
 .percentage {
   font-size: 2.5rem;
-  font-weight: bold;
-  background: var(--gradient-1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: opacity 0.3s ease;
 }
 
-/* Detalles de la cuenta */
-.details-grid {
+.emoji {
+  position: absolute;
+  font-size: 2.5rem;
+  color: rgb(32, 158, 106);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.show-emoji .percentage {
+  opacity: 0;
+}
+
+.show-emoji .emoji {
+  opacity: 1;
+}
+
+/* Contenido de Stats */
+.stat-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-content i {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Card de Información */
+.info-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.info-card h2 {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+}
+
+.info-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
 }
 
-.detail-item {
+.info-item {
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: transform 0.2s ease;
+  background: var(--background-color);
+  border-radius: var(--border-radius);
 }
 
-.detail-item:hover {
-  transform: translateX(10px);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.label {
+.info-item label {
+  display: block;
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
 }
 
-.value {
-  font-weight: 500;
+.info-item span {
+  display: block;
+  font-size: 1rem;
   color: var(--text-primary);
+  font-weight: 500;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .main-content {
-    grid-template-columns: 1fr;
-  }
-
-  .container > img {
-    height: 150px;
-  }
-
-  .container {
+  .dashboard-container {
     padding: 1rem;
   }
 
-  .profile-header {
+  .profile-info-container {
     flex-direction: column;
     text-align: center;
   }
 
-  .banner {
-    height: 150px;
+  .profile-image-wrapper {
+    margin: 0 auto;
   }
-}
 
-/* Efectos de hover y focus */
-.card:focus-within {
-  box-shadow: 0 0 0 2px var(--accent-color);
-}
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 
-/* Animación de carga */
-@keyframes shimmer {
-  0% { background-position: -1000px 0; }
-  100% { background-position: 1000px 0; }
-}
-
-.loading {
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite;
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
 }
