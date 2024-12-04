@@ -46,6 +46,7 @@ export class MyProfileUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadInitialData();
+    window.scrollTo(0, 0);
   }
 
   private async loadInitialData(): Promise<void> {
@@ -59,10 +60,6 @@ export class MyProfileUserComponent implements OnInit {
     }
   }
 
-  private updateAttendanceStyles(): void {
-    document.documentElement.style.setProperty('--percentage', this.attendancePercentage.toString());
-  }
-  
   private async loadUserData(): Promise<void> {
     switch(this.sesion._rol) {
       case 'Alumno':
@@ -78,7 +75,6 @@ export class MyProfileUserComponent implements OnInit {
   }
 
   private async loadAlumnoData(): Promise<void> {
-    // Simular carga de datos - Reemplazar con llamadas reales a la API
     await new Promise(resolve => setTimeout(resolve, 800));
     
     this.stats = {
@@ -106,26 +102,35 @@ export class MyProfileUserComponent implements OnInit {
     };
   }
 
-  // Métodos de interfaz
-  public toggleEmoji(show: boolean): void {
+  // Método para controlar el emoji
+  toggleEmoji(show: boolean): void {
     this.showEmoji = show;
   }
 
-  public handleImageError(event: any): void {
+  // Método para copiar al portapapeles
+  copyToClipboard(): void {
+    const textToCopy = this.sesion._numeroControl;
+    if (!textToCopy) return;
+
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        this.isCopied = true;
+        setTimeout(() => {
+          this.isCopied = false;
+        }, 1000);
+      })
+      .catch(err => {
+        console.error('Error al copiar al portapapeles:', err);
+      });
+  }
+
+  // Método para manejar errores de imagen
+  handleImageError(event: any): void {
     event.target.src = 'assets/default-avatar.png';
   }
 
-  public copyToClipboard(text: string): void {
-    navigator.clipboard.writeText(text)
-      .then(() => {
-        this.isCopied = true;
-        setTimeout(() => this.isCopied = false, 2000);
-      })
-      .catch(err => console.error('Error al copiar:', err));
-  }
-
   // Utilidades
-  public formatDate(date: string | Date): string {
+  formatDate(date: string | Date): string {
     try {
       return new Date(date).toLocaleDateString('es-MX', {
         year: 'numeric',
@@ -133,37 +138,32 @@ export class MyProfileUserComponent implements OnInit {
         day: 'numeric'
       });
     } catch (error) {
-      console.error('Error al formatear fecha:', error);
       return 'Fecha no válida';
     }
   }
 
-  public getRoleClass(): string {
+  getRoleClass(): string {
     switch (this.sesion._rol) {
-      case 'Alumno':
-        return 'student';
-      case 'Profesor':
-        return 'teacher';
-      case 'Administrador':
-        return 'admin';
-      default:
-        return '';
+      case 'Alumno': return 'student';
+      case 'Profesor': return 'teacher';
+      case 'Administrador': return 'admin';
+      default: return '';
     }
   }
 
-  public getStatusColor(value: number): string {
+  getStatusColor(value: number): string {
     if (value >= 90) return 'success';
     if (value >= 70) return 'warning';
     return 'danger';
   }
 
-  public hasProfileImage(): boolean {
+  hasProfileImage(): boolean {
     return !!this.sesion._foto && 
            this.sesion._foto !== 'null' && 
            this.sesion._foto !== 'undefined';
   }
 
-  public get loadingClass(): string {
+  get loadingClass(): string {
     return this.isLoading ? 'loading' : '';
   }
 }

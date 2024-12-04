@@ -1,7 +1,7 @@
 /* Variables */
 :root {
   --primary-color: #4F46E5;
-  --success-color: #22C55E;
+  --success-color: #28a745;
   --warning-color: #F59E0B;
   --danger-color: #EF4444;
   --background-color: #F3F4F6;
@@ -23,6 +23,7 @@
 .profile-dashboard {
   max-width: 1200px;
   margin: 0 auto;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Card de Perfil */
@@ -46,6 +47,7 @@
   border-radius: 50%;
   overflow: hidden;
   border: 4px solid var(--background-color);
+  animation: scaleIn 0.5s ease-in-out;
 }
 
 .profile-image-wrapper img {
@@ -109,68 +111,48 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
 .attendance-circle {
-  width: 180px;
-  height: 180px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  position: relative;
-  background: rgb(32, 158, 106);
+  border: 6px solid #28a745;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  font-size: 1.5rem;
+  color: #28a745;
+  transition: transform 0.3s;
 }
 
-.attendance-circle::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--success-color) calc(var(--percentage) * 1%),
-    #e5e7eb 0deg
-  );
+.attendance-circle:hover {
+  transform: scale(1.1);
 }
 
-.circle-content {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  background: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
+.attendance-emoji {
+  font-size: 2rem;
+  color: var(--success-color);
+  animation: bounceIn 0.3s ease-in-out;
 }
 
-.percentage {
-  font-size: 2.5rem;
+.attendance-percentage {
+  font-size: 1.5rem;
+  color: var(--success-color);
   font-weight: 600;
-  color: var(--text-primary);
-  transition: opacity 0.3s ease;
 }
 
-.emoji {
-  position: absolute;
-  font-size: 2.5rem;
-  color: rgb(32, 158, 106);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* Botón de copiar */
+.bx-copy {
+  margin-left: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.show-emoji .percentage {
-  opacity: 0;
-}
-
-.show-emoji .emoji {
-  opacity: 1;
+.bx-copy.copied {
+  color: #28a745;
+  transform: scale(1.2);
 }
 
 /* Contenido de Stats */
@@ -228,6 +210,23 @@
   font-size: 1rem;
   color: var(--text-primary);
   font-weight: 500;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 /* Responsive */

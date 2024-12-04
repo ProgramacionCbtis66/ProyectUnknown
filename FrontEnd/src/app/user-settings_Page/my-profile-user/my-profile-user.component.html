@@ -26,14 +26,14 @@
         <div class="attendance-container">
           <div
             class="attendance-circle"
-            (mouseenter)="toggleEmoji(true)"
-            (mouseleave)="toggleEmoji(false)"
+            (mouseenter)="showEmoji = true"
+            (mouseleave)="showEmoji = false"
           >
-            <div class="circle-content" [class.show-emoji]="showEmoji">
-              <span class="percentage" [class.hide]="showEmoji"
-                >{{ attendancePercentage }}%</span
-              >
-              <i class="bx bxs-smile emoji" [class.show]="showEmoji"></i>
+            <div *ngIf="showEmoji" class="attendance-emoji">
+              <i class="bx bx-smile"></i>
+            </div>
+            <div *ngIf="!showEmoji" class="attendance-percentage">
+              {{ attendancePercentage }}%
             </div>
           </div>
         </div>
@@ -64,7 +64,15 @@
       <div class="info-grid">
         <div class="info-item">
           <label>Número de Control</label>
-          <span>{{ sesion._numeroControl }}</span>
+          <span>
+            {{ sesion._numeroControl }}
+            <i
+              class="bx bx-copy"
+              [class.copied]="isCopied"
+              (click)="copyToClipboard()"
+              style="cursor: pointer"
+            ></i>
+          </span>
         </div>
         <div class="info-item">
           <label>Grupo</label>
