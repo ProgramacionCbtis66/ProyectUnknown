@@ -4,7 +4,7 @@
     </div>
   
     <div class="clases">
-      <div class="card" *ngFor="let clase of clases">
+      <div class="card" *ngFor="let clase of clases" (click)="goToClassSelect(clase.id_clase)">
         <div class="card-header">
           <h3>{{ clase.nombre_clase }}</h3>
           <p><strong>Profesor:</strong> {{ clase.profesor_nombre }}</p>
@@ -14,7 +14,7 @@
           <div *ngIf="clase.tareas.length; else noTareas">
             <ul>
               <li *ngFor="let tarea of clase.tareas; let i = index">
-                <div (click)="toggleDescripcion(clase.id, i)" style="cursor: pointer;">
+                <div (click)="toggleDescripcion(clase.id_clase, i)" style="cursor: pointer;">
                   <strong>{{ tarea.titulo }}</strong>
                   <br />
                   <small>
@@ -22,7 +22,7 @@
                     <i class="fi fi-ss-calendar student-ico entrega"></i> {{ tarea.fecha_entrega | date: 'dd/MM/yyyy' }}
                   </small>
                 </div>
-                <p *ngIf="isDescripcionVisible(clase.id, i)" class="tarea-descripcion">
+                <p *ngIf="isDescripcionVisible(clase.id_clase, i)" class="tarea-descripcion">
                   {{ tarea.descripcion }}
                 </p>
               </li>

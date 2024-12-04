@@ -17,7 +17,7 @@ export class PoliceGuard implements CanActivate {
       'segurity_user', 
       'notifications_user', 
       'connected_devices_user', 
-      'Main_Dashboard/clases',
+      'Main_Dashboard/clase/:id',
       'Main_Dashboard/clases-dashboard',
     ],
     Profesor: [
@@ -27,7 +27,7 @@ export class PoliceGuard implements CanActivate {
       'segurity_user', 
       'notifications_user', 
       'connected_devices_user',
-      'Main_Dashboard/clases',
+      'Main_Dashboard/clase/:id',
       'Main_Dashboard/clases-dashboard',
     ],
     Administrador: [
@@ -37,7 +37,7 @@ export class PoliceGuard implements CanActivate {
       'segurity_user', 
       'notifications_user', 
       'connected_devices_user',
-      'Main_Dashboard/clases', 
+      'Main_Dashboard/clase/:id', 
       'Main_Dashboard/administrativos', 
       'Main_Dashboard/alumnos-listado', 
       'Main_Dashboard/servicios-menu', 
