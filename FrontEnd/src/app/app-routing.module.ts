@@ -49,9 +49,9 @@ const routes: Routes = [
       { path: 'alumnos-registros', component: AlumnosRegistrosComponent, canActivate: [PoliceGuard] },
       { path: 'alumnos-grupos', component: AlumnosGruposComponent, canActivate: [PoliceGuard] },
       { path: 'clase/:id', component: ClasesComponent},
-      { path: "Profile_User", component: MyProfileUserComponent, canActivate: [PoliceGuard] },
-      { path: "segurity_user", component: UserSegurityComponent, canActivate: [PoliceGuard] },
-      { path: "notifications_user", component: UserNotificationsPageComponent, canActivate: [PoliceGuard] },
+      { path: "Profile_User", component: MyProfileUserComponent,},
+      { path: "segurity_user", component: UserSegurityComponent,},
+      { path: "notifications_user", component: UserNotificationsPageComponent, },
       { path: "options", component: OptionsComponent, canActivate: [PoliceGuard] },
       { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
       { path: '', redirectTo: 'options', pathMatch: 'full' } // Redirección a una vista por defecto

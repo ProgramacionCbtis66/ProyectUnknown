@@ -95,7 +95,6 @@ html, body {
     flex-direction: column;
     justify-content: space-between;
     animation: fadeIn 1.5s ease forwards;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .header {

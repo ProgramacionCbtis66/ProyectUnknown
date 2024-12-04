@@ -1,63 +1,206 @@
-<div class="container">
-  <div class="banner">
-    <img src="/FrontEnd/src/assets/img/banner.jpg" alt="Banner de perfil">
-    <div class="banner-pattern"></div>
-  </div>
-  
-  <div class="main-content">
-    <!-- Sección izquierda -->
-    <div class="left-column">
-      <!-- Tarjeta de Perfil -->
-      <div class="profile-card card">
-        <div class="profile-header">
-          <img [src]="sesion._foto || 'assets/default-profile-pic.jpg'" alt="Foto de perfil" class="profile-pic">
-          <div class="profile-info">
-            <h2>{{ sesion._usuario }} {{ sesion._apellido }}</h2>
-            <p class="join-date">Join at {{ joinDate }}</p>
-            <p class="role">{{ sesion._rol }}</p>
-          </div>
+<div class="dashboard-container">
+  <!-- Sección para Alumnos -->
+  <div *ngIf="sesion._rol === 'Alumno'" class="profile-dashboard">
+    <!-- Card de Perfil -->
+    <div class="profile-card">
+      <div class="profile-info-container">
+        <div class="profile-image-wrapper">
+          <img
+            [src]="sesion._foto || 'assets/default-avatar.png'"
+            alt="Foto de perfil"
+            (error)="handleImageError($event)"
+          />
         </div>
-      </div>
-
-      <!-- Tarjeta de Asistencias -->
-      <div class="attendance-card card">
-        <h3>Asistencias</h3>
-        <div class="attendance-circle">
-          <div class="percentage">100%</div>
+        <div class="profile-details">
+          <h1>{{ sesion._usuario }} {{ sesion._apellido }}</h1>
+          <span class="role-tag student">{{ sesion._rol }}</span>
+          <p class="specialty">{{ sesion._especialidad }}</p>
         </div>
       </div>
     </div>
 
-    <!-- Sección derecha -->
-    <div class="right-column">
-      <!-- Tarjeta de Detalles de la Cuenta -->
-      <div class="details-card card">
-        <h3>Detalles de la cuenta</h3>
-        <div class="details-grid">
-          <div class="detail-item">
-            <span class="label">Nombre</span>
-            <span class="value">{{ sesion._usuario }}</span>
+    <div class="cards-grid">
+      <!-- Card de Asistencia -->
+      <div class="data-card attendance-card">
+        <h3>Porcentaje de asistencia</h3>
+        <div class="attendance-container">
+          <div
+            class="attendance-circle"
+            (mouseenter)="toggleEmoji(true)"
+            (mouseleave)="toggleEmoji(false)"
+          >
+            <div class="circle-content" [class.show-emoji]="showEmoji">
+              <span class="percentage" [class.hide]="showEmoji"
+                >{{ attendancePercentage }}%</span
+              >
+              <i class="bx bxs-smile emoji" [class.show]="showEmoji"></i>
+            </div>
           </div>
-          <div class="detail-item">
-            <span class="label">Apellido</span>
-            <span class="value">{{ sesion._apellido }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="label">Grupo</span>
-            <span class="value">{{ sesion._grupo }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="label">Semestre</span>
-            <span class="value">{{ sesion._semestre }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="label">Especialidad</span>
-            <span class="value">{{ sesion._especialidad }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="label">Número de Control</span>
-            <span class="value">{{ sesion._numeroControl }}</span>
-          </div>
+        </div>
+      </div>
+
+      <!-- Card de Promedio -->
+      <div class="data-card">
+        <h3>Promedio General</h3>
+        <div class="stat-content">
+          <i class="bx bx-book"></i>
+          <span class="stat-value">{{ stats.promedio }}</span>
+        </div>
+      </div>
+
+      <!-- Card de Tareas -->
+      <div class="data-card">
+        <h3>Tareas Entregadas</h3>
+        <div class="stat-content">
+          <i class="bx bx-task"></i>
+          <span class="stat-value">{{ stats.tareas }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card de Información -->
+    <div class="info-card">
+      <h2>Información Académica</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Número de Control</label>
+          <span>{{ sesion._numeroControl }}</span>
+        </div>
+        <div class="info-item">
+          <label>Grupo</label>
+          <span>{{ sesion._grupo }}</span>
+        </div>
+        <div class="info-item">
+          <label>Semestre</label>
+          <span>{{ sesion._semestre }}</span>
+        </div>
+        <div class="info-item">
+          <label>Turno</label>
+          <span>{{ sesion._turno }}</span>
+        </div>
+        <div class="info-item">
+          <label>CURP</label>
+          <span>{{ sesion._curp }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección para Profesores -->
+  <div *ngIf="sesion._rol === 'Profesor'" class="profile-dashboard">
+    <!-- Card de Perfil -->
+    <div class="profile-card">
+      <div class="profile-info-container">
+        <div class="profile-image-wrapper">
+          <img
+            [src]="sesion._foto || 'assets/default-avatar.png'"
+            alt="Foto de perfil"
+            (error)="handleImageError($event)"
+          />
+        </div>
+        <div class="profile-details">
+          <h1>{{ sesion._usuario }} {{ sesion._apellido }}</h1>
+          <span class="role-tag teacher">{{ sesion._rol }}</span>
+          <p class="specialty">{{ sesion._especialidad }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <!-- Card de Grupos Activos -->
+      <div class="data-card">
+        <h3>Grupos Activos</h3>
+        <div class="stat-content">
+          <i class="bx bx-group"></i>
+          <span class="stat-value">{{ teacherStats.gruposActivos }}</span>
+        </div>
+      </div>
+
+      <!-- Card de Total Alumnos -->
+      <div class="data-card">
+        <h3>Total de Alumnos</h3>
+        <div class="stat-content">
+          <i class="bx bx-user-check"></i>
+          <span class="stat-value">{{ teacherStats.alumnosTotal }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card de Información -->
+    <div class="info-card">
+      <h2>Información Profesional</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>ID Profesor</label>
+          <span>{{ sesion._numeroControl }}</span>
+        </div>
+        <div class="info-item">
+          <label>Departamento</label>
+          <span>{{ sesion._especialidad }}</span>
+        </div>
+        <div class="info-item">
+          <label>Turno</label>
+          <span>{{ sesion._turno }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección para Administradores -->
+  <div *ngIf="sesion._rol === 'Administrador'" class="profile-dashboard">
+    <!-- Card de Perfil -->
+    <div class="profile-card">
+      <div class="profile-info-container">
+        <div class="profile-image-wrapper">
+          <img
+            [src]="sesion._foto || 'assets/default-avatar.png'"
+            alt="Foto de perfil"
+            (error)="handleImageError($event)"
+          />
+        </div>
+        <div class="profile-details">
+          <h1>{{ sesion._usuario }} {{ sesion._apellido }}</h1>
+          <span class="role-tag admin">{{ sesion._rol }}</span>
+          <p class="specialty">{{ sesion._especialidad }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <!-- Card de Usuarios Activos -->
+      <div class="data-card">
+        <h3>Usuarios Activos</h3>
+        <div class="stat-content">
+          <i class="bx bx-user-voice"></i>
+          <span class="stat-value">{{ adminStats.usuariosActivos }}</span>
+        </div>
+      </div>
+
+      <!-- Card de Uptime -->
+      <div class="data-card">
+        <h3>Uptime del Sistema</h3>
+        <div class="stat-content">
+          <i class="bx bx-timer"></i>
+          <span class="stat-value">{{ adminStats.uptime }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card de Información -->
+    <div class="info-card">
+      <h2>Información Administrativa</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>ID Administrador</label>
+          <span>{{ sesion._numeroControl }}</span>
+        </div>
+        <div class="info-item">
+          <label>Departamento</label>
+          <span>{{ sesion._especialidad }}</span>
+        </div>
+        <div class="info-item">
+          <label>Nivel de Acceso</label>
+          <span>Total</span>
         </div>
       </div>
     </div>

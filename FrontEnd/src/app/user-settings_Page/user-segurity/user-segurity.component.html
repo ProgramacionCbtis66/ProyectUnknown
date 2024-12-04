@@ -1,63 +1,60 @@
-
-    <section class="main-content" [ngClass]="{ blurred: sidebarActive }">
-      <div class="header">
-        <h2>Seguridad</h2>
-        <div class="streak"></div>
-        <div id="menuBtn" (click)="toggleSidebar()">
-          <i class="bx bx-menu"></i>
-          <!-- Icono de tres rayas -->
+<section class="main-content" [ngClass]="{ blurred: sidebarActive }">
+  <div class="header">
+    <h2>Seguridad</h2>
+    <div class="streak"></div>
+    <div id="menuBtn" (click)="toggleSidebar()">
+      <i class="bx bx-menu"></i>
+      <!-- Icono de tres rayas -->
+    </div>
+  </div>
+  <div class="security-settings">
+    <p>
+      En ADAE estamos conscientes de que la seguridad es un tema importante
+      <br />
+      y por defecto al crear una nueva cuenta en esta plataforma el
+      <br />método de seguridad por defecto son códigos por correo, pero
+      <br />
+      puedes agregar más opciones de seguridad.
+    </p>
+    <div class="auth-methods">
+      <div class="method">
+        <div class="method-header">
+          <h3>Aplicación de autenticación</h3>
+          <label class="switch">
+            <input type="checkbox" checked />
+            <span class="slider round"></span>
+          </label>
         </div>
-      </div>
-      <div class="security-settings">
         <p>
-          En ADAE estamos conscientes de que la seguridad es un tema importante
-          <br />
-          y por defecto al crear una nueva cuenta en esta plataforma el
-          <br />método de seguridad por defecto son códigos por correo, pero
-          <br />
-          puedes agregar más opciones de seguridad.
+          Descarga una aplicación en tu teléfono para generar códigos de
+          seguridad únicos. Las aplicaciones sugeridas incluyen Google
+          Authenticator.
         </p>
-        <div class="auth-methods">
-          <div class="method">
-            <div class="method-header">
-              <h3>Aplicación de autenticación</h3>
-              <label class="switch">
-                <input type="checkbox" checked />
-                <span class="slider round"></span>
-              </label>
-            </div>
-            <p>
-              Descarga una aplicación en tu teléfono para generar códigos de
-              seguridad únicos. Las aplicaciones sugeridas incluyen Google
-              Authenticator.
-            </p>
-          </div>
+      </div>
 
-          <div class="method">
-            <div class="method-header">
-              <h3>Correo (por defecto)</h3>
-              <label class="switch">
-                <input type="checkbox" />
-                <span class="slider round"></span>
-              </label>
-            </div>
-            <p>
-              Por defecto se le enviará un correo a su correo institucional para
-              verificar su identidad y las próximas veces que inicie sesión en
-              un dispositivo nuevo se le enviará un código de verificación ahí.
-            </p>
-          </div>
+      <div class="method">
+        <div class="method-header">
+          <h3>Correo (por defecto)</h3>
+          <label class="switch">
+            <input type="checkbox" />
+            <span class="slider round"></span>
+          </label>
         </div>
+        <p>
+          Por defecto se le enviará un correo a su correo institucional para
+          verificar su identidad y las próximas veces que inicie sesión en un
+          dispositivo nuevo se le enviará un código de verificación ahí.
+        </p>
       </div>
+    </div>
+  </div>
 
-      <div class="account-info">
-        <h3>Información de la cuenta</h3>
-        <p>
-          <strong>Correo electrónico:</strong> alm.joshefsrubiocbtis66.edu.mx
-        </p>
-        <p>
-          <strong>Contraseña:</strong> ********
-          <span class="edit-icon">✏️</span>
-        </p>
-      </div>
-    </section>
+  <div class="account-info">
+    <h3>Información de la cuenta</h3>
+    <p><strong>Correo electrónico:</strong> alm.joshefsrubiocbtis66.edu.mx</p>
+    <p>
+      <strong>Contraseña:</strong> ********
+      <span class="edit-icon">✏️</span>
+    </p>
+  </div>
+</section>
