@@ -64,6 +64,9 @@ export class LogInComponent implements OnInit {
       if (decodedToken.rol === 'Profesor' && decodedToken.profesor) {
         const profesor = decodedToken.profesor; // Accede a los datos del alumno dentro del token
         this.sesion._id_profesor = profesor.id_profesor;
+        this.sesion._departamento = profesor.departamento;
+        this.sesion._especialidad_Prof = profesor.especialidad;
+        this.sesion._telefono = profesor.telefono;
       }
 
       // Comparar la fecha de nacimiento con la fecha actual para la felicitación
