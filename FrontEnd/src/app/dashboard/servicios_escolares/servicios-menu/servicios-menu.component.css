@@ -30,6 +30,7 @@
     max-width: 217px;
     aspect-ratio: 1 / 1;
     transition-duration: 0.2s;
+    animation: fadeIn 1s ease forwards;
 }
 
 .profile-pic {

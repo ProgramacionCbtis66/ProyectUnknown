@@ -4,6 +4,17 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
 
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+      transform: translateY(20px); 
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
 body {
   font-family: "Poppins", sans-serif;
 }
@@ -27,6 +38,7 @@ body {
   width: 300px;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease forwards;
 }
 
 .card-header {
