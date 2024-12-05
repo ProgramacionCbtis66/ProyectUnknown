@@ -27,10 +27,9 @@ interface Usuario {
   providedIn: 'root'
 })
 export class AuthService {
-
-  private ruta = environment.HTTPS; // URL base del servidor
-  private usr = environment.autorization; // Autorización desde el environment
-  public estatus: boolean = true; // Estado de autenticación
+  private ruta = environment.HTTPS;
+  private usr = environment.autorization;
+  public estatus: boolean = true;
 
   constructor(
     private http: HttpClient,
@@ -38,47 +37,56 @@ export class AuthService {
     private toastr: ToastrService,
     protected sesion: SesionService
   ) { 
-    this.restaurarSesion(); // Restauramos la sesión al cargar el servicio
+    this.restaurarSesion();
   }
 
-  // Cierra la sesión del usuario
   public cerrarSesion(): void {
-    localStorage.removeItem("adae"); // Elimina el token
-    this.limpiarSesion(); // Limpia los datos de la sesión en memoria
+    localStorage.removeItem("adae");
+    localStorage.removeItem("fotoPerfil");
+    this.limpiarSesion();
     this.toastr.info('Sesión cerrada con éxito', 'Info');
+  }
+
+  limpiarSesion(): void {
+    this.sesion._usuario = "No disponible";
+    this.sesion._rol = "No disponible";
+    this.sesion._foto = "";
+    this.sesion._apellido = "";
+    this.sesion._numeroControl = "";
+    this.sesion._especialidad = "";
+    this.sesion._semestre = 0;
+    this.sesion._turno = "";
+    this.sesion._curp = "";
+    this.sesion._grupo = "";
+    this.sesion._id_alumno = 0;
   }
 
   restaurarSesion(): void {
     const token = localStorage.getItem('adae');
     if (token && !this.jwt.isTokenExpired(token)) {
         const decodedToken = this.decodifica();
-        this.sesion._usuario = decodedToken.nombre;
-        this.sesion._apellido = decodedToken.apellido;
-        this.sesion._foto = localStorage.getItem('fotoPerfil') || "Sin Foto Actual";
-        this.sesion._rol = decodedToken.rol;
+        if (decodedToken) {
+            this.sesion._usuario = decodedToken.nombre;
+            this.sesion._apellido = decodedToken.apellido;
+            this.sesion._foto = localStorage.getItem('fotoPerfil') || "";
+            this.sesion._rol = decodedToken.rol;
 
-        // Establecer datos del alumno si existen en el token
-        if (decodedToken.alumno) {
-            const alumno = decodedToken.alumno;
-            this.sesion._numeroControl = alumno.numero_control;
-            this.sesion._especialidad = alumno.especialidad;
-            this.sesion._semestre = alumno.semestre;
-            this.sesion._turno = alumno.turno;
-            this.sesion._curp = alumno.curp;
-            this.sesion._grupo = alumno.grupo;
-            this.sesion._id_alumno = alumno.id_alumno;
+            if (decodedToken.alumno) {
+                const alumno = decodedToken.alumno;
+                this.sesion._numeroControl = alumno.numero_control;
+                this.sesion._especialidad = alumno.especialidad;
+                this.sesion._semestre = alumno.semestre;
+                this.sesion._turno = alumno.turno;
+                this.sesion._curp = alumno.curp;
+                this.sesion._grupo = alumno.grupo;
+                this.sesion._id_alumno = alumno.id_alumno;
+            }
         }
+    } else {
+        this.limpiarSesion();
     }
   }
 
-  // Método para limpiar la sesión al cerrar sesión
-  limpiarSesion(): void {
-    this.sesion._usuario = "Sin Usuario Actual";
-    this.sesion._rol = "Sin Rol Actual";
-    this.sesion._foto = "Sin Foto Actual";
-  }
-
-  // Manejo de errores para las solicitudes HTTP
   private handleError(error: HttpErrorResponse) {
     console.error('Error: ', error);
     const status = error.status;
@@ -86,13 +94,11 @@ export class AuthService {
     return throwError(() => error);
   }
 
-  // Método para iniciar sesión
   public login(user: any): Observable<any> {
-    return this.http.post(`${this.ruta}/usr/login/`, user) // Se usa `this.ruta`
+    return this.http.post(`${this.ruta}/usr/login/`, user)
       .pipe(catchError(this.handleError.bind(this)));
   }
 
-  // Verifica si el usuario está autenticado
   public isAuth(): boolean {
     const token = localStorage.getItem("adae");
     if (token && !this.jwt.isTokenExpired(token)) {
@@ -103,34 +109,31 @@ export class AuthService {
     }
   }
 
-  // Decodifica el token
   public decodifica(): any {
     const token = localStorage.getItem("adae");
     if (token) {
-      return decode(token); // Decodifica el token si no es nulo
+      return decode(token);
     }
     return null;
   }
 
-  // Continúa la sesión aumentando la expiración del token
   public continuar(): void {
     let tokedecode = this.decodifica();
     if (tokedecode) {
-      tokedecode.exp += 1800; // Aumenta el tiempo de expiración
+      tokedecode.exp += 1800;
       let tokecode = this.jwt.decodeToken(tokedecode);
       localStorage.setItem("adae", tokecode);
     }
   }
 
-  // Verifica si el token ha expirado
   public tokeExpired(): boolean {
     const tokenDecode = this.decodifica();
     if (!tokenDecode) {
-      return true; // Si no hay token, considera que ha expirado
+      return true;
     }
     const tiempo = (tokenDecode.exp - Date.now() / 1000);
     if (tiempo < 0) {
-      localStorage.clear(); // Limpia el localStorage si ha expirado
+      localStorage.clear();
       return true;
     }
     return false;

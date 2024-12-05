@@ -20,7 +20,6 @@
       href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
     />
   </head>
-
   <body>
     <header>
       <nav class="navbar">
@@ -30,7 +29,7 @@
         <div
           class="user-icon"
           (click)="toggleMenu()"
-          *ngIf="sesion._usuario !== 'No disponible'"
+          *ngIf="sesion._usuario !== 'No disponible' && sesion._foto"
         >
           <img [src]="sesion._foto" width="30" height="30" />
           <div class="profile-menu" [ngClass]="{ show: menuOpen }">
@@ -59,7 +58,6 @@
       </nav>
     </header>
 
-    <!-- Superposición para el desenfoque -->
     <div
       class="overlay"
       [ngClass]="{ active: menuOpen }"
@@ -73,23 +71,24 @@
     <footer>
       <div class="footer-div">
         <nav>
-          <a [routerLink]="['/politica-privacidad']" class="privacy-policy"
-            >Política de privacidad</a
-          >
+          <a [routerLink]="['/politica-privacidad']" class="privacy-policy">
+            Política de privacidad
+          </a>
         </nav>
         <div class="sep"></div>
         <nav>
           <a
             [routerLink]="['/terminos-condiciones']"
             class="terms-and-condition"
-            >Términos y condiciones</a
           >
+            Términos y condiciones
+          </a>
         </nav>
         <div class="sep"></div>
         <nav>
-          <a [routerLink]="['/sobre-nosotros']" class="terms-and-condition"
-            >Sobre nosotros</a
-          >
+          <a [routerLink]="['/sobre-nosotros']" class="terms-and-condition">
+            Sobre nosotros
+          </a>
         </nav>
       </div>
       <div class="footer-div2">
