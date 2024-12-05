@@ -1,13 +1,12 @@
+<!-- main-dashboard.component.html -->
 <section class="layout">
-  <nav class="sidebar">
-    <header class="sidebar_header">
-      <!-- Encabezado del sidebar -->
-    </header>
+  <nav class="sidebar" *ngIf="showSidebar">
+    <header class="sidebar_header"></header>
     <div class="sidebar_menu">
       <ul *ngIf="menuItems[sesion._rol]">
         <li *ngFor="let item of menuItems[sesion._rol]">
           <a [routerLink]="item.path">
-            <i class="{{ item.icon }} px-3"></i> <!-- Utiliza la clase del ícono -->
+            <i class="{{ item.icon }} px-3"></i>
             {{ item.label }}
           </a>
         </li>
@@ -16,6 +15,6 @@
   </nav>
 
   <div class="main_container">
-    <router-outlet></router-outlet> <!-- Aquí se cargarán los componentes hijos -->
+    <router-outlet></router-outlet>
   </div>
 </section>
