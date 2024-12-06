@@ -57,4 +57,22 @@ export class AppComponent {
       this.closeMenu();
     }
   }
+
+  private lastScrollPosition = 0;
+
+  onScroll(event: any) {
+    const currentScroll = event.target.scrollTop;
+    
+    if (currentScroll > this.lastScrollPosition) {
+      document.documentElement.requestFullscreen()
+        .catch((err) => console.log('Error al entrar en fullscreen:', err));
+    } else {
+      if (document.fullscreenElement) {
+        document.exitFullscreen()
+          .catch((err) => console.log('Error al salir de fullscreen:', err));
+      }
+    }
+    
+    this.lastScrollPosition = currentScroll;
+  }
 }

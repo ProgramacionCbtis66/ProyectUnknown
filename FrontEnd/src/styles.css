@@ -41,3 +41,10 @@ html, body {
 #sign-in-btn:hover {
   background-color: rgb(46, 46, 46);
 }
+
+.content {
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transition: all 0.3s ease-in-out;
+}
