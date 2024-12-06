@@ -115,30 +115,141 @@
 .modal-filters {
   display: none;
   position: fixed;
-  bottom: 0;
+  bottom: -100%;
   left: 0;
   right: 0;
   z-index: 1050;
-  background-color: white;
-  padding: 20px;
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
 }
 
 .modal-filters.show {
   display: block;
+  bottom: 0;
 }
 
-.modal-filters .close-modal {
+.modal-content-filters {
   position: absolute;
-  top: 10px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px 20px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  touch-action: none;
 }
 
+.modal-filters.show .modal-content-filters {
+  transform: translateY(0);
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background-color: #ddd;
+  border-radius: 2px;
+  margin: 0 auto 15px;
+}
+
+.modal-options {
+  display: none;
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.modal-options.show {
+  display: block;
+  bottom: 0;
+}
+
+.modal-content-options {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2b2b2b;
+  padding: 20px;
+  border-radius: 20px 20px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  touch-action: none;
+}
+
+/* Nueva clase para la animación de entrada */
+.modal-content-options.slide-up {
+  transform: translateY(0) !important;
+}
+
+/* Opcional: añadir una animación más suave */
+@keyframes slideUpAndBounce {
+  0% {
+    transform: translateY(100%);
+  }
+  70% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.modal-content-options.animate {
+  animation: slideUpAndBounce 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.modal-options.show .modal-content-options {
+  transform: translateY(0);
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.option-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  border: none;
+  background: none;
+  width: 100%;
+  font-size: 1rem;
+  color: white;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.option-button:hover,
+.option-button:active {
+  background-color: #404040;
+}
+
+.option-button i {
+  font-size: 1.2rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.options-dropdown.desktop-only {
+  display: none; /* Oculto por defecto */
+}
 /* Tarjetas de estudiante */
 .students-list {
   display: flex;
@@ -318,6 +429,7 @@
   padding: 25px;
   animation: fadeIn 0.3s ease-in-out;
   position: relative;
+  animation: fadeIn 1s ease forwards;
 }
 
 .modal-content::-webkit-scrollbar {
@@ -447,6 +559,15 @@
 }
 
 /* Animaciones */
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -503,10 +624,6 @@
     display: none;
   }
 
-  .modal-filters {
-    display: none;
-  }
-
   .container {
     max-width: 767px;
   }
@@ -525,6 +642,31 @@
 
   .small-screen-filters select {
     margin-left: 15px;
+  }
+
+  .student-card {
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s;
+  }
+  
+  .student-card:active {
+    background-color: #353535;
+  }
+
+  .options-dropdown {
+    display: none !important; /* Forzar que nunca se muestre en móvil */
+  }
+
+  .student-card:hover .options-dropdown {
+    transform: none;
+    opacity: 0;
+  }
+
+  /* Ajustes para el modal de opciones */
+  .modal-content-options {
+    max-height: 50vh;
+    overflow-y: auto;
   }
 }
 
@@ -553,4 +695,14 @@
   .modal-filters {
     display: none;
   }
+
+  .options-dropdown.desktop-only {
+    display: flex; /* Mostrar solo en desktop */
+    opacity: 0;
+  }
+  
+  .modal-options {
+    display: none !important; /* Forzar que nunca se muestre en desktop */
+  }
 }
+

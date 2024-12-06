@@ -66,9 +66,19 @@
   </div>
 
   <!-- Modal de filtros en pantallas pequeñas -->
-  <div class="modal-filters" [class.show]="uiState.isModalOpen">
-    <div class="modal-content-filters">
-      <button class="close-modal" (click)="toggleFilters()">×</button>
+  <div
+    class="modal-filters"
+    [class.show]="uiState.isModalOpen"
+    (touchstart)="onTouchStart($event)"
+    (touchmove)="onTouchMove($event)"
+    (touchend)="onTouchEnd($event)"
+    #modalFilters
+  >
+    <div
+      class="modal-content-filters"
+      [style.transform]="'translateY(' + translateY + 'px)'"
+    >
+      <div class="modal-handle"></div>
       <div class="filters small-screen-filters">
         <!-- Botón para cambiar turno -->
         <button (click)="toggleTurno()" class="turno-toggle">
@@ -102,12 +112,53 @@
     </div>
   </div>
 
+  <!-- Nuevo Modal de opciones para móvil -->
+  <div
+    class="modal-options"
+    [class.show]="isOptionsModalOpen"
+    (touchstart)="onTouchStartOptions($event)"
+    (touchmove)="onTouchMoveOptions($event)"
+    (touchend)="onTouchEndOptions($event)"
+    #modalOptions
+  >
+    <div
+      class="modal-content-options"
+      [style.transform]="'translateY(' + translateYOptions + 'px)'"
+    >
+      <div class="modal-handle"></div>
+      <div class="options-list">
+        <button
+          class="option-button"
+          (click)="editStudent(selectedStudentForOptions)"
+        >
+          <i class="fi fi-br-edit"></i>
+          Editar
+        </button>
+        <button
+          class="option-button"
+          (click)="deleteStudent(selectedStudentForOptions)"
+        >
+          <i class="fi fi-br-trash"></i>
+          Eliminar
+        </button>
+        <button
+          class="option-button"
+          (click)="copyStudent(selectedStudentForOptions)"
+        >
+          <i class="fi fi-br-copy"></i>
+          Copiar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="students-list">
       <div
         *ngFor="let usuario of filteredUsuarios"
         class="student-card"
         (mouseleave)="hideOptionsDropdown()"
+        (click)="openOptionsModal(usuario)"
       >
         <div class="student-info">
           <img
@@ -129,17 +180,15 @@
           <span class="group-icon">{{ usuario.detalles?.grupo }}</span>
         </div>
 
-        <!-- Gota con tres puntos o menú de opciones -->
+        <!-- Gota con tres puntos o menú de opciones (solo visible en desktop) -->
         <div
-          class="options-dropdown"
+          class="options-dropdown desktop-only"
           (click)="toggleOptionsDropdown($event, usuario)"
         >
           <ng-container *ngIf="showOptions !== usuario">
-            <!-- Icono de tres puntos -->
             <i class="fi fi-br-menu-dots"></i>
           </ng-container>
           <ng-container *ngIf="showOptions === usuario">
-            <!-- Menú de opciones desplegable -->
             <ul class="options-menu">
               <li (click)="editStudent(usuario)">Editar</li>
               <li (click)="deleteStudent(usuario)">Eliminar</li>
@@ -151,8 +200,6 @@
     </div>
   </div>
 </section>
-
-<!-- Mover los modales aquí, fuera del contenido principal -->
 
 <!-- Modal para editar estudiante -->
 <div
@@ -398,9 +445,7 @@
         </div>
       </div>
       <button type="submit">Enviar Correo</button>
-      <button type="button" (click)="closeAddStudentModal()">
-        Cancelar
-      </button>
+      <button type="button" (click)="closeAddStudentModal()">Cancelar</button>
     </form>
   </div>
 </div>
