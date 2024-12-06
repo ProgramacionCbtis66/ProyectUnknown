@@ -1,6 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 export const environment = {
   production: true,
+  //HTTPS: 'https://srv656099.hstgr.cloud:4000/apiAdae',
   HTTPS: 'http://localhost:4000/apiAdae',
   autorization: {
     headers: new HttpHeaders({ 

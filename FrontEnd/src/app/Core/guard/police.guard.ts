@@ -50,14 +50,14 @@ export class PoliceGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const rutaActual = state.url; // Aquí obtenemos la URL completa
-    console.log('Ruta actual:', rutaActual);
+    //console.log('Ruta actual:', rutaActual);
   
     if (this.autentificacion.isAuth()) {
       const user = this.autentificacion.decodifica();
   
       if (user && user.rol) {
         const rutasPermitidas = this.rutasPermitidasPorRol[user.rol];
-        console.log('Rutas permitidas para el rol:', rutasPermitidas);
+        //console.log('Rutas permitidas para el rol:', rutasPermitidas);
   
         // Asegúrate de que estamos comparando la ruta completa
         if (rutasPermitidas && rutasPermitidas.some(ruta => rutaActual === `/${ruta}`)) {

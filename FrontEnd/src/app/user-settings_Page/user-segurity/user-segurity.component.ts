@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { SesionService } from 'src/app/Core/service/sesion.service';
 
 @Component({
   selector: 'app-user-segurity',
@@ -9,7 +10,7 @@ export class UserSegurityComponent implements OnInit {
    activeMenu: string = 'perfil'; // Elemento activo por defecto
   sidebarActive: boolean = true; // Mostrar el sidebar por defecto en modo PC
 
-  constructor() {}
+  constructor(protected sesion: SesionService) {}
 
   ngOnInit(): void {
     window.addEventListener('resize', this.handleResize.bind(this));

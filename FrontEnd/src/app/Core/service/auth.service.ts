@@ -54,11 +54,15 @@ export class AuthService {
     this.sesion._apellido = "";
     this.sesion._numeroControl = "";
     this.sesion._especialidad = "";
-    this.sesion._semestre = 0;
+    this.sesion._semestre = null;
     this.sesion._turno = "";
     this.sesion._curp = "";
     this.sesion._grupo = "";
-    this.sesion._id_alumno = 0;
+    this.sesion._id_alumno = null;
+    this.sesion._id_profesor = null;
+    this.sesion._departamento = null;
+    this.sesion._especialidad_Prof = null;
+    this.sesion._telefono = null;
   }
 
   restaurarSesion(): void {
@@ -80,6 +84,14 @@ export class AuthService {
                 this.sesion._curp = alumno.curp;
                 this.sesion._grupo = alumno.grupo;
                 this.sesion._id_alumno = alumno.id_alumno;
+            }
+
+            if (decodedToken.profesor) {
+                const profesor = decodedToken.profesor;
+                this.sesion._id_profesor = profesor.id_profesor;
+                this.sesion._departamento = profesor.departamento;
+                this.sesion._especialidad_Prof = profesor.especialidad_Prof;
+                this.sesion._telefono = profesor.telefono;
             }
         }
     } else {

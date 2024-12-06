@@ -12,6 +12,7 @@ export class SesionService {
   private nombre = new BehaviorSubject<string>('No disponible');
   private apellido = new BehaviorSubject<string>('No disponible');
   private rol = new BehaviorSubject<string>('No disponible');
+  private correo_institucional = new BehaviorSubject<string>('No disponible');
   private foto = new BehaviorSubject<string | null>(null);
 
   // Información del alumno
@@ -35,6 +36,13 @@ export class SesionService {
   }
   set _usuario(value: string) {
     this.nombre.next(value);
+  }
+
+  get _correo_institucional(): string {
+    return this.correo_institucional.value;
+  }
+  set _correo_institucional(value: string) {
+    this.correo_institucional.next(value);
   }
 
   get _apellido(): string {

@@ -1,48 +1,68 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12 banner-container">
-            <div class="banner">
-                <h3>
-                    Calculo Integral
-                </h3>
-                <h4>
-                    Guillermo Montero Ramon
-                </h4>
-            </div>
+<div class="container py-5 px-5">
+	<div class="row justify-content-center">
+	  <div class="col-12 banner-container">
+		<div class="banner text-center">
+		  <h3>{{ nombreClase }}</h3>
+		  <h4>{{ profesor_nombre }}</h4>
 		</div>
+	  </div>
 	</div>
-	<div class="row tareas-container">
-		<div class="col-md-4">
-            <div class="add-comentario">
-                <h3>Agrega un comentario</h3>
-                <input type="text">
-            </div>
+  
+	<div class="row mt-4">
+	  <div class="col-md-4 mb-4 d-flex justify-content-center">
+		<div class="add-comentario">
+		  <h3>Agrega un comentario</h3>
+		  <input type="text" class="form-control mt-3" placeholder="Escribe tu comentario...">
 		</div>
-		<div class="col-md-8">
+	  </div>
+	  <div class="col-md-8">
+		<div class="row">
+		  <div class="col-12 mb-3" *ngFor="let tarea of tareas">
 			<div class="card">
-				<h5 class="card-header">
-					Tarea 1
-				</h5>
-                <p>Suma de Rieeman</p>
+			  <div class="card-body">
+				<h5 class="card-title">{{ tarea.titulo }}</h5>
+				<p class="card-text">{{ tarea.descripcion }}</p>
+			  </div>
 			</div>
-            <div class="card">
-				<h5 class="card-header">
-					Tarea 2
-				</h5>
-                <p>Integral con logaritmo natural</p>
-			</div>
-            <div class="card">
-				<h5 class="card-header">
-					Tarea 3
-				</h5>
-                <p>aplicacion del calculo integral</p>
-			</div>
-            <div class="card">
-				<h5 class="card-header">
-					Tarea 4
-				</h5>
-                <p>proyecto final</p>
-			</div>
+		  </div>
 		</div>
+	  </div>
 	</div>
-</div>
+  </div>
+  
+  <style>
+	.banner {
+	  background-color: #333;
+	  color: white;
+	  padding: 50px;
+	  border-radius: 20px;
+	}
+  
+	.add-comentario {
+	  padding: 20px;
+	  color: white;
+	  background-color: #333;
+	  width: 100%;
+	  height: 100%;
+	  border-radius: 20px;
+	}
+  
+	@media (max-width: 768px) {
+	  .banner {
+		padding: 20px;
+	  }
+  
+	  .add-comentario {
+		height: auto;
+	  }
+	}
+  
+	.card {
+	  transition: transform 0.2s ease-in-out;
+	}
+  
+	.card:hover {
+	  transform: scale(1.05);
+	}
+  </style>
+  

@@ -20,8 +20,8 @@ const login = async (req, res) => {
   const { correo_institucional, password } = req.body;
 
   const queries = {
-    userExists: `SELECT id_usuario AS id, nombre, apellido, rol, foto, fecha_nac FROM usuarios WHERE correo_institucional = ?`,
-    passwordMatch: `SELECT id_usuario AS id, nombre, apellido, rol, foto, fecha_nac FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`,
+    userExists: `SELECT id_usuario AS id, nombre, apellido, rol, foto, correo_institucional, fecha_nac FROM usuarios WHERE correo_institucional = ?`,
+    passwordMatch: `SELECT id_usuario AS id, nombre, apellido, rol, foto, correo_institucional, fecha_nac FROM usuarios WHERE correo_institucional = ? AND contraseña = ?`,
     alumnoData: `SELECT id_alumno, numero_control, especialidad, semestre, turno, curp, grupo FROM alumnos WHERE id_usuario = ?`,
     profesorData: `SELECT id_profesor, departamento, especialidad, telefono FROM profesores WHERE id_usuario = ?`,
   };
