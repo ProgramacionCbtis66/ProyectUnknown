@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';  // Importamos ActivatedRoute
-import { ClasesService } from 'src/app/Core/service/clases.service';  // Importamos el servicio ClasesService
+import { ActivatedRoute } from '@angular/router'; // Importamos ActivatedRoute
+import { ClasesService } from 'src/app/Core/service/clases.service'; // Importamos el servicio ClasesService
+import { SesionService } from 'src/app/Core/service/sesion.service';
 
 @Component({
   selector: 'app-clases',
@@ -8,34 +9,40 @@ import { ClasesService } from 'src/app/Core/service/clases.service';  // Importa
   styleUrls: ['./clases.component.css']
 })
 export class ClasesComponent implements OnInit {
-  claseId: number | null = null;  // Variable para almacenar el ID de la clase, usando 'number | null' para mejor control
-  nombreClase: string = '';  // Nombre de la clase que se cargará dinámicamente
-  profesor_nombre: string = '';  // Nombre del profesor que se cargará dinámicamente
-  tareas: any[] = [];  // Array para almacenar las tareas de la clase
+  claseId: number | null = null;
+  nombreClase: string = '';
+  profesor_nombre: string = '';
+  tareas: any[] = [];
+  esProfesor: boolean = false;
 
-  constructor(private route: ActivatedRoute, private clasesService: ClasesService) {}
+  tareaTitulo: string = ''; // Título de la tarea
+  tareaDescripcion: string = ''; // Descripción de la tarea
+  fechaEntrega: string = ''; // Fecha de entrega
+
+  expandedTareaIndex: number | null = null; // Índice de la tarea actualmente expandida
+
+
+  constructor(
+    private route: ActivatedRoute,
+    private clasesService: ClasesService,
+    protected sessionService: SesionService
+  ) {}
 
   ngOnInit(): void {
-    // Obtener el parámetro 'id' de la ruta
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        const numericId = +id;  // Convertimos el parámetro 'id' a un número
+        const numericId = +id;
         if (!isNaN(numericId)) {
           this.claseId = numericId;
-          console.log('ID de clase:', this.claseId);
-          // Llamar al método para cargar la clase y sus tareas
           this.cargarClase(this.claseId);
-        } else {
-          console.error('El parámetro "id" no es un número válido.');
         }
-      } else {
-        console.error('El parámetro "id" no se encontró en la ruta.');
       }
     });
+
+    this.esProfesor = this.sessionService._rol == 'Profesor';
   }
 
-  // Método para cargar la información de la clase, el profesor y las tareas
   cargarClase(idClase: number): void {
     this.clasesService.obtenerClases().subscribe(
       (clases: any[]) => {
@@ -44,14 +51,45 @@ export class ClasesComponent implements OnInit {
           this.nombreClase = clase.nombre_clase;
           this.profesor_nombre = clase.profesor_nombre;
           this.tareas = clase.tareas;
-          console.log('Clase cargada:', this.nombreClase);
-        } else {
-          console.warn('Clase no encontrada con el ID:', idClase);
         }
       },
       error => {
         console.error('Error al obtener las clases:', error);
       }
     );
+  }
+
+  // Crear tarea
+  crearTarea(): void {
+    if (this.claseId && this.tareaTitulo && this.tareaDescripcion && this.fechaEntrega) {
+      this.clasesService.agregarTarea(
+        this.claseId,
+        this.tareaTitulo,
+        this.tareaDescripcion,
+        this.fechaEntrega
+      ).subscribe(
+        response => {
+          console.log('Tarea creada:', response);
+          this.cargarClase(this.claseId!); // Recargar la información de la clase
+          this.limpiarFormulario(); // Limpiar los campos del formulario
+        },
+        error => {
+          console.error('Error al crear la tarea:', error);
+        }
+      );
+    } else {
+      console.error('Faltan campos en el formulario');
+    }
+  }
+
+  limpiarFormulario(): void {
+    this.tareaTitulo = '';
+    this.tareaDescripcion = '';
+    this.fechaEntrega = '';
+  }
+
+  toggleTareaExpand(index: number): void {
+    // Alterna entre expandir y contraer
+    this.expandedTareaIndex = this.expandedTareaIndex === index ? null : index;
   }
 }

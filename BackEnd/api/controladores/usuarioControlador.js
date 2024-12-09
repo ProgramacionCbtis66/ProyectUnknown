@@ -217,6 +217,7 @@ const actualizarUsuario = async (req, res) => {
       "curp",
     ],
     Profesor: ["departamento", "especialidad", "telefono"],
+    Administrador:[]
     // Agrega más roles si es necesario
   };
 

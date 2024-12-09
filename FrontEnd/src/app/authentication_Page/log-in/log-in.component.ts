@@ -50,6 +50,7 @@ export class LogInComponent implements OnInit {
       this.sesion._apellido = decodedToken.apellido;
       this.sesion._rol = decodedToken.rol;
       this.sesion._correo_institucional = decodedToken.correo_institucional;
+      this.sesion._id = decodedToken.id;
 
       // Establecer datos del alumno si el rol es "Alumno" y el token contiene datos del alumno
       if (decodedToken.rol === 'Alumno' && decodedToken.alumno) {

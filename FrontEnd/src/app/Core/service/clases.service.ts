@@ -51,14 +51,11 @@ export class ClasesService {
     return this.http.post(`${this.baseUrl}/class/crearClase`, clase);
   }
 
-  // Agregar una tarea a una clase
-  // Respuesta: Objeto con las propiedades:
-  // - mensaje: string
-  // - id_tarea: number
-  agregarTarea(id_clase: number, descripcion_tarea: string): Observable<any> {
-    const payload = { id_clase, descripcion_tarea };
-    return this.http.post(`${this.baseUrl}/class/agregarTarea`, payload);
-  }
+// Modificación en el servicio para agregar una tarea a una clase
+agregarTarea(id_clase: number, titulo: string, descripcion: string, fecha_entrega: string): Observable<any> {
+  const payload = { id_clase, titulo, descripcion, fecha_entrega };
+  return this.http.post(`${this.baseUrl}/class/agregarTarea`, payload);
+}
 
   // Asociar alumnos a una clase
   // Respuesta: Objeto con la propiedad:

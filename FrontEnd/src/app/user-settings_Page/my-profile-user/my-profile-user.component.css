@@ -43,17 +43,22 @@
 
 .profile-image-wrapper {
   width: 120px;
+  flex-wrap: wrap;
   height: 120px;
+  display: flex;
   border-radius: 50%;
   overflow: hidden;
-  border: 4px solid var(--background-color);
-  animation: scaleIn 0.5s ease-in-out;
+  border: none;
+  align-content: center;
+  justify-content: center;
+  animation: _ngcontent-ng-c3177603683_scaleIn 0.5s ease-in-out;
 }
 
 .profile-image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  
 }
 
 .profile-details h1 {

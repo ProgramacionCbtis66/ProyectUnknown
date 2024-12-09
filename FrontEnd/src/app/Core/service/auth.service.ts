@@ -63,6 +63,7 @@ export class AuthService {
     this.sesion._departamento = null;
     this.sesion._especialidad_Prof = null;
     this.sesion._telefono = null;
+    this.sesion._id = null;
   }
 
   restaurarSesion(): void {
@@ -74,6 +75,7 @@ export class AuthService {
             this.sesion._apellido = decodedToken.apellido;
             this.sesion._foto = localStorage.getItem('fotoPerfil') || "";
             this.sesion._rol = decodedToken.rol;
+            this.sesion._id = decodedToken.id;
 
             if (decodedToken.alumno) {
                 const alumno = decodedToken.alumno;

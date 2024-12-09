@@ -5,11 +5,12 @@
     <div class="profile-card">
       <div class="profile-info-container">
         <div class="profile-image-wrapper">
-          <img
+<!--           <img
             [src]="sesion._foto || 'assets/default-avatar.png'"
             alt="Foto de perfil"
             (error)="handleImageError($event)"
-          />
+          /> -->
+
         </div>
         <div class="profile-details">
           <h1>{{ sesion._usuario }} {{ sesion._apellido }}</h1>
@@ -21,6 +22,7 @@
 
     <div class="cards-grid">
       <!-- Card de Asistencia -->
+
       <div class="data-card attendance-card">
         <h3>Porcentaje de asistencia</h3>
         <div class="attendance-container">
@@ -100,11 +102,6 @@
     <div class="profile-card">
       <div class="profile-info-container">
         <div class="profile-image-wrapper">
-          <img
-            [src]="sesion._foto || 'assets/default-avatar.png'"
-            alt="Foto de perfil"
-            (error)="handleImageError($event)"
-          />
         </div>
         <div class="profile-details">
           <h1>{{ sesion._usuario }} {{ sesion._apellido }}</h1>
@@ -160,11 +157,7 @@
     <div class="profile-card">
       <div class="profile-info-container">
         <div class="profile-image-wrapper">
-          <img
-            [src]="sesion._foto || 'assets/default-avatar.png'"
-            alt="Foto de perfil"
-            (error)="handleImageError($event)"
-          />
+
         </div>
         <div class="profile-details">
           <h1>{{ sesion._usuario }} {{ sesion._apellido }}</h1>
@@ -176,6 +169,7 @@
 
     <div class="cards-grid">
       <!-- Card de Usuarios Activos -->
+
       <div class="data-card">
         <h3>Usuarios Activos</h3>
         <div class="stat-content">

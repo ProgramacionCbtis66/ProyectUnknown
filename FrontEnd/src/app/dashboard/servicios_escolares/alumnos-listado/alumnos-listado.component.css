@@ -558,6 +558,10 @@
   transform: translateY(-1px);
 }
 
+.search{
+  padding-inline:70px ;
+}
+
 /* Animaciones */
 @keyframes slideIn {
   from {
@@ -581,6 +585,11 @@
 
 /* Media Queries */
 @media (max-width: 768px) {
+
+  .search{
+    padding-inline:10px ;
+  }
+
   .modal-overlay {
     padding: 10px;
   }

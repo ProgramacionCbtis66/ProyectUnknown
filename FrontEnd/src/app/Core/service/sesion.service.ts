@@ -9,6 +9,7 @@ export class SesionService {
   constructor(private sanitizer: DomSanitizer) {}
 
   // Información del usuario
+  private id = new BehaviorSubject<number | null>(null);
   private nombre = new BehaviorSubject<string>('No disponible');
   private apellido = new BehaviorSubject<string>('No disponible');
   private rol = new BehaviorSubject<string>('No disponible');
@@ -31,6 +32,13 @@ export class SesionService {
   private telefono = new BehaviorSubject<number | null>(null);
 
   // Métodos para usuario, apellido, rol y foto
+  get _id(): number | null{
+    return this.id.value;
+  }
+  set _id(value: number | null) {
+    this.id.next(value);
+  }
+  
   get _usuario(): string {
     return this.nombre.value;
   }
