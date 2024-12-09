@@ -1,15 +1,34 @@
-<div class="cropper-container" *ngIf="imageChangedEvent">
-    <image-cropper
-      [imageChangedEvent]="imageChangedEvent"
-      [maintainAspectRatio]="true"
-      [aspectRatio]="1 / 1"
-      format="png"
-      [roundCropper]="true"
-      (imageCropped)="imageCropped($event)"
-    ></image-cropper>
+<!-- Imagen clickeable para abrir el modal -->
+<img 
+  [src]="sesion._foto"
+  alt="Subir Imagen" 
+  class="clickable-image" 
+  (click)="openCropperModal()" 
+/>
+
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeCropperModal()">&times;</span>
+    <h2>Editar Imagen</h2>
+    <!-- Input oculto para subir archivos -->
+    <input #fileInput type="file" (change)="fileChangeEvent($event)" style="display: none;" />
+    <div class="cropper-wrapper">
+      <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="1 / 1"
+        [roundCropper]="true"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded($event)"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()"
+      ></image-cropper>
+    </div>
+    <div class="modal-actions">
+      <button (click)="closeCropperModal()">Cancelar</button>
+      <button (click)="confirmCrop()">Aceptar</button>
+    </div>
   </div>
-  
-  <div class="modal-actions">
-    <button (click)="saveCroppedImage()">Guardar</button>
-    <button (click)="cancelCropping()">Cancelar</button>
-  </div>
+</div>

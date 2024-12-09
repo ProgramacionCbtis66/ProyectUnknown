@@ -1,58 +1,118 @@
-.profile-image-container {
-    text-align: center;
-    margin: 20px;
-    }
-    
-    .profile-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    border: 2px solid #ccc;
-    }
-    
-    .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    }
-    
-    .modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    width: 80%;
-    max-width: 500px;
-    }
-    
-    .cropper-container {
-    margin: 20px 0;
-    }
-    
-    .modal-actions button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    }
-    
-    .modal-actions button:first-child {
-    background: #4caf50;
-    color: #fff;
-    }
-    
-    .modal-actions button:last-child {
-    background: #f44336;
-    color: #fff;
-    }
-    
-    
+/* Modal base */
+.modal {
+  display: none; /* Ocultar por defecto */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Mostrar el modal */
+.modal.show {
+  display: block;
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  position: relative;
+  max-height: 90%; /* Para evitar scroll en teléfonos */
+  overflow-y: auto; /* Scroll solo si el contenido excede */
+}
+
+/* Botón cerrar */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #aaa;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+}
+
+/* Acciones del modal */
+.modal-actions {
+  margin-top: 20px;
+  text-align: right;
+  display: flex;
+  justify-content: center; /* Centrar botones */
+  gap: 10px; /* Espaciado entre botones */
+}
+
+/* Imagen clickeable */
+.clickable-image {
+  cursor: pointer;
+  width: 150px; /* Ajusta el tamaño según sea necesario */
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.clickable-image:hover {
+  transform: scale(1.05); /* Efecto de zoom al pasar el cursor */
+  border-color: #007bff;
+}
+
+/* Botones dentro del modal */
+.modal-actions button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin: 5px;
+}
+
+/* Botón de cancelar */
+.modal-actions button:first-child {
+  background-color: #000000; /* Rojo */
+  color: white;
+}
+
+.modal-actions button:first-child:hover {
+  background-color: #d32f2f; /* Rojo más oscuro */
+  transform: scale(1.05);
+}
+
+/* Botón de aceptar */
+.modal-actions button:last-child {
+  background-color: #000000; /* Verde */
+  color: white;
+}
+
+.modal-actions button:last-child:hover {
+  background-color: #388e3c; /* Verde más oscuro */
+  transform: scale(1.05);
+}
+
+/* Media query para pantallas grandes (PC) */
+@media (min-width: 768px) {
+  .modal-content {
+    width: 50%; /* Modal más pequeño en pantallas grandes */
+    max-height: 80%; /* No se permite scroll */
+    overflow: hidden; /* Ocultar contenido que exceda el modal */
+    margin: 5% auto; /* Centrar verticalmente */
+  }
+
+  .modal {
+    overflow: hidden; /* Eliminar scroll en toda la página cuando el modal está abierto */
+  }
+}
