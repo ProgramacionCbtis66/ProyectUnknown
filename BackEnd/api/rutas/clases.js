@@ -24,4 +24,11 @@ Clase.put('/class/actualizarEstadoYCalificacion', clase.actualizarEstadoYCalific
 // Nueva ruta para eliminar una clase
 Clase.delete('/class/eliminarClase/:id_clase', clase.DeleteClaseById);
 
+// Nueva ruta para obtener los alumnos asociados a una clase
+Clase.get('/class/obtenerAlumnosPorClase/:id_clase', clase.obtenerAlumnosPorClase);
+
+Clase.post('/class/registrarAsistencia', clase.registrarAsistencia);
+
+Clase.get('/class/porcentajeAsistencias/:id_alumno', clase.calcularPorcentajeAsistencias);
+
 export default Clase;

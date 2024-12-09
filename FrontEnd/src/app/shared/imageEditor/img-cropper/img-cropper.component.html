@@ -1,0 +1,15 @@
+<div class="cropper-container" *ngIf="imageChangedEvent">
+    <image-cropper
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1 / 1"
+      format="png"
+      [roundCropper]="true"
+      (imageCropped)="imageCropped($event)"
+    ></image-cropper>
+  </div>
+  
+  <div class="modal-actions">
+    <button (click)="saveCroppedImage()">Guardar</button>
+    <button (click)="cancelCropping()">Cancelar</button>
+  </div>

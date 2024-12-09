@@ -42,6 +42,7 @@ import { ConnectedDevicesPageComponent } from './user-settings_Page/connected-de
 import Notiflix from 'notiflix';
 import { FormsModule } from '@angular/forms';
 import { UserRegisterComponent } from './user-settings_Page/user-register/user-register.component';
+import { ImgCropperComponent } from "./shared/imageEditor/img-cropper/img-cropper.component";
 
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
@@ -87,18 +88,18 @@ export function tokenGetter() {
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-   
     ToastrModule.forRoot(), // Módulo importado aquí
     JwtModule.forRoot({
-       config: {
-         tokenGetter: tokenGetter,
-         allowedDomains: ["localhost:4000"],
-         disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
-       }
+        config: {
+            tokenGetter: tokenGetter,
+            allowedDomains: ["localhost:4000"],
+            disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
+        }
     }),
     CommonModule, // Asegúrate de añadir CommonModule
-    RouterModule, // Asegúrate de añadir RouterModule
-  ],
+    RouterModule,
+    ImgCropperComponent
+],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })

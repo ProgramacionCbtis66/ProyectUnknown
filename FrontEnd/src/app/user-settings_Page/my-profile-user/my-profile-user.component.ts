@@ -14,29 +14,29 @@ interface Stats {
 @Component({
   selector: 'app-my-profile-user',
   templateUrl: './my-profile-user.component.html',
-  styleUrls: ['./my-profile-user.component.css']
+  styleUrls: ['./my-profile-user.component.css'],
 })
 export class MyProfileUserComponent implements OnInit {
   // Variables de interfaz
   showEmoji: boolean = false;
-  attendancePercentage: number = 100;
+  attendancePercentage: number | undefined;
   isCopied: boolean = false;
   isLoading: boolean = true;
 
   // Estadísticas por rol
   stats: Stats = {
     promedio: 8.5,
-    tareas: 95
+    tareas: 95,
   };
 
   teacherStats: Stats = {
     gruposActivos: 5,
-    alumnosTotal: 150
+    alumnosTotal: 150,
   };
 
   adminStats: Stats = {
     usuariosActivos: 500,
-    uptime: 99.9
+    uptime: 99.9,
   };
 
   constructor(
@@ -47,6 +47,7 @@ export class MyProfileUserComponent implements OnInit {
   ngOnInit(): void {
     this.loadInitialData();
     window.scrollTo(0, 0);
+    this.getAsistenceStatus();
   }
 
   private async loadInitialData(): Promise<void> {
@@ -61,7 +62,7 @@ export class MyProfileUserComponent implements OnInit {
   }
 
   private async loadUserData(): Promise<void> {
-    switch(this.sesion._rol) {
+    switch (this.sesion._rol) {
       case 'Alumno':
         await this.loadAlumnoData();
         break;
@@ -73,32 +74,44 @@ export class MyProfileUserComponent implements OnInit {
         break;
     }
   }
-
   private async loadAlumnoData(): Promise<void> {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
+    // Simula una espera inicial si es necesario
+    await new Promise((resolve) => setTimeout(resolve, 800));
+  
+    // Llamada al método getAsistenceStatus y espera del porcentaje
+    const porcentajeAsistencias = await this.getAsistenceStatus();
+  
+    // Asigna los datos a las propiedades correspondientes
     this.stats = {
       promedio: 8.5,
-      tareas: 95
+      tareas: 95,
     };
-    this.attendancePercentage = 100;
+    this.attendancePercentage = porcentajeAsistencias;
   }
+  
+  // Método getAsistenceStatus modificado para devolver Promesa
+  private async getAsistenceStatus(): Promise<number> {
+    const response = await this.usuarioService.calcularPorcentajeAsistencias(this.sesion._id_alumno!).toPromise();
+    console.log(`Porcentaje de Asistencias: ${response.porcentaje_asistencias}%`);
+    return response.porcentaje_asistencias;
+  }
+  
 
   private async loadProfesorData(): Promise<void> {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
     this.teacherStats = {
       gruposActivos: 5,
-      alumnosTotal: 150
+      alumnosTotal: 150,
     };
   }
 
   private async loadAdminData(): Promise<void> {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
     this.adminStats = {
       usuariosActivos: 500,
-      uptime: 99.9
+      uptime: 99.9,
     };
   }
 
@@ -112,14 +125,15 @@ export class MyProfileUserComponent implements OnInit {
     const textToCopy = this.sesion._numeroControl;
     if (!textToCopy) return;
 
-    navigator.clipboard.writeText(textToCopy)
+    navigator.clipboard
+      .writeText(textToCopy)
       .then(() => {
         this.isCopied = true;
         setTimeout(() => {
           this.isCopied = false;
         }, 1000);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Error al copiar al portapapeles:', err);
       });
   }
@@ -135,7 +149,7 @@ export class MyProfileUserComponent implements OnInit {
       return new Date(date).toLocaleDateString('es-MX', {
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
       });
     } catch (error) {
       return 'Fecha no válida';
@@ -144,10 +158,14 @@ export class MyProfileUserComponent implements OnInit {
 
   getRoleClass(): string {
     switch (this.sesion._rol) {
-      case 'Alumno': return 'student';
-      case 'Profesor': return 'teacher';
-      case 'Administrador': return 'admin';
-      default: return '';
+      case 'Alumno':
+        return 'student';
+      case 'Profesor':
+        return 'teacher';
+      case 'Administrador':
+        return 'admin';
+      default:
+        return '';
     }
   }
 
@@ -158,12 +176,15 @@ export class MyProfileUserComponent implements OnInit {
   }
 
   hasProfileImage(): boolean {
-    return !!this.sesion._foto && 
-           this.sesion._foto !== 'null' && 
-           this.sesion._foto !== 'undefined';
+    return (
+      !!this.sesion._foto &&
+      this.sesion._foto !== 'null' &&
+      this.sesion._foto !== 'undefined'
+    );
   }
 
   get loadingClass(): string {
     return this.isLoading ? 'loading' : '';
   }
+  
 }

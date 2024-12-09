@@ -94,4 +94,25 @@ agregarTarea(id_clase: number, titulo: string, descripcion: string, fecha_entreg
   eliminarClase(id_clase: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/class/eliminarClase/${id_clase}`);
   }
+
+    // Obtener alumnos por clase
+  // Respuesta: Array de objetos con las propiedades:
+  // - id_alumno: number
+  // - numero_control: string
+  // - grupo: string
+  // - especialidad: string
+  // - turno: string
+  // - curp: string
+  // - nombre: string
+  // - apellido: string
+  obtenerAlumnosPorClase(id_clase: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/class/obtenerAlumnosPorClase/${id_clase}`);
+  }
+
+  // Registrar asistencia
+  // Respuesta: Objeto con la propiedad:
+  // - mensaje: string
+  registrarAsistencia(asistencia: { id_clase: number; id_alumno: number; fecha: string; estado_asistencia: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/class/registrarAsistencia`, asistencia);
+  }
 }

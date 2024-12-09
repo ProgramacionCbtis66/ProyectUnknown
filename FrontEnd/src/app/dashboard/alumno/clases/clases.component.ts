@@ -21,6 +21,9 @@ export class ClasesComponent implements OnInit {
 
   expandedTareaIndex: number | null = null; // Índice de la tarea actualmente expandida
 
+  alumnos: any[] = []; // Lista de alumnos cargados
+  asistencia: { id_alumno: number; estado: string }[] = []; // Estado de asistencia de cada alumno
+
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +39,7 @@ export class ClasesComponent implements OnInit {
         if (!isNaN(numericId)) {
           this.claseId = numericId;
           this.cargarClase(this.claseId);
+          this.obtenerAlumnos(this.claseId);
         }
       }
     });
@@ -92,4 +96,54 @@ export class ClasesComponent implements OnInit {
     // Alterna entre expandir y contraer
     this.expandedTareaIndex = this.expandedTareaIndex === index ? null : index;
   }
+
+  obtenerAlumnos(idClase: number): void {
+    this.clasesService.obtenerAlumnosPorClase(idClase).subscribe({
+      next: (data) => {
+        this.alumnos = data.alumnos;
+        console.log(this.alumnos);
+      },
+      error: (error) => {
+        console.error('Error al obtener los alumnos:', error);
+      },
+    });
+  }
+
+  marcarAsistencia(alumnoId: number, estado: string): void {
+    const fechaActual = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  
+    const asistencia = {
+      id_clase: this.claseId!,
+      id_alumno: alumnoId,
+      fecha: fechaActual,
+      estado_asistencia: estado,
+    };
+  
+    this.clasesService.registrarAsistencia(asistencia).subscribe(response => {
+      console.log(response.mensaje);
+    });
+  }
+  
+
+/*   inicializarAsistencia(): void {
+    this.alumnos.forEach(alumno => {
+      this.asistencia[alumno.id] = 'Ausente'; // Inicializa como Ausente
+    });
+  }
+
+  guardarAsistencia(): void {
+    const listaAsistencia = this.alumnos.map(alumno => ({
+      alumnoId: alumno.id,
+      estado: this.asistencia[alumno.id]
+    }));
+
+    this.clasesService.guardarAsistencia(this.claseId!, listaAsistencia).subscribe(
+      response => {
+        console.log('Asistencia guardada:', response);
+      },
+      error => {
+        console.error('Error al guardar la asistencia:', error);
+      }
+    );
+  } */
 }

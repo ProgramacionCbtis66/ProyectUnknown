@@ -66,4 +66,13 @@ export class UsuarioService {
   getProfesores(): Observable<GetUsuario[]> {
     return this.http.get<GetUsuario[]>(`${this.apiBaseUrl}/usr/listUsr?rol=Profesor`);
   }
+
+    // Calcular porcentaje de asistencias
+  // Respuesta: Objeto con las propiedades:
+  // - total_dias: number
+  // - asistencias_afirmativas: number
+  // - porcentaje_asistencias: string
+  calcularPorcentajeAsistencias(id_alumno: number): Observable<any> {
+    return this.http.get(`${this.apiBaseUrl}/class/porcentajeAsistencias/${id_alumno}`);
+  }
 }

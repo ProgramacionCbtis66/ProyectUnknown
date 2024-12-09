@@ -563,5 +563,165 @@ const DeleteClaseById = async (req, res) => {
     }
 };
 
+const obtenerAlumnosPorClase = async (req, res) => {
+    const { id_clase } = req.params;
 
-export default {crearClase, agregarTarea, asociarAlumnosAClase, ListClases, obtenerTareasPendientes, actualizarEstadoYCalificacion, ListClasesByAlumno, ListClasesByProfesor, DeleteClaseById };
+    if (!id_clase) {
+        return res.status(400).json({ error: 'El campo id_clase es obligatorio.' });
+    }
+
+    const query = `
+        SELECT 
+            a.id_alumno, 
+            a.numero_control, 
+            a.grupo, 
+            a.especialidad, 
+            a.turno, 
+            a.curp, 
+            u.nombre, 
+            u.apellido
+        FROM alumnos_clases ac
+        JOIN alumnos a ON ac.id_alumno = a.id_alumno
+        JOIN usuarios u ON a.id_usuario = u.id_usuario
+        WHERE ac.id_clase = ?;
+    `;
+
+    const conexion = await cnx();
+
+    try {
+        const [result] = await conexion.execute(query, [id_clase]);
+
+        if (!result.length) {
+            return res.status(404).json({ mensaje: 'No hay alumnos asociados a esta clase.' });
+        }
+
+        res.status(200).json({ alumnos: result });
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al obtener los alumnos de la clase.');
+    } finally {
+        await conexion.end();
+    }
+};
+
+const registrarAsistencia = async (req, res) => {
+    const { id_clase, id_alumno, fecha, estado_asistencia } = req.body;
+
+    // Validar los campos obligatorios
+    if (!id_clase || !id_alumno || !fecha || !estado_asistencia) {
+        return res.status(400).json({
+            error: 'Los campos id_clase, id_alumno, fecha y estado_asistencia son obligatorios.',
+        });
+    }
+
+    // Consultas SQL
+    const queries = {
+        checkAlumnoClase: `
+            SELECT ac.id_alumno_clase 
+            FROM alumnos_clases ac
+            WHERE ac.id_clase = ? AND ac.id_alumno = ?;
+        `,
+        insertAsistencia: `
+            INSERT INTO asistencias (id_alumno_clase, fecha, estado_asistencia) 
+            VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE estado_asistencia = VALUES(estado_asistencia);
+        `,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Verificar que el alumno está asociado a la clase
+        const [result] = await conexion.execute(queries.checkAlumnoClase, [id_clase, id_alumno]);
+
+        if (!result.length) {
+            return res.status(404).json({
+                error: 'El alumno no está asociado a la clase especificada.',
+            });
+        }
+
+        const idAlumnoClase = result[0].id_alumno_clase;
+
+        // Registrar o actualizar la asistencia
+        await conexion.execute(queries.insertAsistencia, [idAlumnoClase, fecha, estado_asistencia]);
+
+        res.status(201).json({
+            mensaje: 'Asistencia registrada correctamente.',
+        });
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al registrar la asistencia.');
+    } finally {
+        await conexion.end();
+    }
+};
+
+const calcularPorcentajeAsistencias = async (req, res) => {
+    const { id_alumno } = req.params;
+
+    if (!id_alumno) {
+        return res.status(400).json({
+            error: 'El campo id_alumno es obligatorio.',
+        });
+    }
+
+    // Consultas SQL
+    const queries = {
+        getTotalAsistencias: `
+            SELECT COUNT(*) AS total_dias
+            FROM asistencias a
+            JOIN alumnos_clases ac ON a.id_alumno_clase = ac.id_alumno_clase
+            WHERE ac.id_alumno = ?;
+        `,
+        getAsistenciasAfirmativas: `
+            SELECT COUNT(*) AS asistencias_afirmativas
+            FROM asistencias a
+            JOIN alumnos_clases ac ON a.id_alumno_clase = ac.id_alumno_clase
+            WHERE ac.id_alumno = ? AND a.estado_asistencia = 'Asistió';
+        `
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Obtener el total de días registrados
+        const [totalResult] = await conexion.execute(queries.getTotalAsistencias, [id_alumno]);
+        const totalDias = totalResult[0].total_dias;
+
+        if (totalDias === 0) {
+            return res.status(404).json({
+                mensaje: 'No hay registros de asistencias para este alumno.',
+            });
+        }
+
+        // Obtener las asistencias afirmativas
+        const [afirmativasResult] = await conexion.execute(queries.getAsistenciasAfirmativas, [id_alumno]);
+        const asistenciasAfirmativas = afirmativasResult[0].asistencias_afirmativas;
+
+        // Calcular el porcentaje
+        const porcentajeAsistencias = ((asistenciasAfirmativas / totalDias) * 100).toFixed(2);
+
+        res.status(200).json({
+            total_dias: totalDias,
+            asistencias_afirmativas: asistenciasAfirmativas,
+            porcentaje_asistencias: porcentajeAsistencias
+        });
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al calcular el porcentaje de asistencias.');
+    } finally {
+        await conexion.end();
+    }
+};
+
+export default {
+    crearClase,
+    agregarTarea,
+    asociarAlumnosAClase,
+    ListClases,
+    obtenerTareasPendientes,
+    actualizarEstadoYCalificacion,
+    ListClasesByAlumno,
+    ListClasesByProfesor,
+    DeleteClaseById,
+    obtenerAlumnosPorClase, // Nuevo método
+    registrarAsistencia,
+    calcularPorcentajeAsistencias,
+};

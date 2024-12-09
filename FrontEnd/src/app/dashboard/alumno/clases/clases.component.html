@@ -26,19 +26,18 @@
     <div class="col-md-6 mb-4">
       <div class="row">
         <div class="col-12 mb-3" *ngFor="let tarea of tareas; let i = index">
-			<div
-			class="card"
-			[ngClass]="{ expanded: expandedTareaIndex === i }"
-			(click)="toggleTareaExpand(i)"
-		  >
-			<div class="card-body">
-			  <h5 class="card-title">{{ tarea.titulo }}</h5>
-			  <p class="card-text" *ngIf="expandedTareaIndex === i">
-				{{ tarea.descripcion }}
-			  </p>
-			</div>
-		  </div>
-		  
+          <div
+            class="card"
+            [ngClass]="{ expanded: expandedTareaIndex === i }"
+            (click)="toggleTareaExpand(i)"
+          >
+            <div class="card-body">
+              <h5 class="card-title">{{ tarea.titulo }}</h5>
+              <p class="card-text" *ngIf="expandedTareaIndex === i">
+                {{ tarea.descripcion }}
+              </p>
+            </div>
+          </div>
         </div>
 
         <!-- Si no hay tareas, mostrar mensaje e imagen -->
@@ -64,12 +63,12 @@
       </div>
     </div>
 
-    <!-- Columna 3: Acciones para el profesor (ocupa 2 partes del ancho, más pequeña) -->
+    <!-- Columna 3: Acciones para el profesor -->
     <div class="col-md-2 mb-4" *ngIf="esProfesor">
       <div class="card options-card">
         <div class="card-body">
           <h5 class="card-title">Acciones</h5>
-          <!-- Botones que abren el modal -->
+          <!-- Botones que abren los modales -->
           <button
             style="
               height: 50px;
@@ -98,7 +97,90 @@
           >
             Añadir Anuncio
           </button>
+          <button
+            style="
+              height: 50px;
+              border-radius: 10px;
+              border: none;
+              background-color: #1d1d1d;
+              color: white;
+            "
+            data-bs-toggle="modal"
+            data-bs-target="#paseListaModal"
+          >
+            Pase de Lista
+          </button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para pase de lista -->
+<div
+  class="modal fade"
+  id="paseListaModal"
+  tabindex="-1"
+  aria-labelledby="paseListaModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paseListaModalLabel">Pase de Lista</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="alumnos" class="form-label">Lista de Alumnos</label>
+            <div class="list-group">
+              <div
+                class="list-group-item"
+                *ngFor="let alumno of alumnos; let i = index"
+              >
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>{{ alumno.nombre }}</span>
+                  <div>
+                    <button
+                      type="button"
+                      class="btn btn-success btn-sm me-2"
+                      (click)="marcarAsistencia(alumno.id_alumno, 'Asistió')"
+                    >
+                      Presente
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-warning btn-sm me-2"
+                      (click)="marcarAsistencia(alumno.id_alumno, 'Retardo')"
+                    >
+                      Tardio
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        marcarAsistencia(alumno.id_alumno, 'Inasistencia')
+                      "
+                    >
+                      Ausente
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
       </div>
     </div>
   </div>
@@ -262,30 +344,29 @@
   }
 
   .card {
-  transition: transform 0.2s ease-in-out;
-  cursor: pointer;
-  overflow: hidden;
-}
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+    overflow: hidden;
+  }
 
-.card-body {
-  transition: max-height 0.1s ease-in-out, padding 0.3s ease-in-out;
-  max-height: 60px; /* Altura inicial */
-  padding: 10px;
-}
+  .card-body {
+    transition: max-height 0.1s ease-in-out, padding 0.3s ease-in-out;
+    max-height: 60px; /* Altura inicial */
+    padding: 10px;
+  }
 
-.card.expanded .card-body {
-  max-height: 300px; /* Ajusta según la longitud máxima esperada */
-  padding: 15px;
-}
+  .card.expanded .card-body {
+    max-height: 300px; /* Ajusta según la longitud máxima esperada */
+    padding: 15px;
+  }
 
-.card-title {
-  margin-bottom: 0;
-}
+  .card-title {
+    margin-bottom: 0;
+  }
 
-.card-text {
-  margin-top: 10px;
-}
-
+  .card-text {
+    margin-top: 10px;
+  }
 
   .card:hover {
     transform: scale(1.05);
@@ -296,11 +377,11 @@
     margin-bottom: 20px;
   }
 
-  .notTarea-card{
-	height: 185px;
+  .notTarea-card {
+    height: 185px;
   }
 
-  .options-card{
-	height: 185px;
+  .options-card {
+    height: 185px;
   }
 </style>
