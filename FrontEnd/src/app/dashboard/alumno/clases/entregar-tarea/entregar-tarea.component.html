@@ -1,0 +1,21 @@
+<div class="container">
+    <h2>Entregar Tarea</h2>
+    <form [formGroup]="entregarTareaForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="archivo">Archivo (PDF):</label>
+        <input
+          type="file"
+          id="archivo"
+          class="form-control"
+          (change)="onFileSelect($event)"
+          required
+          accept=".pdf"
+        />
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="!entregarTareaForm.valid || !archivoSeleccionado">
+        Enviar Tarea
+      </button>
+    </form>
+  </div>
+  

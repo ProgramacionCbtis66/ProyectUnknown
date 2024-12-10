@@ -22,273 +22,281 @@
       </div>
     </div>
 
-    <!-- Sección principal de tareas -->
-    <div class="main-content">
-      <div class="tasks-container" *ngIf="tareas.length > 0">
+    <!-- Columna 2: Tareas (ocupa 6 partes del ancho, más grande) -->
+    <div class="col-md-6 mb-4">
+      <div class="row">
+        <div class="col-12 mb-3" *ngFor="let tarea of tareas; let i = index">
+          <div
+            class="card"
+            [ngClass]="{ expanded: expandedTareaIndex === i }"
+            (click)="toggleTareaExpand(i)"
+          >
+            <div class="card-body">
+              <h5 class="card-title">{{ tarea.titulo }}</h5>
+              <p class="card-text" *ngIf="expandedTareaIndex === i">
+                {{ tarea.descripcion }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estado vacío -->
+        <div class="empty-state" *ngIf="tareas.length === 0">
+          <img
+            src="../../../../assets/img/Recurso 3.svg"
+            alt="No hay tareas"
+            class="empty-illustration"
+          />
+          <h3 *ngIf="esProfesor">
+            Aquí te puedes comunicar con tus alumnos y subir tareas.
+          </h3>
+          <h3 *ngIf="!esProfesor">
+            Aquí se muestran tus futuras tareas y anuncios.
+          </h3>
+        </div>
+      </div>
+
+      <!-- Botón flotante de acciones -->
+      <button
+        class="fab-button"
+        *ngIf="esProfesor"
+        (click)="toggleActionMenu()"
+        [class.active]="isActionMenuVisible"
+      >
+        <i class="bx bx-plus"></i>
+      </button>
+
+      <!-- Menú de acciones flotante -->
+      <div class="action-menu" [class.show]="isActionMenuVisible">
         <div
-          class="task-card"
-          *ngFor="let tarea of tareas; let i = index"
-          [class.expanded]="expandedTareaIndex === i"
-          (click)="toggleTareaExpand(i)"
+          class="menu-option"
+          data-bs-toggle="modal"
+          data-bs-target="#addTareaModal"
         >
-          <div class="task-header">
-            <h3>{{ tarea.titulo }}</h3>
-            <i class="bx bx-chevron-down transition-icon"></i>
-          </div>
-          <div class="task-content">
-            <p>{{ tarea.descripcion }}</p>
-          </div>
+          <i class="bx bx-book-add"></i>
+          <span>Añadir Tarea</span>
         </div>
-      </div>
-
-      <!-- Estado vacío -->
-      <div class="empty-state" *ngIf="tareas.length === 0">
-        <img
-          src="../../../../assets/img/Recurso 3.svg"
-          alt="No hay tareas"
-          class="empty-illustration"
-        />
-        <h3 *ngIf="esProfesor">
-          Aquí te puedes comunicar con tus alumnos y subir tareas.
-        </h3>
-        <h3 *ngIf="!esProfesor">
-          Aquí se muestran tus futuras tareas y anuncios.
-        </h3>
+        <div
+          class="menu-option"
+          data-bs-toggle="modal"
+          data-bs-target="#addAnuncioModal"
+        >
+          <i class="bx bx-message-square-add"></i>
+          <span>Añadir Anuncio</span>
+        </div>
+        <div
+          class="menu-option"
+          data-bs-toggle="modal"
+          data-bs-target="#paseListaModal"
+        >
+          <i class="bx bx-list-check"></i>
+          <span>Pase de Lista</span>
+        </div>
       </div>
     </div>
 
-    <!-- Botón flotante de acciones -->
-    <button
-      class="fab-button"
-      *ngIf="esProfesor"
-      (click)="toggleActionMenu()"
-      [class.active]="isActionMenuVisible"
+    <!-- Modal para pase de lista -->
+    <div
+      class="modal fade"
+      id="paseListaModal"
+      tabindex="-1"
+      aria-labelledby="paseListaModalLabel"
+      aria-hidden="true"
     >
-      <i class="bx bx-plus"></i>
-    </button>
-
-    <!-- Menú de acciones flotante -->
-    <div class="action-menu" [class.show]="isActionMenuVisible">
-      <div
-        class="menu-option"
-        data-bs-toggle="modal"
-        data-bs-target="#addTareaModal"
-      >
-        <i class="bx bx-book-add"></i>
-        <span>Añadir Tarea</span>
-      </div>
-      <div
-        class="menu-option"
-        data-bs-toggle="modal"
-        data-bs-target="#addAnuncioModal"
-      >
-        <i class="bx bx-message-square-add"></i>
-        <span>Añadir Anuncio</span>
-      </div>
-      <div
-        class="menu-option"
-        data-bs-toggle="modal"
-        data-bs-target="#paseListaModal"
-      >
-        <i class="bx bx-list-check"></i>
-        <span>Pase de Lista</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para pase de lista -->
-  <div
-    class="modal fade"
-    id="paseListaModal"
-    tabindex="-1"
-    aria-labelledby="paseListaModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="paseListaModalLabel">Pase de Lista</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <div class="lista-alumnos">
-            <div class="alumno-item" *ngFor="let alumno of alumnos">
-              <span class="alumno-nombre">{{ alumno.nombre }}</span>
-              <div class="asistencia-buttons">
-                <button
-                  class="btn-asistencia presente"
-                  (click)="marcarAsistencia(alumno.id_alumno, 'Asistió')"
-                >
-                  <i class="bx bx-check"></i>
-                  <span>Presente</span>
-                </button>
-                <button
-                  class="btn-asistencia retardo"
-                  (click)="marcarAsistencia(alumno.id_alumno, 'Retardo')"
-                >
-                  <i class="bx bx-time"></i>
-                  <span>Tardío</span>
-                </button>
-                <button
-                  class="btn-asistencia ausente"
-                  (click)="marcarAsistencia(alumno.id_alumno, 'Inasistencia')"
-                >
-                  <i class="bx bx-x"></i>
-                  <span>Ausente</span>
-                </button>
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="paseListaModalLabel">Pase de Lista</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="lista-alumnos">
+              <div class="alumno-item" *ngFor="let alumno of alumnos">
+                <span class="alumno-nombre">{{ alumno.nombre }}</span>
+                <div class="asistencia-buttons">
+                  <button
+                    class="btn-asistencia presente"
+                    (click)="marcarAsistencia(alumno.id_alumno, 'Asistió')"
+                  >
+                    <i class="bx bx-check"></i>
+                    <span>Presente</span>
+                  </button>
+                  <button
+                    class="btn-asistencia retardo"
+                    (click)="marcarAsistencia(alumno.id_alumno, 'Retardo')"
+                  >
+                    <i class="bx bx-time"></i>
+                    <span>Tardío</span>
+                  </button>
+                  <button
+                    class="btn-asistencia ausente"
+                    (click)="marcarAsistencia(alumno.id_alumno, 'Inasistencia')"
+                  >
+                    <i class="bx bx-x"></i>
+                    <span>Ausente</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cerrar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para añadir tarea -->
-  <div
-    class="modal fade"
-    id="addTareaModal"
-    tabindex="-1"
-    aria-labelledby="addTareaModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addTareaModalLabel">Añadir Tarea</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="tareaTitulo" class="form-label"
-                >Título de la tarea</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="tareaTitulo"
-                [(ngModel)]="tareaTitulo"
-                name="titulo"
-                placeholder="Escribe el título de la tarea"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="tareaDescripcion" class="form-label"
-                >Descripción</label
-              >
-              <textarea
-                class="form-control"
-                id="tareaDescripcion"
-                [(ngModel)]="tareaDescripcion"
-                name="descripcion"
-                rows="3"
-                placeholder="Escribe la descripción de la tarea"
-              ></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="fechaEntrega" class="form-label"
-                >Fecha de entrega</label
-              >
-              <input
-                type="date"
-                class="form-control"
-                id="fechaEntrega"
-                [(ngModel)]="fechaEntrega"
-                name="fecha_entrega"
-              />
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancelar
-          </button>
-          <button type="button" class="btn btn-primary" (click)="crearTarea()">
-            Añadir Tarea
-          </button>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal para añadir anuncio -->
-  <div
-    class="modal fade"
-    id="addAnuncioModal"
-    tabindex="-1"
-    aria-labelledby="addAnuncioModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addAnuncioModalLabel">Añadir Anuncio</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+    <!-- Modal para añadir tarea -->
+    <div
+      class="modal fade"
+      id="addTareaModal"
+      tabindex="-1"
+      aria-labelledby="addTareaModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addTareaModalLabel">Añadir Tarea</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="tareaTitulo" class="form-label"
+                  >Título de la tarea</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tareaTitulo"
+                  [(ngModel)]="tareaTitulo"
+                  name="titulo"
+                  placeholder="Escribe el título de la tarea"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="tareaDescripcion" class="form-label"
+                  >Descripción</label
+                >
+                <textarea
+                  class="form-control"
+                  id="tareaDescripcion"
+                  [(ngModel)]="tareaDescripcion"
+                  name="descripcion"
+                  rows="3"
+                  placeholder="Escribe la descripción de la tarea"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="fechaEntrega" class="form-label"
+                  >Fecha de entrega</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="fechaEntrega"
+                  [(ngModel)]="fechaEntrega"
+                  name="fecha_entrega"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="crearTarea()"
+            >
+              Añadir Tarea
+            </button>
+          </div>
         </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="anuncioTitulo" class="form-label"
-                >Título del anuncio</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="anuncioTitulo"
-                placeholder="Escribe el título del anuncio"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="anuncioDescripcion" class="form-label"
-                >Descripción</label
-              >
-              <textarea
-                class="form-control"
-                id="anuncioDescripcion"
-                rows="3"
-                placeholder="Escribe la descripción del anuncio"
-              ></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancelar
-          </button>
-          <button type="button" class="btn btn-primary">Añadir Anuncio</button>
+      </div>
+    </div>
+
+    <!-- Modal para añadir anuncio -->
+    <div
+      class="modal fade"
+      id="addAnuncioModal"
+      tabindex="-1"
+      aria-labelledby="addAnuncioModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addAnuncioModalLabel">
+              Añadir Anuncio
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="anuncioTitulo" class="form-label"
+                  >Título del anuncio</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="anuncioTitulo"
+                  placeholder="Escribe el título del anuncio"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="anuncioDescripcion" class="form-label"
+                  >Descripción</label
+                >
+                <textarea
+                  class="form-control"
+                  id="anuncioDescripcion"
+                  rows="3"
+                  placeholder="Escribe la descripción del anuncio"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary">
+              Añadir Anuncio
+            </button>
+          </div>
         </div>
       </div>
     </div>
