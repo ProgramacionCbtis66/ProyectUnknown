@@ -1,16 +1,14 @@
-<!-- src/app/components/alumnos-clases/alumnos-clases.component.html -->
-
 <div class="container my-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Clases</h2>
     <button
       type="button"
-      class="btn btn-success"
+      class="add-button"
       data-bs-toggle="modal"
       data-bs-target="#crearClaseModal"
       aria-label="Agregar Clase"
     >
-      <i class="fi fi-br-plus me-2"></i> Agregar Clase
+      <i class="bx bx-plus"></i>
     </button>
   </div>
 
@@ -36,7 +34,9 @@
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="nombreClase" class="form-label">Nombre de la Clase:</label>
+              <label for="nombreClase" class="form-label"
+                >Nombre de la Clase:</label
+              >
               <input
                 type="text"
                 id="nombreClase"
@@ -57,14 +57,16 @@
                 name="idProfesor"
                 required
               >
-                <option value=""  selected>Selecciona un profesor</option>
+                <option value="" selected>Selecciona un profesor</option>
                 <option
                   *ngFor="let profesor of profesores"
                   [value]="profesor.id_profesor"
                 >
                   {{ profesor.nombre_completo }}
                 </option>
-                <option *ngIf="profesores.length === 0" disabled>No hay profesores disponibles</option>
+                <option *ngIf="profesores.length === 0" disabled>
+                  No hay profesores disponibles
+                </option>
               </select>
             </div>
           </div>
@@ -84,45 +86,34 @@
   </div>
 
   <!-- Listado de clases -->
-  <div class="row">
-    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let clase of clases">
-      <div class="card h-100">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <div>
-            <h5 class="card-title mb-0">{{ clase.nombre_clase }}</h5>
-            <small class="text-muted">Profesor: {{ clase.profesor_nombre }}</small>
-          </div>
-          
+  <div class="classes-grid">
+    <div class="class-card" *ngFor="let clase of clases">
+      <div class="card-content">
+        <div class="card-header">
+          <h3>{{ clase.nombre_clase }}</h3>
+          <p class="professor">
+            <i class="bx bxs-user"></i>
+            {{ clase.profesor_nombre }}
+          </p>
         </div>
-        <!-- Puedes agregar más contenido en el body de la tarjeta si lo deseas -->
-        <div class="card-body">
-          <div class="btn-group" role="group" aria-label="Opciones de Clase">
-            <button
-              type="button"
-              class="btn btn-primary btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#agregarAlumnoModal"
-              (click)="abrirModalAgregarAlumnos(clase.id_clase)"
-              aria-label="Agregar Alumnos"
-            >
-              <i class="fi fi-ss-user-add"></i>
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger btn-sm"
-              (click)="eliminarClase(clase.id_clase)"
-              aria-label="Eliminar Clase"
-            >
-              <i class="fi fi-ss-trash"></i>
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary btn-sm"
-              aria-label="Editar Clase"
-            >
-              <i class="fi fi-ss-pencil"></i>
-            </button>
-          </div>
+        <div class="card-actions">
+          <button
+            class="action-btn add"
+            data-bs-toggle="modal"
+            data-bs-target="#agregarAlumnoModal"
+            (click)="abrirModalAgregarAlumnos(clase.id_clase)"
+          >
+            <i class="bx bx-user-plus"></i>
+          </button>
+          <button class="action-btn edit">
+            <i class="bx bx-edit"></i>
+          </button>
+          <button
+            class="action-btn delete"
+            (click)="eliminarClase(clase.id_clase)"
+          >
+            <i class="bx bx-trash"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -153,7 +144,9 @@
       <div class="modal-body">
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="filtroGrupo" class="form-label">Filtrar por Grupo:</label>
+            <label for="filtroGrupo" class="form-label"
+              >Filtrar por Grupo:</label
+            >
             <select
               id="filtroGrupo"
               class="form-select"
@@ -168,7 +161,9 @@
             </select>
           </div>
           <div class="col-md-6">
-            <label for="filtroSemestre" class="form-label">Filtrar por Semestre:</label>
+            <label for="filtroSemestre" class="form-label"
+              >Filtrar por Semestre:</label
+            >
             <select
               id="filtroSemestre"
               class="form-select"
@@ -198,7 +193,10 @@
                 id="seleccionado-{{ alumno.id }}"
                 aria-label="Seleccionar Alumno"
               />
-              <label class="form-check-label" for="seleccionado-{{ alumno.id }}">
+              <label
+                class="form-check-label"
+                for="seleccionado-{{ alumno.id }}"
+              >
                 Seleccionar
               </label>
             </div>
@@ -206,11 +204,7 @@
         </ul>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Cerrar
         </button>
         <button
