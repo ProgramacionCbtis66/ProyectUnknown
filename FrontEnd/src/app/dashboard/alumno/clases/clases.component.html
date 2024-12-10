@@ -34,12 +34,12 @@
             <div class="card-body">
               <h5 class="card-title">{{ tarea.titulo }}</h5>
               <p class="card-text" *ngIf="expandedTareaIndex === i">
-                {{ tarea.descripcion }}
+                {{ tarea.descripcion }} 
+                <app-entregar-tarea [id_tarea]="tarea.id_tarea"></app-entregar-tarea>
               </p>
             </div>
           </div>
         </div>
-        <app-entregar-tarea></app-entregar-tarea>
 
         <!-- Si no hay tareas, mostrar mensaje e imagen -->
         <div class="col-12 notTarea" *ngIf="tareas.length === 0">

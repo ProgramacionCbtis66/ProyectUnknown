@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { SesionService } from 'src/app/Core/service/sesion.service';
+
 
 @Component({
   selector: 'app-entregar-tarea',
@@ -12,6 +13,7 @@ import { SesionService } from 'src/app/Core/service/sesion.service';
   styleUrls: ['./entregar-tarea.component.css'],
 })
 export class EntregarTareaComponent {
+  @Input() id_tarea!: number; // Recibe el ID de la tarea desde el componente padre
   entregarTareaForm: FormGroup;
   archivoSeleccionado: File | null = null;
 
@@ -34,11 +36,11 @@ export class EntregarTareaComponent {
   }
 
   // Manejar el envío del formulario
-  onSubmit(id_tarea): void {
+  onSubmit(): void {
     const id_alumno = this.sesion._id_alumno!;
     if (this.entregarTareaForm.valid && this.archivoSeleccionado) {
       const formData = new FormData();
-      formData.append('id_tarea', id_tarea.toString()); // Convertir a string
+      formData.append('id_tarea', this.id_tarea.toString()); // Convertir a string
       formData.append('id_alumno', id_alumno.toString()); // Convertir a string
       formData.append('archivo', this.archivoSeleccionado);
   
