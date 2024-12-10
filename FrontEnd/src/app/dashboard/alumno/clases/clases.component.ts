@@ -1,154 +1,153 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'; // Importamos ActivatedRoute
-import { ClasesService } from 'src/app/Core/service/clases.service'; // Importamos el servicio ClasesService
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ClasesService } from 'src/app/Core/service/clases.service';
 import { SesionService } from 'src/app/Core/service/sesion.service';
 
 @Component({
-  selector: 'app-clases',
-  templateUrl: './clases.component.html',
-  styleUrls: ['./clases.component.css']
+ selector: 'app-clases',
+ templateUrl: './clases.component.html',
+ styleUrls: ['./clases.component.css']
 })
-export class ClasesComponent implements OnInit {
+export class ClasesComponent implements OnInit, OnDestroy {
+ isActionMenuVisible: boolean = false;
+ claseId: number | null = null;
+ nombreClase: string = '';
+ profesor_nombre: string = '';
+ tareas: any[] = [];
+ esProfesor: boolean = false;
 
-  isActionMenuVisible: boolean = false;
-  toggleActionMenu(): void {
-    this.isActionMenuVisible = !this.isActionMenuVisible;
-  }
-  claseId: number | null = null;
-  nombreClase: string = '';
-  profesor_nombre: string = '';
-  tareas: any[] = [];
-  esProfesor: boolean = false;
+ tareaTitulo: string = '';
+ tareaDescripcion: string = '';
+ fechaEntrega: string = '';
 
-  tareaTitulo: string = ''; // Título de la tarea
-  tareaDescripcion: string = ''; // Descripción de la tarea
-  fechaEntrega: string = ''; // Fecha de entrega
+ expandedTareaIndex: number | null = null;
 
-  expandedTareaIndex: number | null = null; // Índice de la tarea actualmente expandida
+ alumnos: any[] = [];
+ asistencia: { id_alumno: number; estado: string }[] = [];
 
-  alumnos: any[] = []; // Lista de alumnos cargados
-  asistencia: { id_alumno: number; estado: string }[] = []; // Estado de asistencia de cada alumno
+ constructor(
+   private route: ActivatedRoute,
+   private clasesService: ClasesService,
+   protected sessionService: SesionService
+ ) {
+   // Agregar listener para clics en el documento
+   document.addEventListener('click', this.onDocumentClick.bind(this));
+ }
 
+ ngOnDestroy() {
+   // Remover el listener cuando el componente se destruye
+   document.removeEventListener('click', this.onDocumentClick.bind(this));
+ }
 
-  constructor(
-    private route: ActivatedRoute,
-    private clasesService: ClasesService,
-    protected sessionService: SesionService
-  ) {}
+ toggleActionMenu(event?: Event): void {
+   if (event) {
+     event.stopPropagation(); // Prevenir que el clic se propague al documento
+   }
+   this.isActionMenuVisible = !this.isActionMenuVisible;
+ }
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        const numericId = +id;
-        if (!isNaN(numericId)) {
-          this.claseId = numericId;
-          this.cargarClase(this.claseId);
-          this.obtenerAlumnos(this.claseId);
-        }
-      }
-    });
+ onDocumentClick(event: MouseEvent): void {
+   // Verificar si el clic fue fuera del menú y del botón
+   const actionMenu = document.querySelector('.action-menu');
+   const fabButton = document.querySelector('.fab-button');
+   
+   if (this.isActionMenuVisible && actionMenu && fabButton) {
+     const clickedElement = event.target as HTMLElement;
+     
+     if (!actionMenu.contains(clickedElement) && !fabButton.contains(clickedElement)) {
+       this.isActionMenuVisible = false;
+     }
+   }
+ }
 
-    this.esProfesor = this.sessionService._rol == 'Profesor';
-  }
+ ngOnInit(): void {
+   this.route.paramMap.subscribe(params => {
+     const id = params.get('id');
+     if (id) {
+       const numericId = +id;
+       if (!isNaN(numericId)) {
+         this.claseId = numericId;
+         this.cargarClase(this.claseId);
+         this.obtenerAlumnos(this.claseId);
+       }
+     }
+   });
 
-  cargarClase(idClase: number): void {
-    this.clasesService.obtenerClases().subscribe(
-      (clases: any[]) => {
-        const clase = clases.find(c => c.id_clase === idClase);
-        if (clase) {
-          this.nombreClase = clase.nombre_clase;
-          this.profesor_nombre = clase.profesor_nombre;
-          this.tareas = clase.tareas;
-        }
-      },
-      error => {
-        console.error('Error al obtener las clases:', error);
-      }
-    );
-  }
+   this.esProfesor = this.sessionService._rol == 'Profesor';
+ }
 
-  // Crear tarea
-  crearTarea(): void {
-    if (this.claseId && this.tareaTitulo && this.tareaDescripcion && this.fechaEntrega) {
-      this.clasesService.agregarTarea(
-        this.claseId,
-        this.tareaTitulo,
-        this.tareaDescripcion,
-        this.fechaEntrega
-      ).subscribe(
-        response => {
-          console.log('Tarea creada:', response);
-          this.cargarClase(this.claseId!); // Recargar la información de la clase
-          this.limpiarFormulario(); // Limpiar los campos del formulario
-        },
-        error => {
-          console.error('Error al crear la tarea:', error);
-        }
-      );
-    } else {
-      console.error('Faltan campos en el formulario');
-    }
-  }
+ cargarClase(idClase: number): void {
+   this.clasesService.obtenerClases().subscribe(
+     (clases: any[]) => {
+       const clase = clases.find(c => c.id_clase === idClase);
+       if (clase) {
+         this.nombreClase = clase.nombre_clase;
+         this.profesor_nombre = clase.profesor_nombre;
+         this.tareas = clase.tareas;
+       }
+     },
+     error => {
+       console.error('Error al obtener las clases:', error);
+     }
+   );
+ }
 
-  limpiarFormulario(): void {
-    this.tareaTitulo = '';
-    this.tareaDescripcion = '';
-    this.fechaEntrega = '';
-  }
+ crearTarea(): void {
+   if (this.claseId && this.tareaTitulo && this.tareaDescripcion && this.fechaEntrega) {
+     this.clasesService.agregarTarea(
+       this.claseId,
+       this.tareaTitulo,
+       this.tareaDescripcion,
+       this.fechaEntrega
+     ).subscribe(
+       response => {
+         console.log('Tarea creada:', response);
+         this.cargarClase(this.claseId!);
+         this.limpiarFormulario();
+       },
+       error => {
+         console.error('Error al crear la tarea:', error);
+       }
+     );
+   } else {
+     console.error('Faltan campos en el formulario');
+   }
+ }
 
-  toggleTareaExpand(index: number): void {
-    // Alterna entre expandir y contraer
-    this.expandedTareaIndex = this.expandedTareaIndex === index ? null : index;
-  }
+ limpiarFormulario(): void {
+   this.tareaTitulo = '';
+   this.tareaDescripcion = '';
+   this.fechaEntrega = '';
+ }
 
-  obtenerAlumnos(idClase: number): void {
-    this.clasesService.obtenerAlumnosPorClase(idClase).subscribe({
-      next: (data) => {
-        this.alumnos = data.alumnos;
-        console.log(this.alumnos);
-      },
-      error: (error) => {
-        console.error('Error al obtener los alumnos:', error);
-      },
-    });
-  }
+ toggleTareaExpand(index: number): void {
+   this.expandedTareaIndex = this.expandedTareaIndex === index ? null : index;
+ }
 
-  marcarAsistencia(alumnoId: number, estado: string): void {
-    const fechaActual = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
-  
-    const asistencia = {
-      id_clase: this.claseId!,
-      id_alumno: alumnoId,
-      fecha: fechaActual,
-      estado_asistencia: estado,
-    };
-  
-    this.clasesService.registrarAsistencia(asistencia).subscribe(response => {
-      console.log(response.mensaje);
-    });
-  }
-  
+ obtenerAlumnos(idClase: number): void {
+   this.clasesService.obtenerAlumnosPorClase(idClase).subscribe({
+     next: (data) => {
+       this.alumnos = data.alumnos;
+       console.log(this.alumnos);
+     },
+     error: (error) => {
+       console.error('Error al obtener los alumnos:', error);
+     },
+   });
+ }
 
-/*   inicializarAsistencia(): void {
-    this.alumnos.forEach(alumno => {
-      this.asistencia[alumno.id] = 'Ausente'; // Inicializa como Ausente
-    });
-  }
-
-  guardarAsistencia(): void {
-    const listaAsistencia = this.alumnos.map(alumno => ({
-      alumnoId: alumno.id,
-      estado: this.asistencia[alumno.id]
-    }));
-
-    this.clasesService.guardarAsistencia(this.claseId!, listaAsistencia).subscribe(
-      response => {
-        console.log('Asistencia guardada:', response);
-      },
-      error => {
-        console.error('Error al guardar la asistencia:', error);
-      }
-    );
-  } */
+ marcarAsistencia(alumnoId: number, estado: string): void {
+   const fechaActual = new Date().toISOString().split('T')[0];
+ 
+   const asistencia = {
+     id_clase: this.claseId!,
+     id_alumno: alumnoId,
+     fecha: fechaActual,
+     estado_asistencia: estado,
+   };
+ 
+   this.clasesService.registrarAsistencia(asistencia).subscribe(response => {
+     console.log(response.mensaje);
+   });
+ }
 }

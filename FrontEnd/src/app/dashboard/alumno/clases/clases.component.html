@@ -35,7 +35,9 @@
               <h5 class="card-title">{{ tarea.titulo }}</h5>
               <p class="card-text" *ngIf="expandedTareaIndex === i">
                 {{ tarea.descripcion }}
-                <app-entregar-tarea [id_tarea]="tarea.id_tarea"></app-entregar-tarea>
+                <app-entregar-tarea
+                  [id_tarea]="tarea.id_tarea"
+                ></app-entregar-tarea>
               </p>
             </div>
           </div>
@@ -61,14 +63,18 @@
       <button
         class="fab-button"
         *ngIf="esProfesor"
-        (click)="toggleActionMenu()"
+        (click)="toggleActionMenu($event)"
         [class.active]="isActionMenuVisible"
       >
         <i class="bx bx-plus"></i>
       </button>
 
       <!-- Menú de acciones flotante -->
-      <div class="action-menu" [class.show]="isActionMenuVisible">
+      <div
+        class="action-menu"
+        [class.show]="isActionMenuVisible"
+        (click)="$event.stopPropagation()"
+      >
         <div
           class="menu-option"
           data-bs-toggle="modal"
