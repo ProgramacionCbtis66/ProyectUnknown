@@ -49,10 +49,17 @@
  .user-icon {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
   cursor: pointer;
- }
+  position: relative;
+}
  
+.user-icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
  .profile-menu {
   position: absolute;
   top: 63px;
