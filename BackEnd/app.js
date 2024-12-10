@@ -33,7 +33,8 @@ import UserApi from './api/rutas/usuario.js';
 import EmailApi from './api/rutas/Email.js';
 import prueba from './api/rutas/pruebas.js';
 import clasesApi from './api/rutas/clases.js';
+import file from './api/rutas/archivos.js';
 
-app.use('/apiAdae', [UserApi, prueba, EmailApi, clasesApi]);
+app.use('/apiAdae', [UserApi, prueba, EmailApi, clasesApi, file]);
 
 export default app;

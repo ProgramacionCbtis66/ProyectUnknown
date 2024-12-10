@@ -43,6 +43,7 @@ import Notiflix from 'notiflix';
 import { FormsModule } from '@angular/forms';
 import { UserRegisterComponent } from './user-settings_Page/user-register/user-register.component';
 import { ImgCropperComponent } from "./shared/imageEditor/img-cropper/img-cropper.component";
+import { EntregarTareaComponent } from "./dashboard/alumno/clases/entregar-tarea/entregar-tarea.component";
 
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
@@ -98,7 +99,8 @@ export function tokenGetter() {
     }),
     CommonModule, // Asegúrate de añadir CommonModule
     RouterModule,
-    ImgCropperComponent
+    ImgCropperComponent,
+    EntregarTareaComponent
 ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
