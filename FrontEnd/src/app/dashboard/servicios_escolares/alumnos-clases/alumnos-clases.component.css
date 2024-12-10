@@ -224,6 +224,31 @@ h2 {
   border-bottom: none;
 }
 
+.select-all-container {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
+}
+
+.select-all-container .form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.select-all-container .form-check-input {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.select-all-container .form-check-label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #1d1d1f;
+}
 /* Responsive */
 @media (max-width: 992px) {
   .classes-grid {

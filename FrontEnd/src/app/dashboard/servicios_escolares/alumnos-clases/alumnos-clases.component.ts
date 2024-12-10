@@ -213,6 +213,25 @@ export class AlumnosClasesComponent implements OnInit {
       const coincideSemestre = this.filtroSemestre ? u.semestre == this.filtroSemestre : true;
       return coincideGrupo && coincideSemestre;
     });
+
+    this.filteredUsuarios.forEach(alumno => {
+      const alumnoOriginal = this.usuarios.find(u => u.id === alumno.id);
+      if (alumnoOriginal) {
+        alumno.seleccionado = alumnoOriginal.seleccionado;
+      }
+    });
+  }
+
+  areAllSelected(): boolean {
+    return this.filteredUsuarios.length > 0 && 
+           this.filteredUsuarios.every(alumno => alumno.seleccionado);
+  }
+
+  toggleSelectAll(event: any): void {
+    const isChecked = event.target.checked;
+    this.filteredUsuarios.forEach(alumno => {
+      alumno.seleccionado = isChecked;
+    });
   }
 
   agregarAlumnosSeleccionados(): void {
