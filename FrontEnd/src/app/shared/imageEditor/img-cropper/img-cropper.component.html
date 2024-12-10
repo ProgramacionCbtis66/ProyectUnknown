@@ -13,7 +13,7 @@
     <h2>Editar Imagen</h2>
     <!-- Input oculto para subir archivos -->
     <input #fileInput type="file" (change)="fileChangeEvent($event)" style="display: none;" />
-    <div class="cropper-wrapper">
+    <div class="cropper-wrapper" style="justify-content: center; align-items: center; align-content: center; display: flex;">
       <image-cropper
         [imageChangedEvent]="imageChangedEvent"
         [maintainAspectRatio]="true"
@@ -24,6 +24,11 @@
         (imageLoaded)="imageLoaded($event)"
         (cropperReady)="cropperReady()"
         (loadImageFailed)="loadImageFailed()"
+        style="width: 300px;
+        height: 300px;
+        align-content: center;
+        align-items: center;
+        justify-content: center;"
       ></image-cropper>
     </div>
     <div class="modal-actions">

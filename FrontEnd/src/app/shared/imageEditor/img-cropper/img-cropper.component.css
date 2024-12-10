@@ -103,6 +103,10 @@
   transform: scale(1.05);
 }
 
+.image-cropper{
+  height: 20%;
+}
+
 /* Media query para pantallas grandes (PC) */
 @media (min-width: 768px) {
   .modal-content {

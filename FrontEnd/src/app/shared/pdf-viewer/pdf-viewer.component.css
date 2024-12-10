@@ -1,0 +1,11 @@
+.pdf-viewer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  input[type='file'] {
+    margin-bottom: 20px;
+  }
+  
