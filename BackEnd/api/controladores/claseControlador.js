@@ -16,6 +16,9 @@ const executeQuery = async (conexion, query, params) => {
     }
 };
 
+import fs from 'fs';
+import path from 'path';
+
 const crearClase = async (req, res) => {
     const { nombre_clase, id_profesor } = req.body;
 
@@ -43,9 +46,24 @@ const crearClase = async (req, res) => {
         const [classResult] = await conexion.execute(queries.insertClase, [nombre_clase, id_profesor]);
         const classId = classResult.insertId;
 
+        // Crear carpetas
+        const baseDirectory = path.join(env.dir, 'clases');
+        const classDirectory = path.join(baseDirectory, nombre_clase);
+
+        // Crear carpeta "clases" si no existe
+        if (!fs.existsSync(baseDirectory)) {
+            fs.mkdirSync(baseDirectory, { recursive: true });
+        }
+
+        // Crear carpeta con el nombre de la clase
+        if (!fs.existsSync(classDirectory)) {
+            fs.mkdirSync(classDirectory, { recursive: true });
+        }
+
         res.status(201).json({
             mensaje: 'Clase creada exitosamente.',
-            id_clase: classId
+            id_clase: classId,
+            directorio: classDirectory
         });
     } catch (error) {
         handleDatabaseError(error, res, 'Error al crear la clase.');
@@ -53,6 +71,9 @@ const crearClase = async (req, res) => {
         await conexion.end();
     }
 };
+
+
+import { fileURLToPath } from 'url';
 
 const agregarTarea = async (req, res) => {
     const { titulo, descripcion, fecha_entrega, id_clase } = req.body;
@@ -66,7 +87,7 @@ const agregarTarea = async (req, res) => {
 
     // Consultas SQL
     const queries = {
-        checkClaseExists: `SELECT id_clase FROM clases WHERE id_clase = ?`,
+        checkClaseExists: `SELECT id_clase, nombre_clase FROM clases WHERE id_clase = ?`,
         insertTarea: `INSERT INTO tareas (titulo, descripcion, fecha_entrega, fecha_asignacion, id_clase) VALUES (?, ?, ?, NOW(), ?)`,
         getAlumnosByClase: `SELECT ac.id_alumno FROM alumnos_clases ac WHERE ac.id_clase = ?`,
         insertTareaAlumno: `
@@ -85,6 +106,8 @@ const agregarTarea = async (req, res) => {
                 error: 'La clase especificada no existe.',
             });
         }
+
+        const { nombre_clase } = claseExists[0];
 
         // Insertar la tarea
         const [tareaResult] = await conexion.execute(queries.insertTarea, [
@@ -108,9 +131,27 @@ const agregarTarea = async (req, res) => {
             await conexion.execute(queries.insertTareaAlumno, [tareaId, alumno.id_alumno]);
         }
 
+        // Crear carpeta para la tarea
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = env.dir;
+
+        const baseDirectory = path.join(__dirname, 'clases', nombre_clase);
+        const tareaDirectory = path.join(baseDirectory, titulo);
+
+        // Verificar si la carpeta de la clase existe
+        if (!fs.existsSync(baseDirectory)) {
+            fs.mkdirSync(baseDirectory, { recursive: true });
+        }
+
+        // Crear la carpeta de la tarea
+        if (!fs.existsSync(tareaDirectory)) {
+            fs.mkdirSync(tareaDirectory, { recursive: true });
+        }
+
         res.status(201).json({
-            mensaje: 'Tarea añadida exitosamente y asignada a los alumnos.',
+            mensaje: 'Tarea añadida exitosamente, asignada a los alumnos y creada la carpeta.',
             id_tarea: tareaId,
+            directorio: tareaDirectory,
         });
     } catch (error) {
         handleDatabaseError(error, res, 'Error al añadir la tarea.');
@@ -118,6 +159,7 @@ const agregarTarea = async (req, res) => {
         await conexion.end();
     }
 };
+
 
 const obtenerTareasPendientes = async (req, res) => {
     const { id_alumno } = req.params;

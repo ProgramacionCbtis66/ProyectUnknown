@@ -94,7 +94,7 @@ export class AlumnosClasesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar las clases:', err);
-        alert('No se pudieron cargar las clases. Intenta nuevamente más tarde.');
+        Notiflix.Notify.failure('No se pudieron cargar las clases. Intenta nuevamente más tarde.');
       },
     });
     this.subscriptions.add(clasesSub);
@@ -102,7 +102,7 @@ export class AlumnosClasesComponent implements OnInit {
 
   crearClase(): void {
     if (!this.nombreClase.trim() || this.idProfesor === null) {
-      Notiflix.Notify.failure('Profavor Completa los campos');
+      Notiflix.Notify.failure('Porfavor Completa los campos');
       return;
     }
 
@@ -128,12 +128,13 @@ export class AlumnosClasesComponent implements OnInit {
     if (confirm('¿Estás seguro de que deseas eliminar esta clase?')) {
       this.clasesService.eliminarClase(idClase).subscribe({
         next: () => {
-          alert('Clase eliminada correctamente.');
+          Notiflix.Notify.failure('Clase eliminada');
+
           this.cargarClases();
         },
         error: (err) => {
           console.error('Error al eliminar clase:', err);
-          alert('Ocurrió un error al eliminar la clase.');
+          Notiflix.Notify.failure('Ocurrio un error al eliminar la clase');
         },
       });
     }
@@ -156,7 +157,8 @@ export class AlumnosClasesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar los profesores:', err);
-        alert('No se pudieron cargar los profesores. Intenta nuevamente más tarde.');
+        Notiflix.Notify.failure('CNo se pudieron cargar los profesores. Intenta nuevamente más tarde.');
+
       },
     });
     this.subscriptions.add(profesoresSub);
@@ -189,7 +191,8 @@ export class AlumnosClasesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar los alumnos:', err);
-        alert('No se pudieron cargar los alumnos. Intenta nuevamente más tarde.');
+        Notiflix.Notify.failure('No se pudieron cargar los alumnos. Intenta nuevamente más tarde.');
+
       },
     });
   
@@ -230,12 +233,14 @@ export class AlumnosClasesComponent implements OnInit {
       .asociarAlumnosAClase(this.idClaseSeleccionada, idsSeleccionados)
       .subscribe({
         next: () => {
-          alert('Alumnos agregados correctamente.');
+          Notiflix.Notify.success('Alumnos agregados correctamente.');
+
           // Opcional: Actualizar la lista de clases o realizar otra acción
         },
         error: (err) => {
           console.error('Error al agregar alumnos:', err);
-          alert('Ocurrió un error al agregar los alumnos.');
+          Notiflix.Notify.failure('Ocurrió un error al agregar los alumnos.');
+
         },
       });
   }
