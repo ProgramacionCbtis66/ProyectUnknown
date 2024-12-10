@@ -1,1 +1,134 @@
-<p>trabajos-detalles works!</p>
+<!-- trabajos-detalles.component.html -->
+<div class="classroom-container">
+  <!-- Banner de la tarea -->
+  <div class="task-banner">
+    <div class="banner-content">
+      <h1>{{ tarea.titulo }}</h1>
+      <div class="task-meta">
+        <p class="teacher">{{ profesor_nombre }}</p>
+        <p class="points">{{ tarea.puntos }} puntos</p>
+        <p class="due-date">
+          Fecha límite: {{ tarea.fecha_entrega | date : "dd MMM, h:mm a" }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <!-- Vista del Alumno -->
+    <div class="student-view" *ngIf="!esProfesor">
+      <div class="task-details">
+        <div class="description">
+          <h2>Instrucciones</h2>
+          <p>{{ tarea.descripcion }}</p>
+        </div>
+
+        <div class="submission-section">
+          <h3>Tu entrega</h3>
+          <!-- Si no hay entrega -->
+          <div class="upload-section" *ngIf="!entregaActual">
+            <div class="file-input">
+              <p>Archivo (PDF):</p>
+              <input
+                type="file"
+                #fileInput
+                accept=".pdf"
+                (change)="onFileSelected($event)"
+                class="form-control"
+              />
+              <button
+                class="submit-btn"
+                [disabled]="!selectedFile"
+                (click)="submitTask()"
+              >
+                <i class="bx bx-upload"></i>
+                Enviar Tarea
+              </button>
+            </div>
+          </div>
+
+          <!-- Si ya hay entrega -->
+          <div class="current-submission" *ngIf="entregaActual">
+            <div class="file-info">
+              <i class="bx bx-file"></i>
+              <p>{{ entregaActual.nombreArchivo }}</p>
+              <span class="submission-date">
+                Entregado el
+                {{ entregaActual.fechaEntrega | date : "dd MMM, h:mm a" }}
+              </span>
+            </div>
+            <div class="actions">
+              <button
+                class="action-btn view"
+                (click)="descargarArchivo(entregaActual.id)"
+              >
+                <i class="bx bx-download"></i>
+                Descargar
+              </button>
+              <button
+                class="action-btn delete"
+                (click)="eliminarEntrega(entregaActual.id)"
+              >
+                <i class="bx bx-trash"></i>
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista del Profesor -->
+    <div class="teacher-view" *ngIf="esProfesor">
+      <div class="submissions-list">
+        <h2>Entregas de estudiantes</h2>
+        <div class="stats">
+          <span>{{ entregas.length }} Entregadas</span>
+          <span>{{ totalAlumnos }} Asignadas</span>
+        </div>
+
+        <div class="submission-cards">
+          <div class="submission-card" *ngFor="let entrega of entregas">
+            <div class="student-info">
+              <img
+                [src]="entrega.alumno.foto || 'assets/default-avatar.png'"
+                alt="Foto de perfil"
+              />
+              <div class="details">
+                <h3>{{ entrega.alumno.nombre }}</h3>
+                <span
+                  >Entregado el
+                  {{ entrega.fechaEntrega | date : "dd MMM, h:mm a" }}</span
+                >
+              </div>
+            </div>
+            <div class="submission-actions">
+              <button
+                class="download-btn"
+                (click)="descargarArchivo(entrega.id)"
+              >
+                <i class="bx bx-download"></i>
+              </button>
+              <div class="grade-input">
+                <input
+                  type="number"
+                  [value]="entrega.calificacion"
+                  (change)="calificarEntrega(entrega.id, $event)"
+                  max="{{ tarea.puntos }}"
+                />
+                <span>/{{ tarea.puntos }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estado vacío -->
+        <div class="empty-state" *ngIf="entregas.length === 0">
+          <img src="assets/no-submissions.svg" alt="Sin entregas" />
+          <h3>Sin entregas aún</h3>
+          <p>Cuando los estudiantes entreguen sus trabajos, aparecerán aquí.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

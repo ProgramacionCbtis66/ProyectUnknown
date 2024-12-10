@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ClasesService } from 'src/app/Core/service/clases.service';
 import { SesionService } from 'src/app/Core/service/sesion.service';
+import { Router } from '@angular/router';
+import { TrabajosService } from 'src/app/Core/service/trabajos.service.service'; // Añadir esta importación
 
 @Component({
  selector: 'app-clases',
@@ -15,22 +17,24 @@ export class ClasesComponent implements OnInit, OnDestroy {
  profesor_nombre: string = '';
  tareas: any[] = [];
  esProfesor: boolean = false;
-
+ selectedFile: File | null = null;
  tareaTitulo: string = '';
  tareaDescripcion: string = '';
  fechaEntrega: string = '';
-
+ entregaActual: any = null;
+ tarea: any = null;
  expandedTareaIndex: number | null = null;
 
  alumnos: any[] = [];
  asistencia: { id_alumno: number; estado: string }[] = [];
 
  constructor(
-   private route: ActivatedRoute,
-   private clasesService: ClasesService,
-   protected sessionService: SesionService
+  private route: ActivatedRoute,
+  private router: Router,
+  private clasesService: ClasesService,
+  private trabajosService: TrabajosService,
+  protected sessionService: SesionService
  ) {
-   // Agregar listener para clics en el documento
    document.addEventListener('click', this.onDocumentClick.bind(this));
  }
 
@@ -120,9 +124,14 @@ export class ClasesComponent implements OnInit, OnDestroy {
    this.fechaEntrega = '';
  }
 
- toggleTareaExpand(index: number): void {
-   this.expandedTareaIndex = this.expandedTareaIndex === index ? null : index;
- }
+ toggleTareaExpand(index: number, idTarea: number): void {
+  if (this.expandedTareaIndex === index) {
+    this.router.navigate(['/Main_Dashboard/trabajos-detalles', idTarea]);
+  } else {
+    this.expandedTareaIndex = index;
+  }
+}
+
 
  obtenerAlumnos(idClase: number): void {
    this.clasesService.obtenerAlumnosPorClase(idClase).subscribe({
@@ -150,4 +159,36 @@ export class ClasesComponent implements OnInit, OnDestroy {
      console.log(response.mensaje);
    });
  }
+
+ onFileSelected(event: any): void {
+  const file = event.target.files[0];
+  if (file && file.type === 'application/pdf') {
+    this.selectedFile = file;
+  } else {
+    // Mostrar error - solo se permiten PDFs
+    this.selectedFile = null;
+  }
+}
+
+submitTask(): void {
+  if (!this.selectedFile) return;
+
+  const formData = new FormData();
+  formData.append('archivo', this.selectedFile);
+  
+  // Asumiendo que estás trabajando con una tarea específica
+  const tareaActual = this.tareas[this.expandedTareaIndex || 0];
+  
+  this.trabajosService.subirEntrega(tareaActual.id_tarea, formData).subscribe({
+    next: (entrega) => {
+      this.entregaActual = entrega;
+      this.selectedFile = null;
+      // Mostrar mensaje de éxito
+    },
+    error: (error) => {
+      console.error('Error al subir la tarea:', error);
+      // Mostrar mensaje de error
+    }
+  });
+}
 }

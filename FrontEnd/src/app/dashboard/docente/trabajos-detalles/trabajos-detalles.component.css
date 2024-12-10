@@ -1,0 +1,324 @@
+/* trabajos-detalles.component.css */
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+
+.classroom-container {
+  min-height: 100vh;
+  background-color: #f5f5f7;
+}
+
+.task-banner {
+  background: #333;
+  padding: 48px 32px;
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.banner-content h1 {
+  color: white;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.task-meta {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.task-meta p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.points {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.content-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.task-details {
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+}
+
+.description h2 {
+  font-size: 1.3rem;
+  color: #1d1d1f;
+  margin-bottom: 16px;
+}
+
+.description p {
+  color: #424245;
+  line-height: 1.6;
+}
+
+.submission-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.submission-section h3 {
+  font-size: 1.2rem;
+  color: #1d1d1f;
+  margin-bottom: 20px;
+}
+
+.file-input {
+  background: #f5f5f7;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.file-input p {
+  margin-bottom: 12px;
+  color: #1d1d1f;
+  font-weight: 500;
+}
+
+.submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #0071e3;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 16px;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:disabled {
+  background: #d2d2d7;
+  cursor: not-allowed;
+}
+
+.submit-btn:not(:disabled):hover {
+  background: #0077ed;
+  transform: translateY(-1px);
+}
+
+.current-submission {
+  background: #f5f5f7;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.file-info i {
+  font-size: 1.5rem;
+  color: #1d1d1f;
+}
+
+.file-info p {
+  margin: 0;
+  font-weight: 500;
+  color: #1d1d1f;
+}
+
+.submission-date {
+  color: #6e6e73;
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.action-btn.view {
+  background: #1d1d1f;
+}
+
+.action-btn.delete {
+  background: #ff3b30;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+/* Estilos para la vista del profesor */
+.submissions-list {
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+}
+
+.submissions-list h2 {
+  margin: 0;
+  color: #1d1d1f;
+  font-size: 1.5rem;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  color: #6e6e73;
+}
+
+.submission-cards {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.submission-card {
+  background: #f5f5f7;
+  padding: 20px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.student-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.student-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #1d1d1f;
+}
+
+.submission-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.download-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #1d1d1f;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+  transform: scale(1.05);
+}
+
+.grade-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grade-input input {
+  width: 60px;
+  padding: 8px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+}
+
+.empty-state img {
+  width: 200px;
+  margin-bottom: 24px;
+}
+
+.empty-state h3 {
+  color: #1d1d1f;
+  margin: 0 0 8px;
+}
+
+.empty-state p {
+  color: #6e6e73;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .task-banner {
+    padding: 32px 20px;
+  }
+
+  .task-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .content-grid {
+    padding: 16px;
+  }
+
+  .task-details {
+    padding: 24px;
+  }
+
+  .submission-card {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .submission-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

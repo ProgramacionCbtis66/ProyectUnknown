@@ -24,7 +24,7 @@ import { AlumnosGruposComponent } from './dashboard/servicios_escolares/alumnos-
 import { ClasesComponent } from './dashboard/alumno/clases/clases.component';
 import { OptionsComponent } from './main-dashboard/options/options.component';
 import { ClassDashboardComponent } from './main-dashboard/class-dashboard/class-dashboard.component';
-
+import { TrabajosDetallesComponent } from './dashboard/docente/trabajos-detalles/trabajos-detalles.component';
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
@@ -54,7 +54,8 @@ const routes: Routes = [
       { path: "notifications_user", component: UserNotificationsPageComponent, },
       { path: "options", component: OptionsComponent, canActivate: [PoliceGuard] },
       { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
-      { path: '', redirectTo: 'options', pathMatch: 'full' } // Redirección a una vista por defecto
+      { path: "trabajos-detalles/:id", component: TrabajosDetallesComponent},
+      { path: '', redirectTo: 'options', pathMatch: 'full' }
     ]
   },
 

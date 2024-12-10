@@ -4,6 +4,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import { CommonModule } from '@angular/common'; // Importa CommonModule
@@ -44,7 +45,7 @@ import { FormsModule } from '@angular/forms';
 import { UserRegisterComponent } from './user-settings_Page/user-register/user-register.component';
 import { ImgCropperComponent } from "./shared/imageEditor/img-cropper/img-cropper.component";
 import { EntregarTareaComponent } from "./dashboard/alumno/clases/entregar-tarea/entregar-tarea.component";
-
+import { TrabajosDetallesComponent } from './dashboard/docente/trabajos-detalles/trabajos-detalles.component';
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
   return localStorage.getItem("adae");
@@ -82,37 +83,39 @@ export function tokenGetter() {
     AlumnosRegistrosComponent,
     AlumnosClasesComponent,
     AlumnosGruposComponent,
-
+    TrabajosDetallesComponent,
+    ClasesComponent,
   ],
   imports: [
-    FormsModule,
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(), // Módulo importado aquí
+    HttpClientModule,
+    ToastrModule.forRoot(),
     JwtModule.forRoot({
-        config: {
-            tokenGetter: tokenGetter,
-            allowedDomains: ["localhost:4000"],
-            disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
-        }
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:4000"],
+        disallowedRoutes: ["localhost:4000/apiAdae/usr/login/"]
+      }
     }),
-    CommonModule, // Asegúrate de añadir CommonModule
+    CommonModule,
     RouterModule,
-    ImgCropperComponent,
-    EntregarTareaComponent
-],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
-  bootstrap: [AppComponent]
+  ],
+  providers: [
+    provideHttpClient(withInterceptorsFromDi())
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor() { 
+  constructor() {
     Notiflix.Notify.init({
-      position: 'center-top', // Cambia la posición a la esquina superior izquierda
-      distance:'15px',
-      fontSize:'15px',
-      width:'380px',
+      position: 'center-top',
+      distance: '15px',
+      fontSize: '15px',
+      width: '380px',
       timeout: 1700,
     });
   }
- }
+}
