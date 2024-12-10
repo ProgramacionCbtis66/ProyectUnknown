@@ -38,12 +38,12 @@ export class MainDashboardComponent implements OnInit {
     ],
     Profesor: [
       { path: '/Main_Dashboard/options', label: 'Home', icon: 'fi fi-ss-house-chimney' },
-      { path: '/Main_Dashboard/clases', label: 'Clases', icon: 'fi fi-ss-graduation-cap' },
+      { path: '/Main_Dashboard/clases-dashboard', label: 'Clases', icon: 'fi fi-ss-graduation-cap' },
       { path: '/Main_Dashboard/horario', label: 'Horario', icon: 'fi fi-ss-calendar' },
     ],
     Alumno: [
       { path: '/Main_Dashboard/options', label: 'Home', icon: 'fi fi-ss-house-chimney' },
-      { path: '/Main_Dashboard/clases', label: 'Clases', icon: 'fi fi-ss-graduation-cap' },
+      { path: '/Main_Dashboard/clases-dashboard', label: 'Clases', icon: 'fi fi-ss-graduation-cap' },
       { path: '/Main_Dashboard/horario', label: 'Horario', icon: 'fi fi-ss-calendar' },
     ],
   };
