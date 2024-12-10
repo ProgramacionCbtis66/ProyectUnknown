@@ -47,6 +47,38 @@
                 placeholder="Ingresa el nombre de la clase"
               />
             </div>
+
+            <div class="mb-3">
+              <label for="modulo" class="form-label">Módulo:</label>
+              <input
+                type="text"
+                id="modulo"
+                class="form-control"
+                [(ngModel)]="modulo"
+                name="modulo"
+                required
+                placeholder="Ingresa el módulo"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="componente" class="form-label">Componente:</label>
+              <select
+                id="componente"
+                class="form-select"
+                [(ngModel)]="componente"
+                name="componente"
+                required
+              >
+                <option value="" selected disabled>
+                  Selecciona un componente
+                </option>
+                <option value="laboral">Laboral</option>
+                <option value="basico">Básico</option>
+                <option value="socioemocional">Socioemocional</option>
+              </select>
+            </div>
+
             <div class="mb-3">
               <label for="idProfesor" class="form-label">Profesor:</label>
               <select

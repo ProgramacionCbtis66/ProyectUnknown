@@ -54,7 +54,8 @@ export class AlumnosClasesComponent implements OnInit {
   profesores: Profesor[] = [];
   nombreClase: string = '';
   idProfesor: number | null = null;
-
+  modulo: string = '';
+  componente: string = '';
   // Variables para manejar los alumnos
   usuarios: Alumno[] = [];
   filteredUsuarios: Alumno[] = [];
