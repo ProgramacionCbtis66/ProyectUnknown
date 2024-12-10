@@ -9,6 +9,11 @@ import { SesionService } from 'src/app/Core/service/sesion.service';
   styleUrls: ['./clases.component.css']
 })
 export class ClasesComponent implements OnInit {
+
+  isActionMenuVisible: boolean = false;
+  toggleActionMenu(): void {
+    this.isActionMenuVisible = !this.isActionMenuVisible;
+  }
   claseId: number | null = null;
   nombreClase: string = '';
   profesor_nombre: string = '';

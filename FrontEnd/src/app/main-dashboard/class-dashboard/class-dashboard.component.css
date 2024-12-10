@@ -1,73 +1,238 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
-
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #f5f5f7;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.clases {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1d1d1f;
 }
 
-.card {
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 300px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition-duration: 0.2s;
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+  padding: 20px 0;
+}
+.class-card {
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
 }
 
-.card:hover{
-  transform: scale(1.05);
+.class-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-content {
+  padding: 28px;
 }
 
 .card-header {
-  margin-bottom: 15px;
+  margin-bottom: 24px;
 }
 
 .card-header h3 {
-  margin: 0;
-  color: #007bff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 12px 0;
 }
 
-.card-body h4 {
-  margin-top: 0;
+h3:hover{
+  text-decoration: underline;
 }
 
-.card-body ul {
-  padding-left: 20px;
-}
-
-.card-body li {
-  margin-bottom: 10px;
-}
-
-.container-header{
+.professor {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 30px;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: #6e6e73;
+  margin: 0;
 }
 
-.asignacion{
+.professor i {
+  font-size: 1.2rem;
+}
+
+.tasks-section {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 20px;
+}
+
+.tasks-section h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 16px;
+}
+
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.tasks-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tasks-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.tasks-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.task-item {
+  background: #f5f5f7;
+  border-radius: 12px;
+  padding: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.task-item:hover {
+  background: #eeeeef;
+}
+
+.task-header {
+  cursor: pointer;
+}
+
+.task-header h5 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #1d1d1f;
+  margin: 0 0 8px 0;
+}
+
+.task-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: #6e6e73;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.asignacion {
   color: rgb(43, 169, 232);
 }
 
-.entrega{
+.entrega {
   color: rgb(175, 26, 26);
 }
 
-small i {
-  margin-left: 12px;
+.task-description {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 0.95rem;
+  color: #494949;
+  line-height: 1.5;
+}
+
+.no-tasks {
+  color: #6e6e73;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 20px;
+  background: #f5f5f7;
+  border-radius: 12px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.class-card {
+  animation: fadeInUp 0.5s ease-out forwards;
+  animation-fill-mode: both;
+}
+
+.class-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.class-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.class-card:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .classes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .class-card {
+    border-radius: 20px;
+  }
+  
+  .card-content {
+    padding: 24px;
+  }
+
+  .card-header h3 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .classes-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .task-dates {
+    font-size: 0.85rem;
+  }
 }

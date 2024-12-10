@@ -1,39 +1,62 @@
-<div class="container">
-    <div class="container-header">
-      <h2>Clases</h2>
-    </div>
-  
-    <div class="clases">
-      <div class="card" *ngFor="let clase of clases" (click)="goToClassSelect(clase.id_clase)">
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Clases</h2>
+  </div>
+
+  <div class="classes-grid">
+    <div
+      class="class-card"
+      *ngFor="let clase of clases"
+      (click)="goToClassSelect(clase.id_clase)"
+    >
+      <div class="card-content">
         <div class="card-header">
           <h3>{{ clase.nombre_clase }}</h3>
-          <p><strong>Profesor:</strong> {{ clase.profesor_nombre }}</p>
+          <p class="professor">
+            <i class="bx bxs-user"></i>
+            {{ clase.profesor_nombre }}
+          </p>
         </div>
-        <div class="card-body">
+
+        <div class="tasks-section">
           <h4>Tareas</h4>
-          <div *ngIf="clase.tareas.length; else noTareas">
-            <ul>
-              <li *ngFor="let tarea of clase.tareas; let i = index">
-                <div (click)="toggleDescripcion(clase.id_clase, i)" style="cursor: pointer;">
-                  <strong>{{ tarea.titulo }}</strong>
-                  <br />
-                  <small>
-                    <i class="fi fi-ss-calendar student-ico asignacion"></i> {{ tarea.fecha_asignacion | date: 'dd/MM/yyyy' }}
-                    <br>
-                    <i class="fi fi-ss-calendar student-ico entrega"></i> {{ tarea.fecha_entrega | date: 'dd/MM/yyyy' }}
-                  </small>
+          <div
+            class="tasks-container"
+            *ngIf="clase.tareas.length; else noTareas"
+          >
+            <div
+              class="task-item"
+              *ngFor="let tarea of clase.tareas; let i = index"
+            >
+              <div
+                class="task-header"
+                (click)="toggleDescripcion(clase.id_clase, i)"
+              >
+                <h5>{{ tarea.titulo }}</h5>
+                <div class="task-dates">
+                  <span class="date">
+                    <i class="fi fi-ss-calendar asignacion"></i>
+                    {{ tarea.fecha_asignacion | date : "dd/MM/yyyy" }}
+                  </span>
+                  <span class="date">
+                    <i class="fi fi-ss-calendar entrega"></i>
+                    {{ tarea.fecha_entrega | date : "dd/MM/yyyy" }}
+                  </span>
                 </div>
-                <p *ngIf="isDescripcionVisible(clase.id_clase, i)" class="tarea-descripcion">
-                  {{ tarea.descripcion }}
-                </p>
-              </li>
-            </ul>
+              </div>
+              <p
+                class="task-description"
+                *ngIf="isDescripcionVisible(clase.id_clase, i)"
+              >
+                {{ tarea.descripcion }}
+              </p>
+            </div>
           </div>
           <ng-template #noTareas>
-            <p>No hay tareas asignadas a esta clase.</p>
+            <p class="no-tasks">No hay tareas asignadas a esta clase.</p>
           </ng-template>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

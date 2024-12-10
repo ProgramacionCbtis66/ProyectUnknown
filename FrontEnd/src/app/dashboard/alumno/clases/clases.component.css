@@ -1,27 +1,361 @@
-.banner {
-  background-color: #333;
-  color: white;
-  padding: 50px;
-  border-radius: 20px;
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+
+.classroom-container {
+  min-height: 100vh;
+  background-color: #f5f5f7;
 }
 
-.add-comentario {
-  padding: 20px;
+/* Banner Styles */
+.class-banner {
+  background: #333;
+  padding: 48px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.banner-content h1 {
   color: white;
-  background-color: #333;
-  width: 100%;
-  height: 100%;
+  font-size: 2.5rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.banner-content p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  margin: 8px 0 0;
+}
+
+/* Content Grid */
+.content-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  padding: 0 20px;
+  position: relative;
+}
+
+/* Comments Section */
+.comments-section {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+.input-card {
+  background: #333;
+  padding: 24px;
   border-radius: 20px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.input-card h3 {
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Tasks Section */
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.task-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.task-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.task-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.transition-icon {
+  transition: transform 0.3s ease;
+}
+
+.task-card.expanded .transition-icon {
+  transform: rotate(180deg);
+}
+
+.task-content {
+  padding: 0 20px;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.task-card.expanded .task-content {
+  padding: 0 20px 20px;
+  max-height: 500px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.empty-illustration {
+  width: 200px;
+  margin-bottom: 24px;
+}
+
+/* FAB Button and Menu */
+.fab-button {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #0071e3;
+  border: none;
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 113, 227, 0.3);
+  z-index: 1000;
+}
+
+.fab-button:hover {
+  transform: scale(1.05);
+  background: #0077ed;
+}
+
+.fab-button.active {
+  transform: rotate(45deg);
+}
+
+.action-menu {
+  position: fixed;
+  bottom: 100px;
+  right: 32px;
+  background: white;
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.action-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.menu-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.menu-option:hover {
+  background: #f5f5f7;
+}
+
+.menu-option i {
+  font-size: 20px;
+  color: #1d1d1f;
+}
+
+.menu-option span {
+  color: #1d1d1f;
+  font-weight: 500;
+}
+
+/* Modal Styles */
+.modal-content {
+  border-radius: 20px;
+  border: none;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.form-control {
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #0071e3;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+}
+
+/* Lista de Alumnos */
+.lista-alumnos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alumno-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.asistencia-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-asistencia {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-asistencia.presente {
+  background: #34c759;
+}
+
+.btn-asistencia.retardo {
+  background: #ff9f0a;
+}
+
+.btn-asistencia.ausente {
+  background: #ff3b30;
+}
+
+.btn-asistencia:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comments-section {
+    position: static;
+  }
 }
 
 @media (max-width: 768px) {
-  .banner {
-  padding: 20px;
+  .class-banner {
+    padding: 32px 20px;
   }
 
-  .add-comentario {
-  height: auto;
+  .banner-content h1 {
+    font-size: 2rem;
+  }
+
+  .content-grid {
+    padding: 0 16px;
+  }
+
+  .fab-button {
+    bottom: 24px;
+    right: 24px;
+  }
+
+  .action-menu {
+    right: 24px;
+  }
+
+  .alumno-item {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .asistencia-buttons {
+    width: 100%;
+    justify-content: center;
   }
 }
-
-
