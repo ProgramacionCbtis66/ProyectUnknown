@@ -34,11 +34,11 @@ export class EntregarTareaComponent {
   }
 
   // Manejar el envío del formulario
-  onSubmit(): void {
+  onSubmit(id_tarea): void {
     const id_alumno = this.sesion._id_alumno!;
     if (this.entregarTareaForm.valid && this.archivoSeleccionado) {
       const formData = new FormData();
-      formData.append('id_tarea', this.entregarTareaForm.value.id_tarea.toString()); // Convertir a string
+      formData.append('id_tarea', id_tarea.toString()); // Convertir a string
       formData.append('id_alumno', id_alumno.toString()); // Convertir a string
       formData.append('archivo', this.archivoSeleccionado);
   

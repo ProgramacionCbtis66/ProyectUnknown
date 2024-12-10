@@ -1,17 +1,6 @@
 <div class="container">
     <h2>Entregar Tarea</h2>
-    <form [formGroup]="entregarTareaForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-      <div class="form-group">
-        <label for="id_tarea">ID de la Tarea:</label>
-        <input
-          type="number"
-          id="id_tarea"
-          class="form-control"
-          formControlName="id_tarea"
-          required
-          placeholder="Ingrese el ID de la tarea"
-        />
-      </div>
+    <form [formGroup]="entregarTareaForm" (ngSubmit)="onSubmit(1)" enctype="multipart/form-data">
       <div class="form-group">
         <label for="archivo">Archivo (PDF):</label>
         <input
