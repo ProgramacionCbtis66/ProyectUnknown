@@ -29,7 +29,10 @@ interface Entrega {
   templateUrl: './trabajos-detalles.component.html',
   styleUrl: './trabajos-detalles.component.css'
 })
-export class TrabajosDetallesComponent {
+export class TrabajosDetallesComponent implements OnInit {
+  profesor_nombre: string = '';
+  selectedFile: File | null = null;
+  
   tarea: Tarea = {
     id: 0,
     titulo: '',
@@ -67,6 +70,23 @@ export class TrabajosDetallesComponent {
         }
       }
     });
+  }
+
+  submitTask(): void {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('archivo', this.selectedFile);
+      
+      this.trabajosService.subirEntrega(this.tarea.id, formData).subscribe({
+        next: (entrega) => {
+          this.entregaActual = entrega;
+          this.selectedFile = null;
+        },
+        error: (error) => {
+          console.error('Error al subir la tarea:', error);
+        }
+      });
+    }
   }
 
   cargarTarea(idTarea: number): void {
@@ -129,6 +149,7 @@ export class TrabajosDetallesComponent {
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
+    this.selectedFile = file;
     if (file) {
       const formData = new FormData();
       formData.append('archivo', file);
@@ -136,6 +157,7 @@ export class TrabajosDetallesComponent {
       this.trabajosService.subirEntrega(this.tarea.id, formData).subscribe({
         next: (entrega) => {
           this.entregaActual = entrega;
+          this.selectedFile = null;
         },
         error: (error) => {
           console.error('Error al subir el archivo:', error);

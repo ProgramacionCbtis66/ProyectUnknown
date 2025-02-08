@@ -84,7 +84,7 @@ export function tokenGetter() {
     AlumnosClasesComponent,
     AlumnosGruposComponent,
     TrabajosDetallesComponent,
-    ClasesComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -102,6 +102,8 @@ export function tokenGetter() {
     }),
     CommonModule,
     RouterModule,
+    ImgCropperComponent,
+    EntregarTareaComponent,
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi())
