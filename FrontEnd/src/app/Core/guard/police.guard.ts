@@ -11,7 +11,7 @@ export class PoliceGuard implements CanActivate {
 
   private rutasPermitidasPorRol = {
     Alumno: [
-      'Main_Dashboard', 
+      'Main_Dashboard/', 
       'Main_Dashboard/options', 
       'Main_Dashboard/Profile_User', 
       'segurity_user', 
@@ -21,7 +21,7 @@ export class PoliceGuard implements CanActivate {
       'Main_Dashboard/clases-dashboard',
     ],
     Profesor: [
-      'Main_Dashboard', 
+      'Main_Dashboard/', 
       'Main_Dashboard/options', 
       'Main_Dashboard/Profile_User', 
       'segurity_user', 
@@ -31,7 +31,7 @@ export class PoliceGuard implements CanActivate {
       'Main_Dashboard/clases-dashboard',
     ],
     Administrador: [
-      'Main_Dashboard', 
+      'Main_Dashboard/', 
       'Main_Dashboard/options', 
       'Main_Dashboard/Profile_User', 
       'segurity_user', 
@@ -66,7 +66,7 @@ export class PoliceGuard implements CanActivate {
       }
     }
   
-    console.log('Acceso denegado. Redirigiendo al login...');
+    console.log('Acceso denegado. Redirigiendo al login...', rutaActual);
     return this.router.createUrlTree(['/login']);
   }
   

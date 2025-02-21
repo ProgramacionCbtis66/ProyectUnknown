@@ -37,11 +37,7 @@ export class AppComponent {
 
   redirigirAlDashboard() {
     if (this.sesion._rol !== 'No disponible') {
-      const user = this.sesion._rol;
-
-      if (user === 'Alumno' || user === 'Profesor' || user === 'Administrador') {
         this.router.navigate(['/Main_Dashboard/options']);
-      }
     } else {
       this.router.navigate(['/main']);
     }

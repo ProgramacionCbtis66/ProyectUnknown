@@ -61,5 +61,6 @@
     "devkit",
     "notiflix",
     "toastr"
-  ]
+  ],
+  "liveServer.settings.port": 5501
 }

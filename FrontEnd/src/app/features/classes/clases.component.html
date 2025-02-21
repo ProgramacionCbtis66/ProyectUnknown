@@ -1,0 +1,69 @@
+<section class="background-svg">
+  <div class="container-fluid vh-100 d-flex flex-column">
+    <!-- Fila Superior -->
+    <div class="row" style="height: 20%; background: linear-gradient(135deg, #1e1e1e, #2c2c2c); border-bottom-right-radius: 100px; padding: 20px; display: flex; align-items: center;">
+      <div class="col">
+        <h2 style="color: white; font-family: 'Poppins', sans-serif; font-weight: 700; margin-bottom: 5px;">Cálculo Integral</h2>
+        <p style="color: #d1d1d1; font-family: 'Poppins', sans-serif; font-size: 14px; margin: 0;">Guillermo Montero Ramon</p>
+      </div>
+    </div>
+
+    <!-- Contenido de la clase -->
+    <div class="row flex-grow-1 main-container" id="main-container" style="height: 80%">
+      <!-- Mostrar la lista de tareas si showTaskList es true -->
+      <app-task-list *ngIf="showTaskList" [claseId]="claseId"></app-task-list>
+      <!-- Mostrar la lista de estudiantes si showTaskList es false -->
+      <app-student-list *ngIf="!showTaskList" [claseId]="claseId"></app-student-list>
+    </div>
+  </div>
+
+  <!-- Botón secundario para alternar la vista -->
+  <button 
+    class="btn btn-secondary rounded-circle shadow-lg d-flex align-items-center justify-content-center"
+    style="position: fixed; bottom: 90px; right: 20px; width: 60px; height: 60px; font-size: 30px; z-index: 996; transition: transform 0.3s ease-in-out;"
+    (click)="onSecondaryButtonClick()">
+    <svg 
+      width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="m4 6a2.982 2.982 0 0 1 -2.122-.879l-1.544-1.374a1 1 0 0 1 1.332-1.494l1.585 1.414a1 1 0 0 0 1.456.04l3.604-3.431a1 1 0 0 1 1.378 1.448l-3.589 3.414a2.964 2.964 0 0 1 -2.1.862zm20-2a1 1 0 0 0 -1-1h-10a1 1 0 0 0 0 2h10a1 1 0 0 0 1-1zm-17.9 9.138 3.589-3.414a1 1 0 1 0 -1.378-1.448l-3.6 3.431a1.023 1.023 0 0 1 -1.414 0l-1.59-1.585a1 1 0 0 0 -1.414 1.414l1.585 1.585a3 3 0 0 0 4.226.017zm17.9-1.138a1 1 0 0 0 -1-1h-10a1 1 0 0 0 0 2h10a1 1 0 0 0 1-1zm-17.9 9.138 3.585-3.414a1 1 0 1 0 -1.378-1.448l-3.6 3.431a1 1 0 0 1 -1.456-.04l-1.585-1.414a1 1 0 0 0 -1.332 1.494l1.544 1.374a3 3 0 0 0 4.226.017zm17.9-1.138a1 1 0 0 0 -1-1h-10a1 1 0 0 0 0 2h10a1 1 0 0 0 1-1z"/>
+    </svg>
+  </button>
+
+  <!-- Botón principal flotante -->
+  <button 
+    class="btn btn-primary rounded-circle shadow-lg" 
+    style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 997;"
+    (click)="toggleMenu()">
+    +
+  </button>
+
+  <!-- Menú flotante -->
+  <div 
+    *ngIf="menuOpen"
+    class="floating-menu"
+    style="position: fixed; bottom: 100px; right: 20px; z-index: 997; display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
+    
+    <!-- Opción 1 -->
+    <button 
+      class="btn btn-light shadow-lg menu-option"
+      [@fadeInAnimation]="{ value: '', params: { delay: 100 } }" (click)="openModal()">
+      <i class="fas fa-tasks"></i> Añadir Tarea
+    </button>
+
+    <!-- Opción 2 -->
+    <button 
+      class="btn btn-light shadow-lg menu-option"
+      [@fadeInAnimation]="{ value: '', params: { delay: 200 } }">
+      <i class="fas fa-user"></i> Realizar Anuncio
+    </button>
+
+    <!-- Opción 3 -->
+    <button 
+      class="btn btn-light shadow-lg menu-option"
+      [@fadeInAnimation]="{ value: '', params: { delay: 300 } }">
+      <i class="fas fa-cog"></i> Pasar Lista
+    </button>
+  </div>
+
+  <!-- Mostrar el modal si está activo -->
+  <app-task-editor-modal *ngIf="isModalOpen" (close)="closeModal()"></app-task-editor-modal>
+</section>

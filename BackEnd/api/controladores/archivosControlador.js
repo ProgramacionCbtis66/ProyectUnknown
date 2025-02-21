@@ -112,6 +112,53 @@ const entregarTarea = async (req, res) => {
     }
 };
 
+const getTareaArchivo = async (req, res) => {
+    const { id_tarea, id_alumno } = req.params;
+
+    // Validar campos obligatorios
+    if (!id_tarea || !id_alumno) {
+        return res.status(400).json({
+            error: 'Los parámetros id_tarea y id_alumno son obligatorios.',
+        });
+    }
+
+    // Consultas SQL
+    const queries = {
+        getArchivo: `
+            SELECT ruta_archivo
+            FROM archivos_tareas at
+            JOIN tareas_alumnos ta ON at.id_tarea_alumno = ta.id_tarea_alumno
+            WHERE ta.id_tarea = ? AND ta.id_alumno = ?;
+        `,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Obtener la ruta del archivo
+        const [result] = await conexion.execute(queries.getArchivo, [id_tarea, id_alumno]);
+
+        if (!result.length) {
+            return res.status(404).json({
+                error: 'No se encontró el archivo para la tarea y alumno especificados.',
+            });
+        }
+
+        const rutaArchivo = result[0].ruta_archivo;
+
+        // Enviar el archivo como respuesta
+        res.sendFile(rutaArchivo, { root: path.resolve('.') }, (err) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Error al enviar el archivo.' });
+            }
+        });
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al obtener el archivo.');
+    } finally {
+        await conexion.end();
+    }
+};
 
 // Exportar el middleware de carga y el controlador
-export { upload, entregarTarea };
+export { upload, entregarTarea, getTareaArchivo };

@@ -734,6 +734,151 @@ const calcularPorcentajeAsistencias = async (req, res) => {
     }
 };
 
+//nuevo
+
+const ListTareasByClaseParaAlumno = async (req, res) => {
+    const { id_clase, id_alumno } = req.params;
+
+    // Validación de los parámetros
+    if (!id_clase || !id_alumno) {
+        return res.status(400).json({ mensaje: 'Se requieren el ID de la clase y el ID del alumno.' });
+    }
+
+    const queries = {
+        // Query para obtener las tareas y su estado para el alumno
+        getTareasByClase: `
+            SELECT DISTINCT 
+                t.id_tarea, 
+                t.titulo, 
+                t.descripcion, 
+                t.fecha_asignacion, 
+                t.fecha_entrega,
+                COALESCE(ta.estado, 'Pendiente') AS estado
+            FROM tareas t
+            LEFT JOIN tareas_alumnos ta ON t.id_tarea = ta.id_tarea AND ta.id_alumno = ?
+            WHERE t.id_clase = ?
+        `,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Obtener las tareas asociadas a la clase para el alumno
+        const [tareas] = await conexion.execute(queries.getTareasByClase, [id_alumno, id_clase]);
+
+        if (!tareas.length) {
+            return res.status(404).json({ mensaje: 'No se encontraron tareas para la clase o el alumno proporcionados.' });
+        }
+
+        // Formatear las tareas
+        const resultado = tareas.map((tarea) => ({
+            title: tarea.titulo,
+            description: tarea.descripcion,
+            deadline: formatDeadline(tarea.fecha_entrega),
+            iconColor: determineIconColor(tarea.estado, tarea.fecha_entrega),
+            isExpanded: false,
+            estado: tarea.estado, // Estado adicional (Pendiente, Entregado, Calificado)
+        }));
+
+        res.status(200).json(resultado);
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al cargar las tareas de la clase para el alumno.');
+    } finally {
+        await conexion.end();
+    }
+};
+
+const ListTareasByClaseParaProfesor = async (req, res) => {
+    const { id_clase } = req.params;
+
+    // Validación del parámetro
+    if (!id_clase) {
+        return res.status(400).json({ mensaje: 'Se requiere el ID de la clase.' });
+    }
+
+    const queries = {
+        // Query para obtener las tareas asociadas a la clase
+        getTareasByClase: `
+            SELECT DISTINCT 
+                t.id_tarea, 
+                t.titulo, 
+                t.descripcion, 
+                t.fecha_asignacion, 
+                t.fecha_entrega
+            FROM tareas t
+            WHERE t.id_clase = ?
+        `,
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Obtener las tareas asociadas a la clase
+        const [tareas] = await conexion.execute(queries.getTareasByClase, [id_clase]);
+
+        if (!tareas.length) {
+            return res.status(404).json({ mensaje: 'No se encontraron tareas para la clase proporcionada.' });
+        }
+
+        // Formatear las tareas (color blanco por defecto)
+        const resultado = tareas.map((tarea) => ({
+            id_task: tarea.id_tarea,
+            title: tarea.titulo,
+            description: tarea.descripcion,
+            deadline: formatDeadline(tarea.fecha_entrega),
+            iconColor: '#FFFFFF', // Siempre blanco para profesores
+            isExpanded: false,
+        }));
+
+        res.status(200).json(resultado);
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al cargar las tareas de la clase para el profesor.');
+    } finally {
+        await conexion.end();
+    }
+};
+
+
+
+// Función para formatear la fecha límite en un formato relativo
+const formatDeadline = (fecha_entrega) => {
+    const fechaActual = new Date();
+    const fechaEntrega = new Date(fecha_entrega);
+    const diferenciaTiempo = fechaActual - fechaEntrega;
+    const dias = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24));
+
+    if (dias === 0) {
+        return 'Hoy';
+    } else if (dias > 0) {
+        return `Hace ${dias} día${dias > 1 ? 's' : ''}`;
+    } else {
+        return `En ${Math.abs(dias)} día${Math.abs(dias) > 1 ? 's' : ''}`;
+    }
+};
+
+// Función para determinar el color del ícono basado en el estado y la fecha de entrega
+const determineIconColor = (estado, fecha_entrega) => {
+    const fechaActual = new Date();
+    const fechaEntrega = new Date(fecha_entrega);
+
+    // Si el estado es "Pendiente" y la fecha de entrega ha pasado
+    if (estado === 'Pendiente' && fechaActual > fechaEntrega) {
+        return '#C1272D'; // Rojo
+    }
+
+    switch (estado) {
+        case 'Pendiente':
+            return '#FFFFFF'; // Blanco
+        case 'Entregado':
+            return '#0071BC'; // Azul
+        case 'Calificado':
+            return '#0071BC'; // Azul
+        default:
+            return '#FFFFFF'; // Blanco como fallback
+    }
+};
+
+
 export default {
     crearClase,
     agregarTarea,
@@ -747,4 +892,6 @@ export default {
     obtenerAlumnosPorClase, // Nuevo método
     registrarAsistencia,
     calcularPorcentajeAsistencias,
+    ListTareasByClaseParaProfesor,
+    ListTareasByClaseParaAlumno
 };

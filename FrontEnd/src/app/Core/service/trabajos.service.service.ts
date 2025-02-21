@@ -56,6 +56,14 @@ export class TrabajosService {
     return this.http.get(`${this.apiUrl}/clases/${idClase}/tareas`, environment.autorization);
   }
 
+  obtenerTareasClaseProfesor(idClase: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/class/obtenerTareasPorClaseParaProfesor/${idClase}`);
+}
+
+obtenerTareasClaseAlumno(idClase: number, idAlumno: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/class/obtenerTareasPorClaseParaAlumno/${idClase}/${idAlumno}`);
+}
+
   // Crear una nueva tarea
   crearTarea(idClase: number, tarea: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/clases/${idClase}/tareas`, tarea, environment.autorization);

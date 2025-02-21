@@ -21,6 +21,13 @@ Clase.get('/class/obtenerTareasPendientes/:id_alumno', clase.obtenerTareasPendie
 
 Clase.put('/class/actualizarEstadoYCalificacion', clase.actualizarEstadoYCalificacion); // Actualiza estado y calificación
 
+// Nueva ruta para obtener tareas asociadas a una clase para alumnos
+Clase.get('/class/obtenerTareasPorClaseParaAlumno/:id_clase/:id_alumno', clase.ListTareasByClaseParaAlumno);
+
+// Nueva ruta para obtener tareas asociadas a una clase para profesores
+Clase.get('/class/obtenerTareasPorClaseParaProfesor/:id_clase', clase.ListTareasByClaseParaProfesor);
+
+
 // Nueva ruta para eliminar una clase
 Clase.delete('/class/eliminarClase/:id_clase', clase.DeleteClaseById);
 

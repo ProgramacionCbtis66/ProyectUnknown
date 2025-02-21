@@ -1,0 +1,108 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css"
+  />
+</head>
+
+<body>
+  <div class="sub_container_1 text-center">
+    <h3 id="user_name_dashboard">
+      Hola, {{ sesion._usuario }} {{ sesion._apellido }}
+    </h3>
+    <p id="rol_user_dashboard" class="text-muted">{{ sesion._rol }}</p>
+  </div>
+
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Perfil - Visible para todos -->
+      <div
+        class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+        (click)="navigateToProfile()"
+      >
+        <div class="custom-card">
+          <img
+            [src]="sesion._foto"
+            class="profile-pic rounded-circle mb-3"
+            alt="Profile Picture"
+          />
+          <h5 class="card-title">
+            {{ sesion._usuario }} {{ sesion._apellido }}
+          </h5>
+          <p class="card-text">{{ sesion._rol }}</p>
+        </div>
+      </div>
+
+      <!-- Horarios - Visible para todos -->
+<!--       <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+        <div class="custom-card">
+          <i class="fi fi-ss-calendar student-ico"></i>
+          <h5 class="card-title">Horarios</h5>
+        </div>
+      </div> -->
+
+      <!-- Clases - Visible para todos excepto Administrador -->
+      <div
+        class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+        *ngIf="sesion._rol !== 'Administrador'"
+        (click)="goToClases()"
+      >
+        <div class="custom-card">
+          <i class="fi fi-ss-graduation-cap student-ico"></i>
+          <h5 class="card-title">Clases</h5>
+        </div>
+      </div>
+
+      <!-- Contenido exclusivo para Administrador -->
+      <ng-container *ngIf="sesion._rol === 'Administrador'">
+        <!-- Lista Alumnos -->
+        <div
+          class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+          (click)="goToAlumnos()"
+        >
+          <div class="custom-card">
+            <i class="fi fi-ss-student student-ico"></i>
+            <h5 class="card-title">Lista Alumnos</h5>
+          </div>
+        </div>
+
+        <!-- Servicios Escolares -->
+<!--         <div
+          class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+          (click)="goToServicios()"
+        >
+          <div class="custom-card">
+            <i class="fi fi-ss-user-headset student-ico"></i>
+            <h5 class="card-title">Servicios Escolares</h5>
+          </div>
+        </div> -->
+
+        <!-- Crear Clases -->
+        <div
+          class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer"
+          (click)="goToMakeClases()"
+        >
+          <div class="custom-card">
+            <i class="fi fi-ss-graduation-cap student-ico"></i>
+            <h5 class="card-title">Crear Clases</h5>
+          </div>
+        </div>
+
+        <!-- Otros módulos administrativos -->
+ <!--        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+          <div class="custom-card">
+            <i class="fi fi-ss-square-plus student-ico"></i>
+            <h5 class="card-title">Gestión Profesores</h5>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-3 mb-4 cursor-pointer">
+          <div class="custom-card">
+            <i class="fi fi-ss-square-plus student-ico"></i>
+            <h5 class="card-title">Gestión Materias</h5>
+          </div>
+        </div> -->
+      </ng-container>
+    </div>
+  </div>
+</body>

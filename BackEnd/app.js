@@ -1,40 +1,36 @@
 import express from 'express';
-const app = express();
-
-import bodyparse from 'body-parser';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 
-app.use(bodyparse.urlencoded({ extended: false }));
-app.use(bodyparse.json());
+const app = express();
 
+// Middleware para parsear JSON y formularios
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Lista de orígenes permitidos
 const clientesPermitidos = ['http://localhost:4200'];
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || clientesPermitidos.indexOf(origin) !== -1) {
+        if (!origin || clientesPermitidos.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Este dominio no está permitido'));
         }
-    }
+    },
+    methods: 'GET,POST,PUT,DELETE,PATCH',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    credentials: true // Permitir cookies o autenticación en las solicitudes CORS
 }));
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
-        return res.status(200).json({ ok: 'ok' }); // Cambié 'rest' por 'res'
-    }
-    next();
-});
-
+// Rutas de la API
 import UserApi from './api/rutas/usuario.js';
 import EmailApi from './api/rutas/Email.js';
-import prueba from './api/rutas/pruebas.js';
-import clasesApi from './api/rutas/clases.js';
-import file from './api/rutas/archivos.js';
+import Prueba from './api/rutas/pruebas.js';
+import ClasesApi from './api/rutas/clases.js';
+import File from './api/rutas/archivos.js';
 
-app.use('/apiAdae', [UserApi, prueba, EmailApi, clasesApi, file]);
+app.use('/apiAdae', [UserApi, Prueba, EmailApi, ClasesApi, File]);
 
 export default app;
