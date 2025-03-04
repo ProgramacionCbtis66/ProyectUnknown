@@ -48,10 +48,6 @@ export function tokenGetter() {
     AlumnosListadoComponent,
     AlumnosClasesComponent,
     TrabajosDetallesComponent,
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
   ],
   imports: [
     BrowserModule,
@@ -70,13 +66,8 @@ export function tokenGetter() {
     CommonModule,
     RouterModule,
     ImgCropperComponent,
-<<<<<<< Updated upstream
-    EntregarTareaComponent,
-  ],
-=======
     EntregarTareaComponent
 ],
->>>>>>> Stashed changes
   providers: [
     provideHttpClient(withInterceptorsFromDi())
   ],

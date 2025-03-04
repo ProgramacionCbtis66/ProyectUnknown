@@ -31,20 +31,10 @@ interface Entrega {
   templateUrl: './trabajos-detalles.component.html',
   styleUrl: './trabajos-detalles.component.css'
 })
-<<<<<<< Updated upstream:FrontEnd/src/app/dashboard/docente/trabajos-detalles/trabajos-detalles.component.ts
 export class TrabajosDetallesComponent implements OnInit {
   profesor_nombre: string = '';
   selectedFile: File | null = null;
   
-=======
-export class TrabajosDetallesComponent {
-selectedFile: any;
-submitTask() {
-
-
-throw new Error('Method not implemented.');
-}
->>>>>>> Stashed changes:FrontEnd/src/app/features/tasks/trabajos-detalles/trabajos-detalles.component.ts
   tarea: Tarea = {
     id: 0,
     titulo: '',

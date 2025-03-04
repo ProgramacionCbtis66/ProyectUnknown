@@ -13,7 +13,7 @@
     <div class="filters-larges-container">
       <!-- Botón para añadir alumno nuevo -->
       <button class="filter-toggle" (click)="openAddStudentModal()">
-        <i class="fi fi-br-plus"></i>
+        <i class="bx bx-plus"></i>
       </button>
 
       <!-- Botón de filtros (funciona en todas las pantallas) -->
@@ -22,7 +22,7 @@
         (click)="toggleFilters()"
         aria-label="Abrir filtros"
       >
-        <i class="fi fi-bs-filters"></i>
+        <i class="bx bx-filter"></i>
       </button>
 
       <!-- Filtros en pantalla grande -->
@@ -337,8 +337,13 @@
   class="modal-overlay"
   (click)="closeAddStudentModal()"
 >
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <h2>Añadir nuevo alumno</h2>
+  <div class="modal-content styled-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Añadir nuevo alumno</h2>
+      <button class="close-btn" (click)="closeAddStudentModal()">
+        <i class="bx bx-x"></i>
+      </button>
+    </div>
     <form (ngSubmit)="addStudent()">
       <div class="form-grid">
         <div class="form-group">
@@ -349,6 +354,7 @@
             [(ngModel)]="nuevoAlumno.nombre"
             name="nombre"
             required
+            placeholder="Ingresa el nombre"
           />
         </div>
         <div class="form-group">
@@ -359,6 +365,7 @@
             [(ngModel)]="nuevoAlumno.apellido"
             name="apellido"
             required
+            placeholder="Ingresa el apellido"
           />
         </div>
         <div class="form-group">
@@ -369,6 +376,7 @@
             [(ngModel)]="nuevoAlumno.correo_institucional"
             name="correoInstitucional"
             required
+            placeholder="Ingresa el correo institucional"
           />
         </div>
         <div class="form-group">
@@ -379,6 +387,7 @@
             [(ngModel)]="nuevoAlumno.password"
             name="contrasena"
             required
+            placeholder="Ingresa la contraseña"
           />
         </div>
         <div class="form-group">
@@ -389,6 +398,7 @@
             [(ngModel)]="nuevoAlumno.semestre"
             name="semestre"
             required
+            placeholder="Ingresa el semestre"
           />
         </div>
         <div class="form-group">
@@ -399,6 +409,7 @@
             [(ngModel)]="nuevoAlumno.grupo"
             name="grupo"
             required
+            placeholder="Ingresa el grupo"
           />
         </div>
         <div class="form-group">
@@ -409,6 +420,7 @@
             [(ngModel)]="nuevoAlumno.especialidad"
             name="especialidad"
             required
+            placeholder="Ingresa la especialidad"
           />
         </div>
         <div class="form-group">
@@ -419,6 +431,7 @@
             [(ngModel)]="nuevoAlumno.numero_control"
             name="numeroControl"
             required
+            placeholder="Ingresa el número de control"
           />
         </div>
         <div class="form-group">
@@ -429,6 +442,7 @@
             name="turno"
             required
           >
+            <option value="" disabled selected>Selecciona un turno</option>
             <option value="Matutino">Matutino</option>
             <option value="Vespertino">Vespertino</option>
           </select>
@@ -441,11 +455,20 @@
             [(ngModel)]="nuevoAlumno.curp"
             name="curp"
             required
+            placeholder="Ingresa el CURP"
           />
         </div>
       </div>
-      <button type="submit">Enviar Correo</button>
-      <button type="button" (click)="closeAddStudentModal()">Cancelar</button>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeAddStudentModal()"
+        >
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">Enviar Correo</button>
+      </div>
     </form>
   </div>
 </div>
