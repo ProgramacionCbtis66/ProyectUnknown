@@ -28,12 +28,12 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px; /* Asegúrate de que esta altura corresponda a la que usaste en .content */
+  height: 60px; /* Ajusta este valor si tu header requiere otra altura */
   z-index: 1000;
   backdrop-filter: blur(14px);
   padding: 10px 20px;
   background-color: rgba(251, 251, 253, 0.5);
- }
+}
  
  .content {
   margin-top: 60px; /* Igual a la altura del header */
@@ -171,7 +171,7 @@
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s ease, visibility 0.2s ease;
- }
+}
  
  .overlay.active {
   visibility: visible;
@@ -183,15 +183,16 @@
  }
  
  footer {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #eeeef3;
   padding: 1.5rem;
   width: 100%;
-  margin-top: auto;
   flex-wrap: wrap;
- }
+}
  
  .footer-div,
  .footer-div2 {
@@ -218,6 +219,14 @@
   margin: 0 10px;
  }
  
+ .content {
+  margin-top: 60px; /* Compensa la altura del header fijo */
+  min-height: calc(100vh - 60px); /* Asegura que el contenido ocupe el espacio restante */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transition: all 0.3s ease-in-out;
+}
+
  @media only screen and (max-width: 600px) {
   footer {
     flex-direction: column;
