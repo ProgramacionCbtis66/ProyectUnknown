@@ -277,6 +277,7 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     this.isDraggingOptions = false;
   }
 
+  
   // Métodos de control de modales
   openOptionsModal(usuario: Usuario): void {
     if (window.innerWidth <= 768) {
@@ -292,13 +293,12 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
 
   private closeModalWithAnimation() {
     const modalContent = this.modalFilters.nativeElement.querySelector('.modal-content-filters');
-    modalContent.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-    modalContent.style.transform = 'translateY(100%)';
+    modalContent.classList.add('closing');
     
     setTimeout(() => {
       this.uiState.isModalOpen = false;
       this.translateY = 0;
-      modalContent.style.transform = '';
+      modalContent.classList.remove('closing');
     }, 300);
   }
 
@@ -315,13 +315,12 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
 
   private closeOptionsModalWithAnimation() {
     const modalContent = this.modalOptions.nativeElement.querySelector('.modal-content-options');
-    modalContent.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-    modalContent.style.transform = 'translateY(100%)';
+    modalContent.classList.add('closing');
     
     setTimeout(() => {
       this.isOptionsModalOpen = false;
       this.translateYOptions = 0;
-      modalContent.style.transform = '';
+      modalContent.classList.remove('closing');
       this.selectedStudentForOptions = null;
     }, 300);
   }
