@@ -43,8 +43,9 @@ html, body {
 }
 
 .content {
-  height: 100vh;
+  min-height: calc(100vh - 60px); /* 60px = altura del header */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   transition: all 0.3s ease-in-out;
+  /* Si prefieres, puedes quitar la propiedad height para evitar conflictos */
 }

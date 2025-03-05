@@ -44,7 +44,6 @@ export class AuthService {
     localStorage.removeItem("adae");
     localStorage.removeItem("fotoPerfil");
     this.limpiarSesion();
-    this.toastr.info('Sesión cerrada con éxito', 'Info');
   }
 
   limpiarSesion(): void {
@@ -138,18 +137,5 @@ export class AuthService {
       let tokecode = this.jwt.decodeToken(tokedecode);
       localStorage.setItem("adae", tokecode);
     }
-  }
-
-  public tokeExpired(): boolean {
-    const tokenDecode = this.decodifica();
-    if (!tokenDecode) {
-      return true;
-    }
-    const tiempo = (tokenDecode.exp - Date.now() / 1000);
-    if (tiempo < 0) {
-      localStorage.clear();
-      return true;
-    }
-    return false;
   }
 }
