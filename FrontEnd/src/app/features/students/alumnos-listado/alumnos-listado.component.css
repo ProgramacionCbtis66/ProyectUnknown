@@ -939,3 +939,50 @@
 .modal-content-options.closing {
   animation: slideDown 0.3s ease forwards;
 }
+
+/* Animación de aparición desde la izquierda */
+@keyframes fadeInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Estado inicial para cada elemento filtrado */
+.large-screen-filters.show .filter-item {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: fadeInFromLeft 0.5s ease forwards;
+}
+
+/* Delays escalonados para cada elemento */
+.large-screen-filters.show .filter-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.large-screen-filters.show .filter-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.large-screen-filters.show .filter-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.large-screen-filters.show .filter-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Efecto hover: sombra suave en botones y selects */
+.filter-item button,
+.filter-item select {
+  transition: box-shadow 0.3s ease;
+}
+
+.filter-item button:hover,
+.filter-item select:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}

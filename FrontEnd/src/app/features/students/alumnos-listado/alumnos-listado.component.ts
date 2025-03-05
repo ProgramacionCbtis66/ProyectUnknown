@@ -266,7 +266,7 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   // Métodos de control de modales para filtros y opciones
 
   // Modal de filtros (móvil): se cierra al hacer click fuera y con animación slide down
-  private closeModalWithAnimation() {
+  public closeModalWithAnimation() {
     const modalContent = this.modalFilters.nativeElement.querySelector('.modal-content-filters');
     if (modalContent) {
       modalContent.classList.add('closing');
@@ -293,7 +293,7 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   }
 
   // Modal de opciones (móvil): se cierra al dar click fuera y con animación slide down
-  private closeOptionsModalWithAnimation() {
+  public closeOptionsModalWithAnimation() {
     const modalContent = this.modalOptions.nativeElement.querySelector('.modal-content-options');
     if (modalContent) {
       modalContent.classList.add('closing');
