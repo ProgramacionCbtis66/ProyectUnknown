@@ -69,6 +69,7 @@
   <div
     class="modal-filters"
     [class.show]="uiState.isModalOpen"
+    (click)="closeModalWithAnimation()"
     (touchstart)="onTouchStart($event)"
     (touchmove)="onTouchMove($event)"
     (touchend)="onTouchEnd($event)"
@@ -76,7 +77,9 @@
   >
     <div
       class="modal-content-filters"
+      [class.opening]="uiState.isModalOpen"
       [style.transform]="'translateY(' + translateY + 'px)'"
+      (click)="$event.stopPropagation()"
     >
       <div class="modal-handle"></div>
       <div class="filters small-screen-filters">
@@ -116,6 +119,7 @@
   <div
     class="modal-options"
     [class.show]="isOptionsModalOpen"
+    (click)="closeOptionsModalWithAnimation()"
     (touchstart)="onTouchStartOptions($event)"
     (touchmove)="onTouchMoveOptions($event)"
     (touchend)="onTouchEndOptions($event)"
@@ -123,7 +127,9 @@
   >
     <div
       class="modal-content-options"
+      [class.opening]="isOptionsModalOpen"
       [style.transform]="'translateY(' + translateYOptions + 'px)'"
+      (click)="$event.stopPropagation()"
     >
       <div class="modal-handle"></div>
       <div class="options-list">
@@ -203,6 +209,7 @@
 
 <!-- Modal para editar estudiante -->
 <div
+  #editModal
   *ngIf="isEditStudentModalOpen"
   class="modal-overlay"
   (click)="closeEditStudentModal()"
@@ -333,6 +340,7 @@
 
 <!-- Modal para ingresar datos del nuevo alumno -->
 <div
+  #addModal
   *ngIf="isAddStudentModalOpen"
   class="modal-overlay"
   (click)="closeAddStudentModal()"

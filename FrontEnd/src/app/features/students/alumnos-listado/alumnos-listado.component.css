@@ -132,6 +132,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+  padding-bottom: 30px;
 }
 
 .student-card {
@@ -471,8 +472,17 @@
   animation: modalFadeOut 0.3s ease forwards;
 }
 
+@keyframes overlayFadeOut {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .modal-overlay.closing {
-  animation: fadeOut 0.3s ease forwards;
+  animation: overlayFadeOut 0.3s ease forwards;
 }
 
 .modal-header h2 {
@@ -896,4 +906,36 @@
   .options-dropdown.desktop-only {
     display: flex;
   }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.modal-content-filters.opening,
+.modal-content-options.opening {
+  animation: slideUp 0.3s ease forwards;
+}
+
+.modal-content-filters.closing,
+.modal-content-options.closing {
+  animation: slideDown 0.3s ease forwards;
 }

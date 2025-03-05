@@ -28,8 +28,10 @@ interface Usuario {
 export class AlumnosListadoComponent implements OnInit, OnDestroy {
   @ViewChild('modalFilters') modalFilters!: ElementRef;
   @ViewChild('modalOptions') modalOptions!: ElementRef;
+  @ViewChild('editModal') editModal!: ElementRef;
+  @ViewChild('addModal') addModal!: ElementRef;
   
-  // Variables para el manejo del gesto táctil
+  // Variables para manejo del gesto táctil (modal de filtros)
   translateY: number = 0;
   startY: number = 0;
   currentY: number = 0;
@@ -67,15 +69,51 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
 
   // Estado de la UI
   uiState = {
-    isModalOpen: false,
-    areFiltersVisible: false,
+    isModalOpen: false,       // Modal de filtros (para móvil)
+    areFiltersVisible: false, // Filtros en pantalla grande
     turnoMatutino: true,
     turnoIcono: 'fi fi-ss-clouds-sun',
   };
-
-  // Modales
+  
+  // Modales de "Añadir" y "Editar"
   isAddStudentModalOpen = false;
   isEditStudentModalOpen = false;
+
+  // Nuevo Alumno
+  nuevoAlumno = {
+    correo_institucional: '',
+    nombre: '',
+    apellido: '',
+    rol: 'Alumno',
+    password: '',
+    numero_control: '',
+    especialidad: '',
+    semestre: 1,
+    grupo: '',
+    turno: 'Matutino',
+    curp: '',
+    foto: "data:image/png;base64,..." // Tu string base64 aquí
+  };
+
+  // Estudiante Seleccionado para Edición
+  selectedStudent: any = {
+    nombre: '',
+    apellido: '',
+    correo_institucional: '',
+    detalles: {
+      numero_control: '',
+      semestre: '',
+      especialidad: '',
+      turno: '',
+      grupo: ''
+    }
+  };
+
+  constructor(
+    private emailService: EmailService,
+    private usuarioService: UsuarioService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   addStudent(): void {
     const {
@@ -172,44 +210,8 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
       error: (err) => console.error('Error al actualizar usuario:', err),
     });
   }
-  
-  // Nuevo Alumno
-  nuevoAlumno = {
-    correo_institucional: '',
-    nombre: '',
-    apellido: '',
-    rol: 'Alumno',
-    password: '',
-    numero_control: '',
-    especialidad: '',
-    semestre: 1,
-    grupo: '',
-    turno: 'Matutino',
-    curp: '',
-    foto: "data:image/png;base64,..." // Tu string base64 aquí
-  };
 
-  // Estudiante Seleccionado para Edición
-  selectedStudent: any = {
-    nombre: '',
-    apellido: '',
-    correo_institucional: '',
-    detalles: {
-      numero_control: '',
-      semestre: '',
-      especialidad: '',
-      turno: '',
-      grupo: ''
-    }
-  };
-
-  constructor(
-    private emailService: EmailService,
-    private usuarioService: UsuarioService,
-    private sanitizer: DomSanitizer
-  ) {}
-
-  // Eventos táctiles para filtros
+  // Eventos táctiles para modal de filtros (modo móvil)
   onTouchStart(event: TouchEvent) {
     this.isDragging = true;
     this.startY = event.touches[0].clientY;
@@ -220,30 +222,22 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     if (!this.isDragging) return;
     const deltaY = event.touches[0].clientY - this.startY;
     this.currentY = event.touches[0].clientY;
-    
-    if (deltaY < 0) {
-      this.translateY = deltaY / 3;
-    } else {
-      this.translateY = deltaY;
-    }
-
+    this.translateY = deltaY < 0 ? deltaY / 3 : deltaY;
     this.translateY = Math.min(Math.max(this.translateY, -this.MAX_DRAG), this.MAX_DRAG);
   }
 
   onTouchEnd(event: TouchEvent) {
     if (!this.isDragging) return;
     const deltaY = this.currentY - this.startY;
-    
     if (deltaY > this.THRESHOLD) {
       this.closeModalWithAnimation();
     } else {
       this.resetPosition();
     }
-    
     this.isDragging = false;
   }
 
-  // Eventos táctiles para opciones
+  // Eventos táctiles para modal de opciones (modo móvil)
   onTouchStartOptions(event: TouchEvent) {
     this.isDraggingOptions = true;
     this.startYOptions = event.touches[0].clientY;
@@ -254,86 +248,85 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     if (!this.isDraggingOptions) return;
     const deltaY = event.touches[0].clientY - this.startYOptions;
     this.currentYOptions = event.touches[0].clientY;
-    
-    if (deltaY < 0) {
-      this.translateYOptions = deltaY / 3;
-    } else {
-      this.translateYOptions = deltaY;
-    }
-
+    this.translateYOptions = deltaY < 0 ? deltaY / 3 : deltaY;
     this.translateYOptions = Math.min(Math.max(this.translateYOptions, -this.MAX_DRAG), this.MAX_DRAG);
   }
 
   onTouchEndOptions(event: TouchEvent) {
     if (!this.isDraggingOptions) return;
     const deltaY = this.currentYOptions - this.startYOptions;
-    
     if (deltaY > this.THRESHOLD) {
       this.closeOptionsModalWithAnimation();
     } else {
       this.resetOptionsPosition();
     }
-    
     this.isDraggingOptions = false;
   }
 
-  
-  // Métodos de control de modales
-  openOptionsModal(usuario: Usuario): void {
-    if (window.innerWidth <= 768) {
-      this.selectedStudentForOptions = usuario;
-      this.isOptionsModalOpen = true;
-      this.translateYOptions = 0;
-    }
-  }
+  // Métodos de control de modales para filtros y opciones
 
-  closeOptionsModal(): void {
-    this.closeOptionsModalWithAnimation();
-  }
-
+  // Modal de filtros (móvil): se cierra al hacer click fuera y con animación slide down
   private closeModalWithAnimation() {
     const modalContent = this.modalFilters.nativeElement.querySelector('.modal-content-filters');
-    modalContent.classList.add('closing');
-    
-    setTimeout(() => {
+    if (modalContent) {
+      modalContent.classList.add('closing');
+      setTimeout(() => {
+        this.uiState.isModalOpen = false;
+        this.translateY = 0;
+        modalContent.classList.remove('closing');
+      }, 300);
+    } else {
       this.uiState.isModalOpen = false;
-      this.translateY = 0;
-      modalContent.classList.remove('closing');
-    }, 300);
+    }
   }
 
   private resetPosition() {
     const modalContent = this.modalFilters.nativeElement.querySelector('.modal-content-filters');
-    modalContent.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-    modalContent.style.transform = '';
-    this.translateY = 0;
-    
-    setTimeout(() => {
-      modalContent.style.transition = '';
-    }, 300);
+    if (modalContent) {
+      modalContent.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+      modalContent.style.transform = '';
+      this.translateY = 0;
+      setTimeout(() => {
+        modalContent.style.transition = '';
+      }, 300);
+    }
   }
 
+  // Modal de opciones (móvil): se cierra al dar click fuera y con animación slide down
   private closeOptionsModalWithAnimation() {
     const modalContent = this.modalOptions.nativeElement.querySelector('.modal-content-options');
-    modalContent.classList.add('closing');
-    
-    setTimeout(() => {
+    if (modalContent) {
+      modalContent.classList.add('closing');
+      setTimeout(() => {
+        this.isOptionsModalOpen = false;
+        this.translateYOptions = 0;
+        modalContent.classList.remove('closing');
+        this.selectedStudentForOptions = null;
+      }, 300);
+    } else {
       this.isOptionsModalOpen = false;
-      this.translateYOptions = 0;
-      modalContent.classList.remove('closing');
       this.selectedStudentForOptions = null;
-    }, 300);
+    }
   }
 
   private resetOptionsPosition() {
     const modalContent = this.modalOptions.nativeElement.querySelector('.modal-content-options');
-    modalContent.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-    modalContent.style.transform = '';
+    if (modalContent) {
+      modalContent.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+      modalContent.style.transform = '';
+      this.translateYOptions = 0;
+      setTimeout(() => {
+        modalContent.style.transition = '';
+      }, 300);
+    }
+  }
+
+  // Método para abrir el modal de opciones al pulsar sobre un estudiante
+  openOptionsModal(usuario: Usuario): void {
+    // Se elimina la condición de ancho para que se abra en cualquier tamaño de pantalla.
+    this.selectedStudentForOptions = usuario;
+    this.isOptionsModalOpen = true;
     this.translateYOptions = 0;
-    
-    setTimeout(() => {
-      modalContent.style.transition = '';
-    }, 300);
   }
 
   // Métodos de manipulación de estudiantes
@@ -349,24 +342,21 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     this.selectedStudent = { ...usuario };
     this.isEditStudentModalOpen = true;
     if (this.isOptionsModalOpen) {
-      this.closeOptionsModal();
+      this.closeOptionsModalWithAnimation();
     }
   }
 
   deleteStudent(usuario: Usuario | null): void {
     if (!usuario) return;
     const usuarioId = usuario.id;
-
     if (this.isOptionsModalOpen) {
-      this.closeOptionsModal();
+      this.closeOptionsModalWithAnimation();
     }
-
     this.usuarioService.deleteUsuario(usuarioId).subscribe({
       next: () => {
         console.log(`Usuario eliminado: ID ${usuarioId}`);
         const { correo_institucional, nombre } = usuario;
         const tipo = 'UserDelete';
-
         if (correo_institucional && nombre) {
           this.emailService
             .enviarCorreo(correo_institucional, nombre, tipo)
@@ -375,7 +365,6 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
         } else {
           console.warn('Datos incompletos para enviar correo:', { correo_institucional, nombre });
         }
-
         this.fetchUsuarios();
         this.closeEditStudentModal();
       },
@@ -386,7 +375,7 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   copyStudent(usuario: Usuario | null): void {
     if (!usuario) return;
     if (this.isOptionsModalOpen) {
-      this.closeOptionsModal();
+      this.closeOptionsModalWithAnimation();
     }
     console.log('Copiar estudiante:', usuario);
   }
@@ -395,32 +384,49 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     this.isAddStudentModalOpen = true;
   }
 
+  // Métodos de cierre con animación para modales de "Añadir" y "Editar"
   closeAddStudentModal(): void {
-    this.isAddStudentModalOpen = false;
+    if (this.addModal) {
+      const modalContent = this.addModal.nativeElement.querySelector('.modal-content');
+      modalContent.classList.add('closing');
+      setTimeout(() => {
+        this.isAddStudentModalOpen = false;
+        modalContent.classList.remove('closing');
+      }, 300);
+    } else {
+      this.isAddStudentModalOpen = false;
+    }
   }
 
   closeEditStudentModal(): void {
-    this.isEditStudentModalOpen = false;
-    this.selectedStudent = null;
+    if (this.editModal) {
+      const modalContent = this.editModal.nativeElement.querySelector('.modal-content');
+      modalContent.classList.add('closing');
+      setTimeout(() => {
+        this.isEditStudentModalOpen = false;
+        this.selectedStudent = null;
+        modalContent.classList.remove('closing');
+      }, 300);
+    } else {
+      this.isEditStudentModalOpen = false;
+      this.selectedStudent = null;
+    }
   }
 
-  // Métodos de utilidad
+  // Métodos de utilidad para procesamiento de imágenes
   async onPhotoSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-
       if (!file.type.startsWith('image/')) {
         alert('Por favor, selecciona un archivo de imagen válido.');
         return;
       }
-
       const maxSizeInBytes = 2 * 1024 * 1024;
       if (file.size > maxSizeInBytes) {
         alert('La imagen seleccionada excede el tamaño máximo permitido (2MB).');
         return;
       }
-
       try {
         const base64Obj: any = await this.extraerBase64(file);
         const base64 = base64Obj.base;
@@ -441,9 +447,7 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.readAsDataURL(foto);
       reader.onload = () => {
-        resolve({
-          base: reader.result
-        });
+        resolve({ base: reader.result });
       };
       reader.onerror = error => {
         reject('Error al leer la imagen');
@@ -564,7 +568,6 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   private matchesSelectedFilters(usuario: Usuario): boolean {
     const { detalles } = usuario;
     if (!detalles) return false;
-    
     return (
       (!this.selectedFilters.turno || detalles.turno === this.selectedFilters.turno) &&
       (!this.selectedFilters.grupo || detalles.grupo === this.selectedFilters.grupo) &&
@@ -576,7 +579,6 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
   private matchesSearch(usuario: Usuario): boolean {
     const query = this.searchQuery.toLowerCase();
     const { nombre, apellido, detalles } = usuario;
-
     return (
       nombre.toLowerCase().includes(query) ||
       apellido.toLowerCase().includes(query) ||
