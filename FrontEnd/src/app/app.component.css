@@ -24,14 +24,20 @@
  
  header {
   position: fixed;
-  width: 100%;
-  z-index: 1000;
   top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px; /* Asegúrate de que esta altura corresponda a la que usaste en .content */
+  z-index: 1000;
   backdrop-filter: blur(14px);
   padding: 10px 20px;
   background-color: rgba(251, 251, 253, 0.5);
  }
  
+ .content {
+  margin-top: 60px; /* Igual a la altura del header */
+}
+
  .navbar {
   display: flex;
   align-items: center;

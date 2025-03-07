@@ -47,7 +47,6 @@
   </div>
 </div>
 
-<!-- Mover los modales fuera del contenedor principal -->
 <!-- Modal para crear clase -->
 <div
   class="modal fade"
@@ -219,9 +218,9 @@
               [checked]="areAllSelected()"
               (change)="toggleSelectAll($event)"
             />
-            <label class="form-check-label" for="selectAll">
-              Seleccionar todos los alumnos filtrados
-            </label>
+            <label class="form-check-label" for="selectAll"
+              >Seleccionar todos los alumnos filtrados</label
+            >
           </div>
         </div>
         <ul class="list-group">
@@ -239,12 +238,9 @@
                 id="seleccionado-{{ alumno.id }}"
                 aria-label="Seleccionar Alumno"
               />
-              <label
-                class="form-check-label"
-                for="seleccionado-{{ alumno.id }}"
+              <label class="form-check-label" for="seleccionado-{{ alumno.id }}"
+                >Seleccionar</label
               >
-                Seleccionar
-              </label>
             </div>
           </li>
         </ul>
