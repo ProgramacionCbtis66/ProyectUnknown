@@ -12,111 +12,6 @@
     </button>
   </div>
 
-  <!-- Modal para crear clase -->
-  <div
-    class="modal fade"
-    id="crearClaseModal"
-    tabindex="-1"
-    aria-labelledby="crearClaseModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form (ngSubmit)="crearClase()">
-          <div class="modal-header">
-            <h5 class="modal-title" id="crearClaseModalLabel">Crear Clase</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Cerrar"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="nombreClase" class="form-label"
-                >Nombre de la Clase:</label
-              >
-              <input
-                type="text"
-                id="nombreClase"
-                class="form-control"
-                [(ngModel)]="nombreClase"
-                name="nombreClase"
-                required
-                placeholder="Ingresa el nombre de la clase"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="modulo" class="form-label">Módulo:</label>
-              <input
-                type="text"
-                id="modulo"
-                class="form-control"
-                [(ngModel)]="modulo"
-                name="modulo"
-                required
-                placeholder="Ingresa el módulo"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="componente" class="form-label">Componente:</label>
-              <select
-                id="componente"
-                class="form-select"
-                [(ngModel)]="componente"
-                name="componente"
-                required
-              >
-                <option value="" selected disabled>
-                  Selecciona un componente
-                </option>
-                <option value="laboral">Laboral</option>
-                <option value="basico">Básico</option>
-                <option value="socioemocional">Socioemocional</option>
-              </select>
-            </div>
-
-            <div class="mb-3">
-              <label for="idProfesor" class="form-label">Profesor:</label>
-              <select
-                id="idProfesor"
-                class="form-select"
-                [(ngModel)]="idProfesor"
-                (change)="onProfesorChange($event)"
-                name="idProfesor"
-                required
-              >
-                <option value="" selected>Selecciona un profesor</option>
-                <option
-                  *ngFor="let profesor of profesores"
-                  [value]="profesor.id_profesor"
-                >
-                  {{ profesor.nombre_completo }}
-                </option>
-                <option *ngIf="profesores.length === 0" disabled>
-                  No hay profesores disponibles
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cerrar
-            </button>
-            <button type="submit" class="btn btn-primary">Crear Clase</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
   <!-- Listado de clases -->
   <div class="classes-grid">
     <div class="class-card" *ngFor="let clase of clases">
@@ -152,6 +47,109 @@
   </div>
 </div>
 
+<!-- Modal para crear clase -->
+<div
+  class="modal fade"
+  id="crearClaseModal"
+  tabindex="-1"
+  aria-labelledby="crearClaseModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form (ngSubmit)="crearClase()">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crearClaseModalLabel">Crear Clase</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Cerrar"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenido del formulario para crear clase -->
+          <div class="mb-3">
+            <label for="nombreClase" class="form-label"
+              >Nombre de la Clase:</label
+            >
+            <input
+              type="text"
+              id="nombreClase"
+              class="form-control"
+              [(ngModel)]="nombreClase"
+              name="nombreClase"
+              required
+              placeholder="Ingresa el nombre de la clase"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="modulo" class="form-label">Módulo:</label>
+            <input
+              type="text"
+              id="modulo"
+              class="form-control"
+              [(ngModel)]="modulo"
+              name="modulo"
+              required
+              placeholder="Ingresa el módulo"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="componente" class="form-label">Componente:</label>
+            <select
+              id="componente"
+              class="form-select"
+              [(ngModel)]="componente"
+              name="componente"
+              required
+            >
+              <option value="" selected disabled>
+                Selecciona un componente
+              </option>
+              <option value="laboral">Laboral</option>
+              <option value="basico">Básico</option>
+              <option value="socioemocional">Socioemocional</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="idProfesor" class="form-label">Profesor:</label>
+            <select
+              id="idProfesor"
+              class="form-select"
+              [(ngModel)]="idProfesor"
+              (change)="onProfesorChange($event)"
+              name="idProfesor"
+              required
+            >
+              <option value="" selected>Selecciona un profesor</option>
+              <option
+                *ngFor="let profesor of profesores"
+                [value]="profesor.id_profesor"
+              >
+                {{ profesor.nombre_completo }}
+              </option>
+              <option *ngIf="profesores.length === 0" disabled>
+                No hay profesores disponibles
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button type="submit" class="btn btn-primary">Crear Clase</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- Modal para agregar alumnos -->
 <div
   class="modal fade"
@@ -174,6 +172,7 @@
         ></button>
       </div>
       <div class="modal-body">
+        <!-- Contenido para filtrar y seleccionar alumnos -->
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="filtroGrupo" class="form-label"
@@ -219,9 +218,9 @@
               [checked]="areAllSelected()"
               (change)="toggleSelectAll($event)"
             />
-            <label class="form-check-label" for="selectAll">
-              Seleccionar todos los alumnos filtrados
-            </label>
+            <label class="form-check-label" for="selectAll"
+              >Seleccionar todos los alumnos filtrados</label
+            >
           </div>
         </div>
         <ul class="list-group">
@@ -239,12 +238,9 @@
                 id="seleccionado-{{ alumno.id }}"
                 aria-label="Seleccionar Alumno"
               />
-              <label
-                class="form-check-label"
-                for="seleccionado-{{ alumno.id }}"
+              <label class="form-check-label" for="seleccionado-{{ alumno.id }}"
+                >Seleccionar</label
               >
-                Seleccionar
-              </label>
             </div>
           </li>
         </ul>

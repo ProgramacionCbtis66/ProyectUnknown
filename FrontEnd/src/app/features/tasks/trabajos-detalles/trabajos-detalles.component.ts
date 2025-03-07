@@ -35,7 +35,6 @@ export class TrabajosDetallesComponent implements OnInit {
   profesor_nombre: string = '';
   selectedFile: File | null = null;
   
-
   tarea: Tarea = {
     id: 0,
     titulo: '',

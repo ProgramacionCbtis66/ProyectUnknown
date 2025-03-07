@@ -2,30 +2,37 @@
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
-@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 
 @keyframes fadeIn {
   0% {
-      opacity: 0;
-      transform: translateY(0); 
+    opacity: 0;
+    transform: translateY(-20px);
   }
   100% {
-      opacity: 1;
-      transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 /* Estructura general */
 .container {
-  padding: 0;
-  margin: 0;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
   animation: fadeIn 1s ease forwards;
 }
 
 .student-list-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
+}
+
+.search {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
 .title {
@@ -38,6 +45,14 @@
 }
 
 /* Filtros */
+
+.filters-larges-container {
+  margin-block: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .filters select {
   padding: 0.5rem;
   font-size: 1rem;
@@ -55,12 +70,6 @@
   outline: none;
 }
 
-.filters.largescreen-filters {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
 .large-screen-filters {
   display: none;
   align-items: center;
@@ -69,13 +78,6 @@
 
 .large-screen-filters.show {
   display: flex;
-}
-
-.filters-larges-container {
-  margin-block: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 .small-screen-filters {
@@ -103,12 +105,92 @@
   aspect-ratio: 1;
   background-color: #2b2b2b;
   border: none;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.filter-toggle:active {
+  transform: scale(0.95);
+  animation: buttonPress 0.2s ease;
+}
+
+@keyframes buttonPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
 }
 
 .filter-toggle i {
   height: 24px;
   color: white;
   aspect-ratio: 1;
+}
+
+
+/* Tarjetas de estudiante */
+.students-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 30px;
+}
+
+.student-card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background-color: #3e3e3e;
+  color: white;
+  border-radius: 1.25rem;
+  width: 80%;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.student-card:hover {
+  transform: scale(1.05);
+}
+
+.student-info {
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+  width: 90%;
+}
+
+.student-photo {
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.info h5 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #c2c2c2;
+}
+
+.student-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2b2b2b;
+  border-radius: 0 1.25rem 1.25rem 0;
+  width: 15%;
+}
+
+.group-icon {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
 }
 
 /* Modal de filtros */
@@ -184,32 +266,6 @@
   touch-action: none;
 }
 
-/* Nueva clase para la animación de entrada */
-.modal-content-options.slide-up {
-  transform: translateY(0) !important;
-}
-
-/* Opcional: añadir una animación más suave */
-@keyframes slideUpAndBounce {
-  0% {
-    transform: translateY(100%);
-  }
-  70% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.modal-content-options.animate {
-  animation: slideUpAndBounce 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-}
-
-.modal-options.show .modal-content-options {
-  transform: translateY(0);
-}
-
 .options-list {
   display: flex;
   flex-direction: column;
@@ -250,71 +306,7 @@
 .options-dropdown.desktop-only {
   display: none; /* Oculto por defecto */
 }
-/* Tarjetas de estudiante */
-.students-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
 
-.student-card {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-  background-color: #3e3e3e;
-  color: white;
-  border-radius: 1.25rem;
-  width: 80%;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
-
-.student-card:hover {
-  transform: scale(1.05);
-}
-
-.student-info {
-  display: flex;
-  align-items: center;
-  margin: 1rem;
-  width: 90%;
-}
-
-.student-photo {
-  width: 3.75rem;
-  height: 3.75rem;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 1rem;
-}
-
-.info h5 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.info p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #c2c2c2;
-}
-
-.student-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #2b2b2b;
-  border-radius: 0 1.25rem 1.25rem 0;
-  width: 15%;
-}
-
-.group-icon {
-  font-size: 2rem;
-  font-weight: bold;
-  color: white;
-}
 
 /* Botón de turno */
 .turno-toggle {
@@ -332,8 +324,13 @@
   transition: background-color 0.3s;
   width: 50px;
   aspect-ratio: 1;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
+.turno-toggle:active {
+  transform: scale(0.95);
+  animation: buttonPress 0.2s ease;
+}
 .turno-toggle:hover {
   background-color: #404040;
 }
@@ -407,8 +404,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -416,20 +413,20 @@
   z-index: 1000;
   padding: 20px;
   box-sizing: border-box;
+  backdrop-filter: blur(5px);
+  
 }
 
 .modal-content {
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   width: 95%;
   max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
-  padding: 25px;
-  animation: fadeIn 0.3s ease-in-out;
   position: relative;
-  animation: fadeIn 1s ease forwards;
+  animation: modalFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-content::-webkit-scrollbar {
@@ -450,69 +447,95 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 24px 28px;
   padding-bottom: 15px;
   margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
   background: #fff;
   z-index: 1;
 }
 
+@keyframes modalFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.modal-content.closing {
+  animation: modalFadeOut 0.3s ease forwards;
+}
+
+@keyframes overlayFadeOut {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.modal-overlay.closing {
+  animation: overlayFadeOut 0.3s ease forwards;
+}
+
 .modal-header h2 {
   font-size: 1.5rem;
   margin: 0;
-  color: #333;
+  font-weight: 600;
+  color: #1d1d1f;
+  padding: 25px;
 }
 
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  color: #666;
-  cursor: pointer;
-  padding: 5px;
-  transition: color 0.2s;
-}
-
-.close-btn:hover {
-  color: #333;
-}
-
-/* Grid del formulario */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
-  padding: 10px 0;
+  padding: 28px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 16px;
 }
 
 .form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #1d1d1f;
   font-size: 0.9rem;
-  font-weight: 600;
-  color: #444;
 }
 
 .form-group input,
 .form-group select {
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d2d2d7;
+  border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
+  background: #f5f5f7;
 }
 
 .form-group input:focus,
 .form-group select:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  border-color: #0071e3;
   outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+  background: #fff;
+}
+
+.form-group input::placeholder {
+  color: #9f9f9f;
 }
 
 .preview-photo-small {
@@ -524,7 +547,144 @@
   border: 2px solid #ccc;
 }
 
-/* Footer del modal */
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #666;
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.3s ease;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f7;
+}
+
+.close-btn:hover {
+  background: #e5e5ea;
+  transform: rotate(90deg);
+}
+
+/* Grid del formulario */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 28px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #1d1d1f;
+  font-size: 0.9rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0071e3;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+  background: #fff;
+}
+
+
+/* Estilos para la foto de perfil */
+.form-group input[type="file"] {
+  padding: 8px;
+  border: 1px dashed #ccc;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-group input[type="file"]:hover {
+  border-color: #0071e3;
+  background-color: #f0f7ff;
+}
+
+.preview-photo-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preview-photo-small {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.preview-photo-small:hover {
+  transform: scale(1.05);
+  border-color: #0071e3;
+}
+
+.photo-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.photo-label i {
+  color: #0071e3;
+}
+
+/* Botones del modal */
+.btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #0071e3;
+  color: white;
+}
+
+.btn:active {
+  transform: scale(0.95);
+  animation: buttonPress 0.2s ease;
+}
+.btn-primary:hover {
+  background: #0077ed;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.2);
+}
+
+.btn-secondary {
+  background: #f5f5f7;
+  color: #1d1d1f;
+}
+
+.btn-secondary:hover {
+  background: #e5e5ea;
+  transform: translateY(-2px);
+}
+
+/* Modal footer */
 .modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -532,34 +692,7 @@
   margin-top: 25px;
   padding-top: 15px;
   border-top: 1px solid #eee;
-}
-
-/* Botones del modal */
-.modal-content button {
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
-  border: none;
-}
-
-.modal-content button[type="submit"] {
-  background-color: #007bff;
-  color: white;
-}
-
-.modal-content button[type="button"] {
-  background-color: #6c757d;
-  color: white;
-}
-
-.modal-content button:hover {
-  transform: translateY(-1px);
-}
-
-.search{
-  padding-inline:70px ;
+  padding: 25px;
 }
 
 /* Animaciones */
@@ -569,6 +702,15 @@
   }
   to {
     transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
   }
 }
 
@@ -583,26 +725,77 @@
   }
 }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* Animaciones para los botones */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 15px rgba(0, 113, 227, 0);
+  }
+}
+
+@keyframes modalFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+
 /* Media Queries */
 @media (max-width: 768px) {
-
-  .search{
-    padding-inline:10px ;
+  .search {
+    padding-inline: 10px;
   }
 
   .modal-overlay {
     padding: 10px;
+    align-items: flex-end;
   }
 
   .modal-content {
-    padding: 15px;
     width: 100%;
     max-height: 85vh;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
+    border-radius: 24px 24px 0 0;
   }
 
   .modal-header h2 {
@@ -616,25 +809,39 @@
   .form-group input,
   .form-group select {
     font-size: 0.9rem;
-    padding: 8px 10px;
+    padding: 10px 14px;
   }
 
   .modal-footer {
-    flex-direction: column;
-    gap: 10px;
+    display: flex;
+    flex-direction: row; /* Asegura que los botones estén en una fila */
+    justify-content: space-between; /* Distribuye el espacio entre los botones */
+    align-items: center; /* Centra verticalmente los botones */
+    gap: 10px; /* Añade un pequeño espacio entre los botones */
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 16px;
+    background: white;
+    position: sticky;
+    bottom: 0;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05); /* Opcional: añade una sombra sutil */
   }
 
-  .modal-footer button {
-    width: 100%;
-    margin: 0;
+  .btn {
+    flex: 1; /* Hace que los botones tengan el mismo ancho */
+    padding: 12px;
+    text-align: center;
+    font-size: 0.9rem; /* Ajusta el tamaño de fuente si es necesario */
   }
 
+  .btn-secondary {
+    order: -1; /* Coloca el botón secundario primero */
+  }
   .large-screen-filters {
     display: none;
   }
 
-  .container {
-    max-width: 767px;
+  .student-card {
+    width: 95%;
   }
 
   .info h5 {
@@ -645,12 +852,13 @@
     font-size: 0.7rem;
   }
 
-  .student-card {
-    width: 95%;
+  .student-photo {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
-  .small-screen-filters select {
-    margin-left: 15px;
+  .group-icon {
+    font-size: 1.5rem;
   }
 
   .student-card {
@@ -664,7 +872,7 @@
   }
 
   .options-dropdown {
-    display: none !important; /* Forzar que nunca se muestre en móvil */
+    display: none !important;
   }
 
   .student-card:hover .options-dropdown {
@@ -672,46 +880,109 @@
     opacity: 0;
   }
 
-  /* Ajustes para el modal de opciones */
   .modal-content-options {
     max-height: 50vh;
     overflow-y: auto;
   }
-}
-
-@media (max-width: 480px) {
-  .modal-overlay {
+  
+  .btn-text {
+    display: none;
+  }
+  
+  .action-btn {
+    width: 50px;
+    height: 50px;
     padding: 0;
-  }
-
-  .modal-content {
-    border-radius: 0;
-    height: 100vh;
-    max-height: 100vh;
-  }
-
-  .modal-header {
-    padding-top: 10px;
-  }
-
-  .form-group input,
-  .form-group select {
-    font-size: 16px;
+    border-radius: 50%;
   }
 }
 
 @media (min-width: 769px) {
-  .modal-filters {
-    display: none;
+  .modal-filters,
+  .modal-options {
+    display: none !important;
   }
 
   .options-dropdown.desktop-only {
-    display: flex; /* Mostrar solo en desktop */
-    opacity: 0;
-  }
-  
-  .modal-options {
-    display: none !important; /* Forzar que nunca se muestre en desktop */
+    display: flex;
   }
 }
 
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.modal-content-filters.opening,
+.modal-content-options.opening {
+  animation: slideUp 0.3s ease forwards;
+}
+
+.modal-content-filters.closing,
+.modal-content-options.closing {
+  animation: slideDown 0.3s ease forwards;
+}
+
+/* Animación de aparición desde la izquierda */
+@keyframes fadeInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Estado inicial para cada elemento filtrado */
+.large-screen-filters.show .filter-item {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: fadeInFromLeft 0.5s ease forwards;
+}
+
+/* Delays escalonados para cada elemento */
+.large-screen-filters.show .filter-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.large-screen-filters.show .filter-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.large-screen-filters.show .filter-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.large-screen-filters.show .filter-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Efecto hover: sombra suave en botones y selects */
+.filter-item button,
+.filter-item select {
+  transition: box-shadow 0.3s ease;
+}
+
+.filter-item button:hover,
+.filter-item select:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
