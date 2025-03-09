@@ -36,4 +36,7 @@ export class OptionsComponent {
     this.router.navigate(['/Main_Dashboard/alumnos-clases-registro']);
   }
 
+  goToMakeschedules() {
+    this.router.navigate(['/Main_Dashboard/alumnos-entrega-horarios']);
+  }
 }

@@ -19,6 +19,7 @@ import { ClasesComponent } from './features/classes/clases.component';
 import { OptionsComponent } from './features/dashboard/options/options.component';
 import { ClassDashboardComponent } from './features/classes/class-dashboard/class-dashboard.component';
 import { TrabajosDetallesComponent } from './features/tasks/trabajos-detalles/trabajos-detalles.component';
+import { AlumnosEntregaHorariosComponent } from './features/students/alumnos-entrega-horarios/alumnos-entrega-horarios.component';
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
@@ -35,6 +36,7 @@ const routes: Routes = [
     children: [ // Rutas hijas del Dashboard
       { path: 'alumnos-listado', component: AlumnosListadoComponent, canActivate: [PoliceGuard] },
       { path: 'alumnos-clases-registro', component: AlumnosClasesComponent, canActivate: [PoliceGuard] },
+      { path: 'alumnos-entrega-horarios', component: AlumnosEntregaHorariosComponent, canActivate: [PoliceGuard] },
       { path: 'clases-dashboard',component:ClassDashboardComponent, canActivate: [PoliceGuard]},
       { path: 'clase/:id', component: ClasesComponent},
       { path: "Profile_User", component: MyProfileUserComponent,},
