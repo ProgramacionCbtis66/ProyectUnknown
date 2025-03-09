@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskListComponent } from "./task-list/task-list.component";
 import { TaskEditorModalComponent } from "../tasks/task-editor-modal/task-editor-modal.component";
+import { ClasesService } from 'src/app/Core/service/clases.service';
 // Importa Bootstrap manualmente
 declare var bootstrap: any;
 
@@ -42,6 +43,19 @@ declare var bootstrap: any;
 
 export class ClasesComponent implements OnInit {
   isModalOpen = false;
+  clase: any; // Variable para almacenar los datos de la clase
+
+  obtenerDatosClase(id_clase: number): void {
+    this.clasesService.obtenerClase(id_clase).subscribe(
+      (data) => {
+        this.clase = data; // Asigna los datos de la clase a la variable
+        console.log('Datos de la clase:', this.clase);
+      },
+      (error) => {
+        console.error('Error al obtener los datos de la clase:', error);
+      }
+    );
+  }
 
   openModal() {
     this.isModalOpen = true;
@@ -61,7 +75,7 @@ export class ClasesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private clasesService: TrabajosService,
+    private clasesService: ClasesService,
   ) {}
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -75,6 +89,9 @@ export class ClasesComponent implements OnInit {
         }
       }
     });
+
+    this.obtenerDatosClase(1); // Llama al método para obtener los datos de la clase
+
   }
   saveAttendance() {
     const presentStudents = this.students.filter((student) => student.present);

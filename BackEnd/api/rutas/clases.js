@@ -7,6 +7,8 @@ const Clase = Router();
 // Rutas para clases y tareas
 Clase.post('/class/crearClase', clase.crearClase);
 
+Clase.get('/class/obtenerDatosClase/:id_clase', clase.obtenerDatosClase);//obtener datos de clase
+
 Clase.post('/class/agregarTarea', clase.agregarTarea);
 
 Clase.post('/class/asociarAlumnosAClase', clase.asociarAlumnosAClase);

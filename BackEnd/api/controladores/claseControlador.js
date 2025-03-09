@@ -654,6 +654,47 @@ const determineIconColor = (estado, fecha_entrega) => {
     }
 };
 
+const obtenerDatosClase = async (req, res) => {
+    const { id_clase } = req.params;
+
+    if (!id_clase) {
+        return res.status(400).json({ error: 'El campo id_clase es obligatorio.' });
+    }
+
+    const query = `
+        SELECT 
+            c.nombre_clase, 
+            CONCAT(u.nombre, ' ', u.apellido) AS profesor_nombre
+        FROM clases c
+        JOIN profesores p ON c.id_profesor = p.id_profesor
+        JOIN usuarios u ON p.id_usuario = u.id_usuario
+        WHERE c.id_clase = ?;
+    `;
+
+    const conexion = await cnx();
+
+    try {
+        // Obtener información de la clase y el profesor
+        const [claseInfo] = await conexion.execute(query, [id_clase]);
+
+        if (!claseInfo.length) {
+            return res.status(404).json({ error: 'La clase especificada no existe.' });
+        }
+
+        // Construir el JSON con la estructura solicitada
+        const resultado = {
+            nombre_clase: claseInfo[0].nombre_clase,
+            profesor: claseInfo[0].profesor_nombre
+        };
+
+        res.status(200).json(resultado);
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al obtener los datos de la clase.');
+    } finally {
+        await conexion.end();
+    }
+};
+
 export default {
     crearClase,
     agregarTarea,
@@ -668,5 +709,6 @@ export default {
     registrarAsistencia,
     calcularPorcentajeAsistencias,
     ListTareasByClaseParaProfesor,
-    ListTareasByClaseParaAlumno
+    ListTareasByClaseParaAlumno,
+    obtenerDatosClase
 };

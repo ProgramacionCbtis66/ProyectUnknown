@@ -109,6 +109,20 @@ agregarTarea(id_clase: number, titulo: string, descripcion: string, fecha_entreg
     return this.http.get(`${this.baseUrl}/class/obtenerAlumnosPorClase/${id_clase}`);
   }
 
+      // Obtener alumnos por clase
+  // Respuesta: Array de objetos con las propiedades:
+  // - id_alumno: number
+  // - numero_control: string
+  // - grupo: string
+  // - especialidad: string
+  // - turno: string
+  // - curp: string
+  // - nombre: string
+  // - apellido: string
+  obtenerClase(id_clase: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}class/obtenerDatosClase/${id_clase}`);
+  }
+
   // Registrar asistencia
   // Respuesta: Objeto con la propiedad:
   // - mensaje: string
