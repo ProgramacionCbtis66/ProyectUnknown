@@ -43,6 +43,7 @@ export class ClasesService {
     return this.http.get(`${this.baseUrl}/class/ListClasesByProfesor/${id_profesor}`);
   }
 
+  
   // Crear una nueva clase
   // Respuesta: Objeto con las propiedades:
   // - mensaje: string
@@ -129,4 +130,17 @@ agregarTarea(id_clase: number, titulo: string, descripcion: string, fecha_entreg
   registrarAsistencia(asistencia: { id_clase: number; id_alumno: number; fecha: string; estado_asistencia: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/class/registrarAsistencia`, asistencia);
   }
+
+  editarClase(clase: { 
+    id_clase: number; 
+    nombre_clase: string; 
+    id_profesor: number; 
+    modulo?: string; 
+    componente?: string 
+  }): Observable<any> {
+    return this.http.put(`${this.baseUrl}/class/editarClase/${clase.id_clase}`, clase);
+  }
+  
+  
+
 }

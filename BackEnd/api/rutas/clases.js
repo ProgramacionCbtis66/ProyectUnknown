@@ -33,6 +33,8 @@ Clase.get('/class/obtenerTareasPorClaseParaProfesor/:id_clase', clase.ListTareas
 // Nueva ruta para eliminar una clase
 Clase.delete('/class/eliminarClase/:id_clase', clase.DeleteClaseById);
 
+// Nueva ruta para editar una clase
+Clase.put('/class/editarClase/:id_clase', clase.editarClase);
 // Nueva ruta para obtener los alumnos asociados a una clase
 Clase.get('/class/obtenerAlumnosPorClase/:id_clase', clase.obtenerAlumnosPorClase);
 

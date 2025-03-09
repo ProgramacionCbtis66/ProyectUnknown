@@ -32,12 +32,19 @@
           >
             <i class="bx bx-user-plus"></i>
           </button>
-          <button class="action-btn edit">
+          <button
+            class="action-btn edit"
+            data-bs-toggle="modal"
+            data-bs-target="#editarClaseModal"
+            (click)="abrirModalEditarClase(clase)"
+          >
             <i class="bx bx-edit"></i>
           </button>
           <button
             class="action-btn delete"
-            (click)="eliminarClase(clase.id_clase)"
+            data-bs-toggle="modal"
+            data-bs-target="#confirmDeleteModal"
+            (click)="confirmarEliminacion(clase)"
           >
             <i class="bx bx-trash"></i>
           </button>
@@ -150,6 +157,159 @@
   </div>
 </div>
 
+<!-- Modal para editar clase -->
+<div
+  class="modal fade"
+  id="editarClaseModal"
+  tabindex="-1"
+  aria-labelledby="editarClaseModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Se muestra el formulario solo si claseSeleccionada existe -->
+      <div *ngIf="claseSeleccionada">
+        <form (ngSubmit)="editarClase()">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editarClaseModalLabel">Editar Clase</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Formulario para editar la clase -->
+            <div class="mb-3">
+              <label for="editarNombreClase" class="form-label"
+                >Nombre de la Clase:</label
+              >
+              <input
+                type="text"
+                id="editarNombreClase"
+                class="form-control"
+                [(ngModel)]="claseSeleccionada.nombre_clase"
+                name="editarNombreClase"
+                required
+                placeholder="Ingresa el nombre de la clase"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="editarModulo" class="form-label">Módulo:</label>
+              <input
+                type="text"
+                id="editarModulo"
+                class="form-control"
+                [(ngModel)]="claseSeleccionada.modulo"
+                name="editarModulo"
+                required
+                placeholder="Ingresa el módulo"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="editarComponente" class="form-label"
+                >Componente:</label
+              >
+              <select
+                id="editarComponente"
+                class="form-select"
+                [(ngModel)]="claseSeleccionada.componente"
+                name="editarComponente"
+                required
+              >
+                <option value="" selected disabled>
+                  Selecciona un componente
+                </option>
+                <option value="laboral">Laboral</option>
+                <option value="basico">Básico</option>
+                <option value="socioemocional">Socioemocional</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editarProfesor" class="form-label">Profesor:</label>
+              <select
+                id="editarProfesor"
+                class="form-select"
+                [(ngModel)]="claseSeleccionada.id_profesor"
+                name="editarProfesor"
+                required
+              >
+                <option value="" selected>Selecciona un profesor</option>
+                <option
+                  *ngFor="let profesor of profesores"
+                  [value]="profesor.id_profesor"
+                >
+                  {{ profesor.nombre_completo }}
+                </option>
+                <option *ngIf="profesores.length === 0" disabled>
+                  No hay profesores disponibles
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Guardar Cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para confirmar eliminación -->
+<div
+  class="modal fade"
+  id="confirmDeleteModal"
+  tabindex="-1"
+  aria-labelledby="confirmDeleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">
+          Confirmar Eliminación
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          ¿Está seguro de que desea eliminar la clase
+          <strong>{{ claseSeleccionada?.nombre_clase }}</strong
+          >?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="eliminarClaseConfirmada()"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal para agregar alumnos -->
 <div
   class="modal fade"
@@ -218,9 +378,9 @@
               [checked]="areAllSelected()"
               (change)="toggleSelectAll($event)"
             />
-            <label class="form-check-label" for="selectAll"
-              >Seleccionar todos los alumnos filtrados</label
-            >
+            <label class="form-check-label" for="selectAll">
+              Seleccionar todos los alumnos filtrados
+            </label>
           </div>
         </div>
         <ul class="list-group">
@@ -238,9 +398,12 @@
                 id="seleccionado-{{ alumno.id }}"
                 aria-label="Seleccionar Alumno"
               />
-              <label class="form-check-label" for="seleccionado-{{ alumno.id }}"
-                >Seleccionar</label
+              <label
+                class="form-check-label"
+                for="seleccionado-{{ alumno.id }}"
               >
+                Seleccionar
+              </label>
             </div>
           </li>
         </ul>

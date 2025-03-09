@@ -78,16 +78,34 @@ export class AlumnosEntregaHorariosComponent {
   applyFilters(): void {
     // Filtramos los usuarios según los filtros seleccionados
     const filteredUsuarios = this.usuarios.filter((usuario) => this.matchesSelectedFilters(usuario));
-    this.gruposDisplay = Array.from(
+
+    // Creamos el arreglo de grupos concatenando semestre y grupo, por ejemplo "1A"
+    let grupos = Array.from(
       new Set(
-        filteredUsuarios.map((u) => {
-          const s = u.detalles?.semestre;
-          const g = u.detalles?.grupo;
-          return s && g ? `${s}${g}` : '';
-        })
-        .filter((val) => val !== '')
+        filteredUsuarios
+          .map((u) => {
+            const s = u.detalles?.semestre;
+            const g = u.detalles?.grupo;
+            return s && g ? `${s}${g}` : '';
+          })
+          .filter((val) => val !== '')
       )
     );
+
+    // Ordenamos primero por el valor numérico (semestre) y luego alfabéticamente (grupo)
+    grupos.sort((a, b) => {
+      const numA = parseInt(a, 10);
+      const numB = parseInt(b, 10);
+      if (numA !== numB) {
+        return numA - numB;
+      }
+      // Extraemos la parte alfabética; asumimos que puede tener más de un carácter
+      const letterA = a.substring(numA.toString().length);
+      const letterB = b.substring(numB.toString().length);
+      return letterA.localeCompare(letterB);
+    });
+
+    this.gruposDisplay = grupos;
   }
 
   private matchesSelectedFilters(usuario: Usuario): boolean {
@@ -112,11 +130,11 @@ export class AlumnosEntregaHorariosComponent {
 
   onUpload(grupo: string): void {
     console.log('Acción de subir para el grupo:', grupo);
-    // Lógica de subir
+    // Implementa la lógica de subir
   }
 
   onEdit(grupo: string): void {
     console.log('Acción de editar para el grupo:', grupo);
-    // Lógica de edición
+    // Implementa la lógica de edición
   }
 }

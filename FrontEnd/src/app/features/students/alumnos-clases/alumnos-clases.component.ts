@@ -4,29 +4,32 @@ import Notiflix from 'notiflix';
 import { ClasesService } from 'src/app/Core/service/clases.service';
 import { UsuarioService } from 'src/app/Core/service/usuario.service';
 
-  // Interfaces definidas dentro del mismo archivo
-  interface Clase {
-    id_clase: number;
-    nombre_clase: string;
-    profesor_nombre: string;
-    id_profesor: number;
-  }
+// Interfaces definidas dentro del mismo archivo
+interface Clase {
+  id_clase: number;
+  nombre_clase: string;
+  profesor_nombre: string;
+  id_profesor: number;
+  // Puedes incluir otros campos si es necesario, por ejemplo, "modulo" o "componente"
+  modulo?: string;
+  componente?: string;
+}
 
-  interface Profesor {
-    id_profesor: number;
-    nombre_completo: string;
-  }
+interface Profesor {
+  id_profesor: number;
+  nombre_completo: string;
+}
 
-  interface Alumno {
-    detalles?:{}
-    id: number;
-    nombre: string;
-    grupo: string;
-    semestre: number;
-    seleccionado?: boolean;
-  }
+interface Alumno {
+  detalles?: {};
+  id: number;
+  nombre: string;
+  grupo: string;
+  semestre: number;
+  seleccionado?: boolean;
+}
 
-  interface GetUsuario {
+interface GetUsuario {
   id: number;
   id_profesor: number;
   detalles: any;
@@ -56,6 +59,10 @@ export class AlumnosClasesComponent implements OnInit {
   idProfesor: number | null = null;
   modulo: string = '';
   componente: string = '';
+
+  // Variable para almacenar la clase seleccionada (para editar o eliminar)
+  claseSeleccionada: Clase | null = null;
+
   // Variables para manejar los alumnos
   usuarios: Alumno[] = [];
   filteredUsuarios: Alumno[] = [];
@@ -87,7 +94,8 @@ export class AlumnosClasesComponent implements OnInit {
     console.log('Profesor seleccionado ID:', this.idProfesor);
   }
 
-  // Métodos para manejar clases
+  // MÉTODOS PARA MANEJAR CLASES
+
   cargarClases(): void {
     const clasesSub = this.clasesService.obtenerClases().subscribe({
       next: (data: Clase[]) => {
@@ -103,18 +111,21 @@ export class AlumnosClasesComponent implements OnInit {
 
   crearClase(): void {
     if (!this.nombreClase.trim() || this.idProfesor === null) {
-      Notiflix.Notify.failure('Porfavor Completa los campos');
+      Notiflix.Notify.failure('Por favor, completa los campos');
       return;
     }
 
     const nuevaClase: any = {
       nombre_clase: this.nombreClase.trim(),
       id_profesor: this.idProfesor,
+      // Si deseas enviar módulo y componente, agrégalos:
+      modulo: this.modulo.trim(),
+      componente: this.componente
     };
 
     this.clasesService.crearClase(nuevaClase).subscribe({
       next: () => {
-        Notiflix.Notify.success('Clase creada con exito');
+        Notiflix.Notify.success('Clase creada con éxito');
         this.resetCrearClaseForm();
         this.cargarClases();
       },
@@ -125,82 +136,116 @@ export class AlumnosClasesComponent implements OnInit {
     });
   }
 
-  eliminarClase(idClase: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar esta clase?')) {
-      this.clasesService.eliminarClase(idClase).subscribe({
-        next: () => {
-          Notiflix.Notify.failure('Clase eliminada');
-
-          this.cargarClases();
-        },
-        error: (err) => {
-          console.error('Error al eliminar clase:', err);
-          Notiflix.Notify.failure('Ocurrio un error al eliminar la clase');
-        },
-      });
-    }
+  /**
+   * Método para abrir el modal de edición. Se asigna una copia de la clase para evitar
+   * modificar directamente la lista hasta confirmar los cambios.
+   */
+  abrirModalEditarClase(clase: Clase): void {
+    this.claseSeleccionada = { ...clase };
   }
 
-  // Métodos para manejar profesores y alumnos
+  /**
+   * Método que se ejecuta al enviar el formulario de edición.
+   */
+  editarClase(): void {
+    if (!this.claseSeleccionada) {
+      return;
+    }
+    this.clasesService.editarClase(this.claseSeleccionada).subscribe({
+      next: () => {
+        Notiflix.Notify.success('Clase actualizada con éxito');
+        this.cargarClases();  // Recarga la lista de clases
+        this.claseSeleccionada = null; // Limpia la variable
+      },
+      error: (err) => {
+        console.error('Error al editar la clase:', err);
+        Notiflix.Notify.failure('Ocurrió un error al actualizar la clase');
+      },
+    });
+  }
+  
+  
+
+  /**
+   * Método para preparar la eliminación de una clase.
+   * Se asigna la clase seleccionada para que el modal de confirmación muestre sus datos.
+   */
+  confirmarEliminacion(clase: Clase): void {
+    this.claseSeleccionada = clase;
+    // El modal se abre automáticamente mediante el atributo data-bs-target en el HTML.
+  }
+
+  /**
+   * Método que se ejecuta al confirmar la eliminación en el modal.
+   */
+  eliminarClaseConfirmada(): void {
+    if (!this.claseSeleccionada) {
+      return;
+    }
+
+    console.log('Eliminando clase:', this.claseSeleccionada);
+    this.clasesService.eliminarClase(this.claseSeleccionada.id_clase).subscribe({
+      next: () => {
+        Notiflix.Notify.failure('Clase eliminada');
+        this.cargarClases();
+        // Opcional: limpiar la variable claseSeleccionada.
+        this.claseSeleccionada = null;
+      },
+      error: (err) => {
+        console.error('Error al eliminar clase:', err);
+        Notiflix.Notify.failure('Ocurrió un error al eliminar la clase');
+      },
+    });
+  }
+
+  // MÉTODOS PARA MANEJAR PROFESORES Y ALUMNOS
+
   cargarProfesores(): void {
     const profesoresSub = this.usuarioService.getProfesores().subscribe({
-      next: (data: GetUsuario[]) => { // Usar la interfaz correcta
-        console.log('Datos originales de profesores:', data); // Para depuración
-  
+      next: (data: GetUsuario[]) => {
+        console.log('Datos originales de profesores:', data);
         this.profesores = data
-          .filter((profesor) => profesor.detalles?.id_profesor) // Filtrar directamente
+          .filter((profesor) => profesor.detalles?.id_profesor)
           .map((profesor) => ({
-            id_profesor: profesor.detalles?.id_profesor, // Acceder directamente
+            id_profesor: profesor.detalles?.id_profesor,
             nombre_completo: `${profesor.nombre} ${profesor.apellido}`,
           }));
-  
-        console.log('Profesores mapeados:', this.profesores); // Para depuración
+        console.log('Profesores mapeados:', this.profesores);
       },
       error: (err) => {
         console.error('Error al cargar los profesores:', err);
-        Notiflix.Notify.failure('CNo se pudieron cargar los profesores. Intenta nuevamente más tarde.');
-
+        Notiflix.Notify.failure('No se pudieron cargar los profesores. Intenta nuevamente más tarde.');
       },
     });
     this.subscriptions.add(profesoresSub);
   }
-  
+
   cargarAlumnos(): void {
     const alumnosSub = this.usuarioService.getAlumnos().subscribe({
-      next: (data: GetUsuario[]) => { // Asegúrate de usar la interfaz correcta
-        console.log('Datos originales de alumnos:', data); // Para depuración
-  
+      next: (data: GetUsuario[]) => {
+        console.log('Datos originales de alumnos:', data);
         this.usuarios = data
-          .filter((alumno) => alumno.detalles?.id_alumno) // Filtrar alumnos que tengan el ID válido
+          .filter((alumno) => alumno.detalles?.id_alumno)
           .map((alumno) => ({
-            id: alumno.detalles.id_alumno, // Asignar al campo 'id' del Alumno
+            id: alumno.detalles.id_alumno,
             nombre: `${alumno.nombre} ${alumno.apellido}`,
             grupo: alumno.detalles.grupo,
             semestre: alumno.detalles.semestre,
-            // Añade otros campos relevantes según tu interfaz
           }));
-  
-        this.filteredUsuarios = [...this.usuarios]; // Inicializar filteredUsuarios con los alumnos filtrados
-  
-        // Obtener valores únicos para grupos y semestres
+        this.filteredUsuarios = [...this.usuarios];
         this.grupos = [...new Set(this.usuarios.map(u => u.grupo))].sort();
         this.semestres = [...new Set(this.usuarios.map(u => u.semestre))].sort((a, b) => a - b);
-  
-        console.log('Alumnos mapeados:', this.usuarios); // Para depuración
+        console.log('Alumnos mapeados:', this.usuarios);
         console.log('Grupos únicos:', this.grupos);
         console.log('Semestres únicos:', this.semestres);
       },
       error: (err) => {
         console.error('Error al cargar los alumnos:', err);
         Notiflix.Notify.failure('No se pudieron cargar los alumnos. Intenta nuevamente más tarde.');
-
       },
     });
-  
     this.subscriptions.add(alumnosSub);
   }
-  
-  
 
   abrirModalAgregarAlumnos(idClase: number): void {
     this.idClaseSeleccionada = idClase;
@@ -210,7 +255,7 @@ export class AlumnosClasesComponent implements OnInit {
   filtrarAlumnos(): void {
     this.filteredUsuarios = this.usuarios.filter((u) => {
       const coincideGrupo = this.filtroGrupo ? u.grupo === this.filtroGrupo : true;
-      const coincideSemestre = this.filtroSemestre ? u.semestre == this.filtroSemestre : true;
+      const coincideSemestre = this.filtroSemestre ? u.semestre === this.filtroSemestre : true;
       return coincideGrupo && coincideSemestre;
     });
 
@@ -223,7 +268,7 @@ export class AlumnosClasesComponent implements OnInit {
   }
 
   areAllSelected(): boolean {
-    return this.filteredUsuarios.length > 0 && 
+    return this.filteredUsuarios.length > 0 &&
            this.filteredUsuarios.every(alumno => alumno.seleccionado);
   }
 
@@ -248,27 +293,27 @@ export class AlumnosClasesComponent implements OnInit {
       alert('No has seleccionado ningún alumno.');
       return;
     }
+
     console.log(idsSeleccionados, this.idClaseSeleccionada);
-    this.clasesService
-      .asociarAlumnosAClase(this.idClaseSeleccionada, idsSeleccionados)
-      .subscribe({
-        next: () => {
-          Notiflix.Notify.success('Alumnos agregados correctamente.');
-
-          // Opcional: Actualizar la lista de clases o realizar otra acción
-        },
-        error: (err) => {
-          console.error('Error al agregar alumnos:', err);
-          Notiflix.Notify.failure('Ocurrió un error al agregar los alumnos.');
-
-        },
-      });
+    this.clasesService.asociarAlumnosAClase(this.idClaseSeleccionada, idsSeleccionados).subscribe({
+      next: () => {
+        Notiflix.Notify.success('Alumnos agregados correctamente.');
+        // Opcional: Actualizar la lista de clases o realizar otra acción
+      },
+      error: (err) => {
+        console.error('Error al agregar alumnos:', err);
+        Notiflix.Notify.failure('Ocurrió un error al agregar los alumnos.');
+      },
+    });
   }
 
-  // Métodos auxiliares
+  // MÉTODOS AUXILIARES
+
   private resetCrearClaseForm(): void {
     this.nombreClase = '';
     this.idProfesor = null;
+    this.modulo = '';
+    this.componente = '';
     // Opcional: Cerrar el modal programáticamente si lo deseas
   }
 
