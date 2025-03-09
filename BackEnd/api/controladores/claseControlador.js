@@ -525,6 +525,55 @@ const calcularPorcentajeAsistencias = async (req, res) => {
     }
 };
 
+// Actualizar una clase
+const editarClase = async (req, res) => {
+    // 1. Tomar el id_clase de los parámetros de la ruta
+    const { id_clase } = req.params;
+  
+    // 2. Tomar los datos de la clase del cuerpo (body) de la petición
+    const { nombre_clase, id_profesor, modulo, componente } = req.body;
+  
+    // 3. Validar campos requeridos
+    if (!nombre_clase || !id_profesor) {
+      return res.status(400).json({ error: 'Los campos nombre_clase e id_profesor son obligatorios.' });
+    }
+  
+    // 4. Preparar la consulta de actualización
+    const query = `
+      UPDATE clases
+      SET nombre_clase = ?, 
+          id_profesor = ?, 
+          modulo = ?, 
+          componente = ?
+      WHERE id_clase = ?
+    `;
+  
+    const conexion = await cnx();
+  
+    try {
+      // 5. Ejecutar la consulta
+      const [result] = await conexion.execute(query, [
+        nombre_clase,
+        id_profesor,
+        modulo || null,
+        componente || null,
+        id_clase
+      ]);
+  
+      // 6. Verificar si se actualizó alguna fila
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: 'No se encontró la clase con ese ID.' });
+      }
+  
+      res.status(200).json({ mensaje: 'Clase actualizada correctamente.' });
+    } catch (error) {
+      handleDatabaseError(error, res, 'Error al actualizar la clase.');
+    } finally {
+      await conexion.end();
+    }
+  };
+
+  
 // Listar tareas por clase para alumno
 const ListTareasByClaseParaAlumno = async (req, res) => {
     const { id_clase, id_alumno } = req.params;
@@ -668,5 +717,6 @@ export default {
     registrarAsistencia,
     calcularPorcentajeAsistencias,
     ListTareasByClaseParaProfesor,
-    ListTareasByClaseParaAlumno
+    ListTareasByClaseParaAlumno,
+    editarClase,
 };
