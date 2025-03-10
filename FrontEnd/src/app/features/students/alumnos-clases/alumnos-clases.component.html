@@ -158,33 +158,19 @@
 </div>
 
 <!-- Modal para editar clase -->
-<div
-  class="modal fade"
-  id="editarClaseModal"
-  tabindex="-1"
-  aria-labelledby="editarClaseModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="editarClaseModal" tabindex="-1" aria-labelledby="editarClaseModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <!-- Se muestra el formulario solo si claseSeleccionada existe -->
       <div *ngIf="claseSeleccionada">
         <form (ngSubmit)="editarClase()">
           <div class="modal-header">
             <h5 class="modal-title" id="editarClaseModalLabel">Editar Clase</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Cerrar"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
           <div class="modal-body">
             <!-- Formulario para editar la clase -->
             <div class="mb-3">
-              <label for="editarNombreClase" class="form-label"
-                >Nombre de la Clase:</label
-              >
+              <label for="editarNombreClase" class="form-label">Nombre de la Clase:</label>
               <input
                 type="text"
                 id="editarNombreClase"
@@ -208,9 +194,7 @@
               />
             </div>
             <div class="mb-3">
-              <label for="editarComponente" class="form-label"
-                >Componente:</label
-              >
+              <label for="editarComponente" class="form-label">Componente:</label>
               <select
                 id="editarComponente"
                 class="form-select"
@@ -218,9 +202,7 @@
                 name="editarComponente"
                 required
               >
-                <option value="" selected disabled>
-                  Selecciona un componente
-                </option>
+                <option value="" selected disabled>Selecciona un componente</option>
                 <option value="laboral">Laboral</option>
                 <option value="basico">Básico</option>
                 <option value="socioemocional">Socioemocional</option>
@@ -236,29 +218,16 @@
                 required
               >
                 <option value="" selected>Selecciona un profesor</option>
-                <option
-                  *ngFor="let profesor of profesores"
-                  [value]="profesor.id_profesor"
-                >
+                <option *ngFor="let profesor of profesores" [value]="profesor.id_profesor">
                   {{ profesor.nombre_completo }}
                 </option>
-                <option *ngIf="profesores.length === 0" disabled>
-                  No hay profesores disponibles
-                </option>
+                <option *ngIf="profesores.length === 0" disabled>No hay profesores disponibles</option>
               </select>
             </div>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button type="submit" class="btn btn-primary">
-              Guardar Cambios
-            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" >Guardar Cambios</button>
           </div>
         </form>
       </div>

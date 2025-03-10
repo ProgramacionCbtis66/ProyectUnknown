@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import Notiflix from 'notiflix';
 import { ClasesService } from 'src/app/Core/service/clases.service';
 import { UsuarioService } from 'src/app/Core/service/usuario.service';
+import * as bootstrap from 'bootstrap';
 
 // Interfaces definidas dentro del mismo archivo
 interface Clase {
@@ -100,6 +101,7 @@ export class AlumnosClasesComponent implements OnInit {
     const clasesSub = this.clasesService.obtenerClases().subscribe({
       next: (data: Clase[]) => {
         this.clases = data;
+        console.log(this.clases);
       },
       error: (err) => {
         console.error('Error al cargar las clases:', err);
@@ -151,14 +153,33 @@ export class AlumnosClasesComponent implements OnInit {
     if (!this.claseSeleccionada) {
       return;
     }
+  
+    // Verifica que los campos obligatorios estén presentes
+    if (
+      !this.claseSeleccionada.nombre_clase ||
+      !this.claseSeleccionada.id_profesor
+    ) {
+      Notiflix.Notify.failure('Por favor, completa todos los campos obligatorios.');
+      return;
+    }
+  
+    // Llama al servicio para editar la clase
     this.clasesService.editarClase(this.claseSeleccionada).subscribe({
       next: () => {
         Notiflix.Notify.success('Clase actualizada con éxito');
-        this.cargarClases();  // Recarga la lista de clases
+        this.cargarClases(); // Recarga la lista de clases
         this.claseSeleccionada = null; // Limpia la variable
+        // Cierra el modal programáticamente
+        const modal = document.getElementById('editarClaseModal');
+        if (modal) {
+          const bootstrapModal = bootstrap.Modal.getInstance(modal);
+          if (bootstrapModal) {
+            bootstrapModal.hide();
+          }
+        }
       },
-      error: (err) => {
-        console.error('Error al editar la clase:', err);
+      error: (error) => {
+        console.error('Error al editar la clase:', error);
         Notiflix.Notify.failure('Ocurrió un error al actualizar la clase');
       },
     });
