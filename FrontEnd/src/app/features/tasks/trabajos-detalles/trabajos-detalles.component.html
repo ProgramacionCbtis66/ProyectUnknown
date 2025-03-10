@@ -3,12 +3,12 @@
   <!-- Banner de la tarea -->
   <div class="task-banner">
     <div class="banner-content">
-      <h1>{{ tarea.titulo }}</h1>
+      <h1>{{ tarea?.titulo }}</h1>
       <div class="task-meta">
-        <p class="teacher"></p>
-        <p class="points">{{ tarea.puntos }} puntos</p>
+        <p class="teacher">{{ tarea?.profesor_nombre }}</p>
+        <p class="points">{{ tarea?.puntos || 0 }} puntos</p>
         <p class="due-date">
-          Fecha límite: {{ tarea.fechaEntrega | date : "dd MMM, h:mm a" }}
+          Fecha límite: {{ tarea?.fecha_entrega | date : "dd MMM, h:mm a" }}
         </p>
       </div>
     </div>
@@ -20,36 +20,35 @@
       <div class="task-details">
         <div class="description">
           <h2>Instrucciones</h2>
-          <p>{{ tarea.descripcion }}</p>
+          <p>{{ tarea?.descripcion }}</p>
         </div>
 
         <div class="submission-section">
           <h3>Tu entrega</h3>
           <!-- Si no hay entrega -->
-           <label for="">id tarea</label>{{tarea.id_tarea}}
-          <app-entregar-tarea [id_tarea]="tarea.id_tarea"></app-entregar-tarea>
+          <label for="">ID Tarea:</label> {{ tarea?.id_tarea }}
+
+          <app-entregar-tarea [id_tarea]="id_tarea" *ngIf="tarea.estado != 'Entregado'"></app-entregar-tarea>
 
           <!-- Si ya hay entrega -->
-          <div class="current-submission" *ngIf="entregaActual">
+          <div class="current-submission" *ngIf="tarea.estado == 'Entregado'">
             <div class="file-info">
               <i class="bx bx-file"></i>
-              <p>{{ entregaActual.nombreArchivo }}</p>
+              <p></p>
               <span class="submission-date">
                 Entregado el
-                {{ entregaActual.fechaEntrega | date : "dd MMM, h:mm a" }}
+                 date : "dd MMM, h:mm a" 
               </span>
             </div>
             <div class="actions">
               <button
                 class="action-btn view"
-                (click)="descargarArchivo(entregaActual.id)"
               >
                 <i class="bx bx-download"></i>
                 Descargar
               </button>
               <button
                 class="action-btn delete"
-                (click)="eliminarEntrega(entregaActual.id)"
               >
                 <i class="bx bx-trash"></i>
                 Eliminar
@@ -96,9 +95,9 @@
                   type="number"
                   [value]="entrega.calificacion"
                   (change)="calificarEntrega(entrega.id, $event)"
-                  max="{{ tarea.puntos }}"
+                  max="{{ tarea?.puntos }}"
                 />
-                <span>/{{ tarea.puntos }}</span>
+                <span>/{{ tarea?.puntos }}</span>
               </div>
             </div>
           </div>

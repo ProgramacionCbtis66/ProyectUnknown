@@ -11,8 +11,9 @@ interface Clase {
   id_clase: number; // Asegúrate de que existe un ID para cada clase
   nombre_clase: string;
   profesor_nombre: string;
-  tareas: any[]; // Define una interfaz más específica si es posible
+  tareas_pendientes: number; // Define una interfaz más específica si es posible
 }
+
 
 @Component({
   selector: 'app-class-dashboard',
@@ -52,6 +53,7 @@ export class ClassDashboardComponent implements OnInit {
       this.clasesService.obtenerClasesPorAlumno(this.idAlumno).subscribe({
         next: (data: Clase[]) => {
           this.clases = data;
+          console.log(this.clases);
         },
         error: (error) => {
           console.error('Error al cargar las clases con tareas:', error);

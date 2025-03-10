@@ -121,7 +121,7 @@ agregarTarea(id_clase: number, titulo: string, descripcion: string, fecha_entreg
   // - nombre: string
   // - apellido: string
   obtenerClase(id_clase: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}class/obtenerDatosClase/${id_clase}`);
+    return this.http.get(`${this.baseUrl}/class/obtenerDatosClase/${id_clase}`);
   }
 
   // Registrar asistencia
@@ -141,6 +141,17 @@ agregarTarea(id_clase: number, titulo: string, descripcion: string, fecha_entreg
     return this.http.put(`${this.baseUrl}/class/editarClase/${clase.id_clase}`, clase);
   }
   
-  
+  entregarTarea(id_tarea: number, id_alumno: number, archivo: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('id_tarea', id_tarea.toString());
+    formData.append('id_alumno', id_alumno.toString());
+    formData.append('archivo', archivo);
+
+    return this.http.post(`${this.baseUrl}/file/entregar-tarea`, formData);
+  }
+
+  obtenerTareaAlumno(id_tarea: number, id_alumno: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/class/obtenerTarea/${id_tarea}/${id_alumno}`);
+  }
 
 }

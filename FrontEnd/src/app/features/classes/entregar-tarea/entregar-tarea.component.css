@@ -21,4 +21,51 @@
     padding: 10px;
     font-size: 16px;
   }
-  
+/* Estilo para el botón de eliminar */
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo para el indicador de éxito */
+.upload-success {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #28a745; /* Verde */
+  font-weight: 500;
+}
+
+/* Estilo para la barra de progreso cuando está completa */
+.progress-bar.complete {
+  background-color: #28a745; /* Verde */
+}
+
+/* Animación para resaltar el área de carga */
+.upload-box.drag-over {
+  background-color: rgba(0, 123, 255, 0.1); /* Fondo azul claro */
+  border: 2px dashed #007bff; /* Borde azul punteado */
+  animation: pulse-border 1.5s infinite; /* Animación de borde pulsante */
+}
+
+/* Definición de la animación de borde pulsante */
+@keyframes pulse-border {
+  0% {
+    border-color: #007bff; /* Azul */
+  }
+  50% {
+    border-color: rgba(0, 123, 255, 0.5); /* Azul semi-transparente */
+  }
+  100% {
+    border-color: #007bff; /* Azul */
+  }
+}

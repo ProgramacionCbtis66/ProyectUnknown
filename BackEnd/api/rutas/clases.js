@@ -9,6 +9,8 @@ Clase.post('/class/crearClase', clase.crearClase);
 
 Clase.get('/class/obtenerDatosClase/:id_clase', clase.obtenerDatosClase);//obtener datos de clase
 
+Clase.get('/class/obtenerTarea/:id_tarea/:id_alumno', clase.obtenerTareaAlumno);//obtener datos de clase
+
 Clase.post('/class/agregarTarea', clase.agregarTarea);
 
 Clase.post('/class/asociarAlumnosAClase', clase.asociarAlumnosAClase);

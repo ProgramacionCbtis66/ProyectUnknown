@@ -121,6 +121,49 @@ const agregarTarea = async (req, res) => {
     }
 };
 
+const obtenerTareaAlumno = async (req, res) => {
+    const { id_tarea, id_alumno } = req.params; // Obtener el ID de la tarea y el ID del alumno desde los parámetros de la URL
+
+    if (!id_tarea || !id_alumno) {
+        return res.status(400).json({ error: 'El ID de la tarea y el ID del alumno son obligatorios.' });
+    }
+
+    const queries = {
+        getTarea: `SELECT * FROM tareas WHERE id_tarea = ?`,
+        getAlumnoTarea: `SELECT ta.estado, ta.calificacion, ta.fecha_entrega, ta.comentarios
+                         FROM tareas_alumnos ta
+                         WHERE ta.id_tarea = ? AND ta.id_alumno = ?`
+    };
+
+    const conexion = await cnx();
+
+    try {
+        // Obtener los datos de la tarea
+        const [tarea] = await conexion.execute(queries.getTarea, [id_tarea]);
+        if (tarea.length === 0) {
+            return res.status(404).json({ error: 'La tarea especificada no existe.' });
+        }
+
+        // Obtener los datos del alumno en la tarea
+        const [alumnoTarea] = await conexion.execute(queries.getAlumnoTarea, [id_tarea, id_alumno]);
+        if (alumnoTarea.length === 0) {
+            return res.status(404).json({ error: 'El alumno no está asociado a esta tarea.' });
+        }
+
+        // Combinar los datos de la tarea y el alumno
+        const tareaAlumno = {
+            ...tarea[0], // Datos de la tarea
+            ...alumnoTarea[0] // Datos del alumno en la tarea
+        };
+
+        res.status(200).json(tareaAlumno);
+    } catch (error) {
+        handleDatabaseError(error, res, 'Error al obtener los datos de la tarea.');
+    } finally {
+        await conexion.end();
+    }
+};
+
 // Obtener tareas pendientes de un alumno
 const obtenerTareasPendientes = async (req, res) => {
     const { id_alumno } = req.params;
@@ -264,7 +307,6 @@ const ListClases = async (req, res) => {
     }
 };
 
-// Listar clases por alumno
 const ListClasesByAlumno = async (req, res) => {
     const { id_alumno } = req.params;
 
@@ -277,12 +319,17 @@ const ListClasesByAlumno = async (req, res) => {
             c.id_clase, 
             c.nombre_clase, 
             p.id_profesor, 
-            CONCAT(u.nombre, ' ', u.apellido) AS profesor_nombre
+            CONCAT(u.nombre, ' ', u.apellido) AS profesor_nombre,
+            COUNT(t.id_tarea) AS total_tareas,
+            COUNT(CASE WHEN ta.estado = 'Pendiente' THEN 1 END) AS tareas_pendientes
         FROM alumnos_clases ac
         JOIN clases c ON ac.id_clase = c.id_clase
         JOIN profesores p ON c.id_profesor = p.id_profesor
         JOIN usuarios u ON p.id_usuario = u.id_usuario
+        LEFT JOIN tareas t ON c.id_clase = t.id_clase
+        LEFT JOIN tareas_alumnos ta ON t.id_tarea = ta.id_tarea AND ta.id_alumno = ac.id_alumno
         WHERE ac.id_alumno = ?
+        GROUP BY c.id_clase, c.nombre_clase, p.id_profesor, u.nombre, u.apellido
     `;
 
     const conexion = await cnx();
@@ -706,8 +753,9 @@ const determineIconColor = (estado, fecha_entrega) => {
 const obtenerDatosClase = async (req, res) => {
     const { id_clase } = req.params;
 
-    if (!id_clase) {
-        return res.status(400).json({ error: 'El campo id_clase es obligatorio.' });
+    // Validar que id_clase sea un número válido
+    if (!id_clase || isNaN(id_clase)) {
+        return res.status(400).json({ error: 'El campo id_clase es obligatorio y debe ser un número válido.' });
     }
 
     const query = `
@@ -761,4 +809,5 @@ export default {
     ListTareasByClaseParaAlumno,
     obtenerDatosClase,
     editarClase,
+    obtenerTareaAlumno
 };

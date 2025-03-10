@@ -18,44 +18,17 @@
           </p>
         </div>
 
-        <div class="tasks-section">
-          <h4>Tareas</h4>
-          <div
-            class="tasks-container"
-            *ngIf="clase.tareas.length; else noTareas"
-          >
-            <div
-              class="task-item"
-              *ngFor="let tarea of clase.tareas; let i = index"
-            >
-              <div
-                class="task-header"
-                (click)="toggleDescripcion(clase.id_clase, i)"
-              >
-                <h5>{{ tarea.titulo }}</h5>
-                <div class="task-dates">
-                  <span class="date">
-                    <i class="fi fi-ss-calendar asignacion"></i>
-                    {{ tarea.fecha_asignacion | date : "dd/MM/yyyy" }}
-                  </span>
-                  <span class="date">
-                    <i class="fi fi-ss-calendar entrega"></i>
-                    {{ tarea.fecha_entrega | date : "dd/MM/yyyy" }}
-                  </span>
-                </div>
-              </div>
-              <p
-                class="task-description"
-                *ngIf="isDescripcionVisible(clase.id_clase, i)"
-              >
-                {{ tarea.descripcion }}
-              </p>
-            </div>
-          </div>
-          <ng-template #noTareas>
-            <p class="no-tasks">No hay tareas asignadas a esta clase.</p>
-          </ng-template>
-        </div>
+<div class="tasks-section">
+  <h4>Tareas</h4>
+  <div *ngIf="clase.tareas_pendientes > 0; else noTareas">
+    <p class="tasks-count">
+      Tienes <strong>{{ clase.tareas_pendientes }}</strong> tarea(s) pendiente(s) en esta clase.
+    </p>
+  </div>
+  <ng-template #noTareas>
+    <p class="no-tasks">No hay tareas pendientes en esta clase.</p>
+  </ng-template>
+</div>
       </div>
     </div>
   </div>

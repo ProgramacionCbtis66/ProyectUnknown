@@ -2,16 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrabajosService } from 'src/app/Core/service/trabajos.service.service';
 import { SesionService } from 'src/app/Core/service/sesion.service';
-
-interface Tarea {
-id_tarea: any;
-  id: number;
-  titulo: string;
-  descripcion: string;
-  puntos: number;
-  fechaEntrega: Date;
-  
-}
+import Notiflix from 'notiflix';
+import { ClasesService } from 'src/app/Core/service/clases.service';
 
 interface Entrega {
   id: number;
@@ -35,27 +27,23 @@ export class TrabajosDetallesComponent implements OnInit {
   profesor_nombre: string = '';
   selectedFile: File | null = null;
   
-  tarea: Tarea = {
-    id: 0,
-    titulo: '',
-    descripcion: '',
-    puntos: 0,
-    fechaEntrega: new Date(),
-    id_tarea: 0
-  };
+  tarea: any = null;
+  id_tarea: number = 0;
 
   // Propiedades para las entregas
   entregas: Entrega[] = [];
   entregaActual: Entrega | null = null;
   totalAlumnos: number = 0;
   esProfesor: boolean = false;
+  
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
     private trabajosService: TrabajosService,
-    protected sessionService: SesionService
+    protected sessionService: SesionService,
+    private clasesService: ClasesService
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +53,9 @@ export class TrabajosDetallesComponent implements OnInit {
     this.route.params.subscribe(params => {
        const idTarea = +params['id'];
       if (idTarea) {
-        this.cargarTarea(idTarea);
+        this.id_tarea =idTarea;
+        console.log(idTarea);
+        this.obtenerDetalleTarea()
         if (this.esProfesor) {
         } else {
         }
@@ -189,5 +179,18 @@ export class TrabajosDetallesComponent implements OnInit {
         }
       });
     }
+  }
+
+  obtenerDetalleTarea(): void {
+    this.clasesService.obtenerTareaAlumno(this.id_tarea, this.sessionService._id_alumno!).subscribe({
+      next: (response) => {
+        console.log('Datos de la tarea:', response);
+        this.tarea = response; // Asignar los datos de la tarea a la variable
+      },
+      error: (error) => {
+        console.error('Error al obtener los datos de la tarea:', error);
+        Notiflix.Notify.failure('Error al obtener los datos de la tarea.');
+      },
+    });
   }
 }

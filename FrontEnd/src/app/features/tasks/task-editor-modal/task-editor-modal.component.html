@@ -1,31 +1,30 @@
 <div class="modal-overlay" (click)="closeModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <header>
-        <h2>Crear Nueva Tarea</h2>
-        <button class="close-btn" (click)="closeModal()">✖</button>
-      </header>
-  
-      <form>
-        <label for="title">Título</label>
-        <input id="title" type="text" placeholder="Título de la tarea" />
-  
-        <label for="description">Descripción</label>
-        <textarea id="description" placeholder="Describe la tarea..."></textarea>
-  
-        <label for="attachments">Archivos Adjuntos</label>
-        <input id="attachments" type="file" multiple />
-  
-        <label for="dueDate">Fecha Límite</label>
-        <input id="dueDate" type="date" />
-  
-        <label for="score">Puntaje</label>
-        <input id="score" type="number" min="0" placeholder="Puntaje" />
-  
-        <div class="actions">
-          <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
-          <button type="submit" class="save-btn">Guardar</button>
-        </div>
-      </form>
-    </div>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <header>
+      <h2>Crear Nueva Tarea</h2>
+      <button class="close-btn" (click)="closeModal()">✖</button>
+    </header>
+
+    <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+      <label for="title">Título</label>
+      <input id="title" type="text" formControlName="titulo" placeholder="Título de la tarea" />
+
+      <label for="description">Descripción</label>
+      <textarea id="description" formControlName="descripcion" placeholder="Describe la tarea..."></textarea>
+
+      <label for="attachments">Archivos Adjuntos</label>
+      <input id="attachments" type="file" multiple (change)="onFileSelected($event)" />
+
+      <label for="dueDate">Fecha Límite</label>
+      <input id="dueDate" type="date" formControlName="fecha_entrega" />
+
+      <label for="score">Puntaje</label>
+      <input id="score" type="number" formControlName="puntaje" min="0" placeholder="Puntaje" />
+
+      <div class="actions">
+        <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="save-btn">Guardar</button>
+      </div>
+    </form>
   </div>
-  
+</div>
