@@ -1,11 +1,15 @@
 <div class="modal-overlay" *ngIf="isOpen">
-    <div class="modal-content">
-      <h2>Subir Archivo</h2>
-      <div class="file-uploader" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
-        <p>Arrastra y suelta un archivo aquí</p>
-        <p>o</p>
-        <input type="file" (change)="onFileSelected($event)" />
-      </div>
-      <button (click)="closeModal()">Cerrar</button>
+  <div class="modal-content">
+    <h2>Subir Archivo</h2>
+    <div
+      class="file-uploader"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+    >
+      <p>Arrastra y suelta un archivo aquí</p>
+      <p>o</p>
+      <input type="file" (change)="onFileSelected($event)" />
     </div>
+    <button (click)="closeModal()">Cerrar</button>
   </div>
+</div>

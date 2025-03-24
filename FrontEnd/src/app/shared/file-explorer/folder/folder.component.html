@@ -1,0 +1,16 @@
+<div class="folder-header">
+  <h3>{{ folder.name }}</h3>
+  <button class="upload-btn" (click)="openUploader()">Subir Archivo</button>
+</div>
+
+<div class="files-list">
+  <div class="file-item" *ngFor="let file of folder.files">
+    {{ file.name }}
+  </div>
+</div>
+
+<!-- Modal del File Uploader -->
+<app-file-uploader
+  *ngIf="showUploader"
+  (fileUploaded)="onFileSelected($event); closeUploader()"
+></app-file-uploader>

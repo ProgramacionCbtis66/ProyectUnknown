@@ -1,0 +1,32 @@
+.file-explorer {
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+.main-folder {
+  margin-bottom: 40px;
+}
+.main-folder h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+.subfolder-actions {
+  margin-bottom: 10px;
+}
+.subfolder-actions button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.subfolder-actions button:hover {
+  background-color: #0056b3;
+}
+.subfolders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

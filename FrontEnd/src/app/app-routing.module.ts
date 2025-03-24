@@ -21,7 +21,6 @@ import { ClassDashboardComponent } from './features/classes/class-dashboard/clas
 import { TrabajosDetallesComponent } from './features/tasks/trabajos-detalles/trabajos-detalles.component';
 import { AlumnosEntregaHorariosComponent } from './features/students/alumnos-entrega-horarios/alumnos-entrega-horarios.component';
 import { ProfesorListadoComponent } from './features/Teachers/profesor-listado/profesor-listado.component';
-
 const routes: Routes = [
   { path: "", component: HomepageComponent },
   { path: "main", component: HomepageComponent },
