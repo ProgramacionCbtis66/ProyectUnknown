@@ -20,6 +20,7 @@ import { OptionsComponent } from './features/dashboard/options/options.component
 import { ClassDashboardComponent } from './features/classes/class-dashboard/class-dashboard.component';
 import { TrabajosDetallesComponent } from './features/tasks/trabajos-detalles/trabajos-detalles.component';
 import { AlumnosEntregaHorariosComponent } from './features/students/alumnos-entrega-horarios/alumnos-entrega-horarios.component';
+import { ProfesorListadoComponent } from './features/Teachers/profesor-listado/profesor-listado.component';
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
@@ -45,6 +46,7 @@ const routes: Routes = [
       { path: "options", component: OptionsComponent, canActivate: [PoliceGuard] },
       { path: "connected_devices_user", component: ConnectedDevicesPageComponent, canActivate: [PoliceGuard] },
       { path: "trabajos-detalles/:id", component: TrabajosDetallesComponent},
+      { path: "profesor-listado", component: ProfesorListadoComponent, canActivate: [PoliceGuard] },
       { path: '', redirectTo: 'options', pathMatch: 'full' }
     ]
   },

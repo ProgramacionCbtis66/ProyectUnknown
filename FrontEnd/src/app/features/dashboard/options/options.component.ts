@@ -39,4 +39,8 @@ export class OptionsComponent {
   goToMakeschedules() {
     this.router.navigate(['/Main_Dashboard/alumnos-entrega-horarios']);
   }
+
+  goToMakeTeachers() {
+    this.router.navigate(['/Main_Dashboard/profesor-listado']);
+  }
 }

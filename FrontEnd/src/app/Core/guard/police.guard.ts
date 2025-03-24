@@ -45,6 +45,7 @@ export class PoliceGuard implements CanActivate {
       'Main_Dashboard/alumnos-registros', 
       'Main_Dashboard/alumnos-grupos',
       'Main_Dashboard/alumnos-entrega-horarios',
+      'Main_Dashboard/profesor-listado',
     ]
   };
   

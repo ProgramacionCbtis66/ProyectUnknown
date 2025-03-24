@@ -29,6 +29,7 @@ import { ImgCropperComponent } from "./shared/imageEditor/img-cropper/img-croppe
 import { EntregarTareaComponent } from "./features/classes/entregar-tarea/entregar-tarea.component";
 import { TrabajosDetallesComponent } from './features/tasks/trabajos-detalles/trabajos-detalles.component';
 import { AlumnosEntregaHorariosComponent } from './features/students/alumnos-entrega-horarios/alumnos-entrega-horarios.component';
+import { ProfesorListadoComponent } from './features/Teachers/profesor-listado/profesor-listado.component';
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
   return localStorage.getItem("adae");
@@ -49,7 +50,8 @@ export function tokenGetter() {
     AlumnosListadoComponent,
     AlumnosClasesComponent,
     TrabajosDetallesComponent,
-    AlumnosEntregaHorariosComponent
+    AlumnosEntregaHorariosComponent,
+    ProfesorListadoComponent,
   ],
   imports: [
     BrowserModule,

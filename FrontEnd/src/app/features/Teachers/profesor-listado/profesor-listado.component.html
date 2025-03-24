@@ -1,0 +1,356 @@
+<section class="professor-list-section">
+  <div class="container search">
+    <h2 class="title">Lista de Profesores</h2>
+    <input
+      type="text"
+      class="form-control search-bar"
+      placeholder="Buscar por nombre, apellido o correo"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+    />
+
+    <div class="filters-larges-container">
+      <button class="filter-toggle" (click)="openAddProfessorModal()">
+        <i class="bx bx-plus"></i>
+      </button>
+      <button
+        class="filter-toggle"
+        (click)="uiState.areFiltersVisible = !uiState.areFiltersVisible"
+        aria-label="Abrir filtros"
+      >
+        <i class="bx bx-filter"></i>
+      </button>
+      <div
+        class="filters large-screen-filters"
+        [class.show]="uiState.areFiltersVisible"
+      >
+        <select
+          [(ngModel)]="selectedFilters.departamento"
+          (change)="applyFilters()"
+        >
+          <option value="">Todos los departamentos</option>
+          <option
+            *ngFor="let dept of filterOptions.departamentos"
+            [value]="dept"
+          >
+            {{ dept }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal-filters"
+    [class.show]="uiState.isModalOpen"
+    (click)="closeModalWithAnimation()"
+    (touchstart)="onTouchStart($event)"
+    (touchmove)="onTouchMove($event)"
+    (touchend)="onTouchEnd($event)"
+    #modalFilters
+  >
+    <div
+      class="modal-content-filters"
+      [class.opening]="uiState.isModalOpen"
+      [style.transform]="'translateY(' + translateY + 'px)'"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="modal-handle"></div>
+      <div class="filters small-screen-filters">
+        <select
+          [(ngModel)]="selectedFilters.departamento"
+          (change)="applyFilters()"
+        >
+          <option value="">Todos los departamentos</option>
+          <option
+            *ngFor="let dept of filterOptions.departamentos"
+            [value]="dept"
+          >
+            {{ dept }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal-options"
+    [class.show]="isOptionsModalOpen"
+    (click)="closeOptionsModalWithAnimation()"
+    (touchstart)="onTouchStartOptions($event)"
+    (touchmove)="onTouchMoveOptions($event)"
+    (touchend)="onTouchEndOptions($event)"
+    #modalOptions
+  >
+    <div
+      class="modal-content-options"
+      [class.opening]="isOptionsModalOpen"
+      [style.transform]="'translateY(' + translateYOptions + 'px)'"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="modal-handle"></div>
+      <div class="options-list">
+        <button
+          class="option-button"
+          (click)="editProfessor(selectedProfessorForOptions)"
+        >
+          <i class="fi fi-br-edit"></i>
+          Editar
+        </button>
+        <button
+          class="option-button"
+          (click)="deleteProfessor(selectedProfessorForOptions)"
+        >
+          <i class="fi fi-br-trash"></i>
+          Eliminar
+        </button>
+        <button
+          class="option-button"
+          (click)="copyProfessor(selectedProfessorForOptions)"
+        >
+          <i class="fi fi-br-copy"></i>
+          Copiar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="professors-list">
+      <div
+        *ngFor="let profesor of filteredProfesores"
+        class="professor-card"
+        (mouseleave)="hideOptionsDropdown()"
+        (click)="openOptionsModal(profesor)"
+      >
+        <div class="professor-info">
+          <img
+            [src]="profesor.foto || 'ruta/a/imagen_default.jpg'"
+            alt="Foto de {{ profesor.nombre }}"
+            class="professor-photo"
+          />
+          <div class="info">
+            <h5>{{ profesor.nombre }} {{ profesor.apellido }}</h5>
+            <p>
+              Correo: {{ profesor.correo_institucional }}<br />
+              Dep: {{ profesor.departamento }} &nbsp;&nbsp; Tel:
+              {{ profesor.telefono }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="options-dropdown desktop-only"
+          (click)="toggleOptionsDropdown($event, profesor)"
+        >
+          <ng-container *ngIf="showOptions !== profesor">
+            <i class="fi fi-br-menu-dots"></i>
+          </ng-container>
+          <ng-container *ngIf="showOptions === profesor">
+            <ul class="options-menu">
+              <li (click)="editProfessor(profesor)">Editar</li>
+              <li (click)="deleteProfessor(profesor)">Eliminar</li>
+              <li (click)="copyProfessor(profesor)">Copiar</li>
+            </ul>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div
+  #editModal
+  *ngIf="isEditProfessorModalOpen"
+  class="modal-overlay"
+  (click)="closeEditProfessorModal()"
+>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Editar Profesor</h2>
+      <button class="close-btn" (click)="closeEditProfessorModal()">×</button>
+    </div>
+    <form (ngSubmit)="updateProfessor()" class="form-grid">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input
+          id="nombre"
+          type="text"
+          [(ngModel)]="selectedProfessor.nombre"
+          name="nombre"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input
+          id="apellido"
+          type="text"
+          [(ngModel)]="selectedProfessor.apellido"
+          name="apellido"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="correoInstitucional">Correo:</label>
+        <input
+          id="correoInstitucional"
+          type="email"
+          [(ngModel)]="selectedProfessor.correo_institucional"
+          name="correoInstitucional"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="departamento">Departamento:</label>
+        <input
+          id="departamento"
+          type="text"
+          [(ngModel)]="selectedProfessor.departamento"
+          name="departamento"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <input
+          id="telefono"
+          type="text"
+          [(ngModel)]="selectedProfessor.telefono"
+          name="telefono"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="foto">Foto de Perfil:</label>
+        <input
+          type="file"
+          id="foto"
+          accept="image/*"
+          (change)="onPhotoSelected($event)"
+        />
+        <img
+          *ngIf="selectedProfessor.foto"
+          [src]="selectedProfessor.foto"
+          alt="Foto de {{ selectedProfessor.nombre }}"
+          class="preview-photo-small"
+        />
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeEditProfessorModal()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  #addModal
+  *ngIf="isAddProfessorModalOpen"
+  class="modal-overlay"
+  (click)="closeAddProfessorModal()"
+>
+  <div class="modal-content styled-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Añadir nuevo profesor</h2>
+      <button class="close-btn" (click)="closeAddProfessorModal()">
+        <i class="bx bx-x"></i>
+      </button>
+    </div>
+    <form (ngSubmit)="addProfessor()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input
+            type="text"
+            id="nombre"
+            [(ngModel)]="nuevoProfesor.nombre"
+            name="nombre"
+            required
+            placeholder="Ingresa el nombre"
+          />
+        </div>
+        <div class="form-group">
+          <label for="apellido">Apellido:</label>
+          <input
+            type="text"
+            id="apellido"
+            [(ngModel)]="nuevoProfesor.apellido"
+            name="apellido"
+            required
+            placeholder="Ingresa el apellido"
+          />
+        </div>
+        <div class="form-group">
+          <label for="correoInstitucional">Correo:</label>
+          <input
+            type="email"
+            id="correoInstitucional"
+            [(ngModel)]="nuevoProfesor.correo_institucional"
+            name="correoInstitucional"
+            required
+            placeholder="Ingresa el correo institucional"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="nuevoProfesor.password"
+            name="password"
+            required
+            placeholder="Ingresa la contraseña"
+          />
+        </div>
+        <div class="form-group">
+          <label for="departamento">Departamento:</label>
+          <input
+            type="text"
+            id="departamento"
+            [(ngModel)]="nuevoProfesor.departamento"
+            name="departamento"
+            required
+            placeholder="Ingresa el departamento"
+          />
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono:</label>
+          <input
+            type="text"
+            id="telefono"
+            [(ngModel)]="nuevoProfesor.telefono"
+            name="telefono"
+            required
+            placeholder="Ingresa el teléfono"
+          />
+        </div>
+        <div class="form-group">
+          <label for="curp">CURP:</label>
+          <input
+            type="text"
+            id="curp"
+            [(ngModel)]="nuevoProfesor.curp"
+            name="curp"
+            placeholder="Ingresa el CURP (opcional)"
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeAddProfessorModal()"
+        >
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">Enviar Correo</button>
+      </div>
+    </form>
+  </div>
+</div>
