@@ -1,0 +1,15 @@
+<div class="file-explorer">
+  <div class="main-folder" *ngFor="let folder of folders">
+    <h2>{{ folder.name }}</h2>
+    <div class="subfolder-actions">
+      <button (click)="addSubfolder(folder)">Agregar subcarpeta</button>
+    </div>
+    <div class="subfolders">
+      <app-folder
+        *ngFor="let sub of folder.subfolders"
+        [folder]="sub"
+        (fileUploaded)="onFileUploaded(sub, $event)"
+      ></app-folder>
+    </div>
+  </div>
+</div>

@@ -115,7 +115,7 @@
     </div>
   </div>
 
-  <!-- Nuevo Modal de opciones para móvil -->
+  <!-- Modal de opciones para móvil -->
   <div
     class="modal-options"
     [class.show]="isOptionsModalOpen"
@@ -154,7 +154,31 @@
           <i class="fi fi-br-copy"></i>
           Copiar
         </button>
+        <!-- Nueva opción "Archivos" -->
+        <button
+          class="option-button"
+          (click)="openFileExplorerForStudent(selectedStudentForOptions)"
+        >
+          <i class="fi fi-br-folder"></i>
+          Archivos
+        </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal para File Explorer -->
+  <div
+    class="modal-overlay"
+    *ngIf="isFileExplorerOpen"
+    (click)="closeFileExplorer()"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Explorador de Archivos</h2>
+        <button class="close-btn" (click)="closeFileExplorer()">×</button>
+      </div>
+      <!-- Aquí se inserta el FileExplorer -->
+      <app-file-explorer></app-file-explorer>
     </div>
   </div>
 
@@ -199,6 +223,7 @@
               <li (click)="editStudent(usuario)">Editar</li>
               <li (click)="deleteStudent(usuario)">Eliminar</li>
               <li (click)="copyStudent(usuario)">Copiar</li>
+              <li (click)="openFileExplorerForStudent(usuario)">Archivos</li>
             </ul>
           </ng-container>
         </div>

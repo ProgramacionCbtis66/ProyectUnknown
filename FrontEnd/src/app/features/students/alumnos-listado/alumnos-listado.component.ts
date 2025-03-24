@@ -3,6 +3,7 @@ import { EmailService } from '../../../Core/service/email.service';
 import { UsuarioService } from 'src/app/Core/service/usuario.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
+
 // Interfaces
 interface Usuario {
   id: number;
@@ -67,6 +68,17 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     semestres: [] as number[],
   };
 
+  // Control para mostrar el File Explorer (modal)
+  isFileExplorerOpen = false;
+
+  openFileExplorer() {
+    this.isFileExplorerOpen = true;
+  }
+
+  closeFileExplorer() {
+    this.isFileExplorerOpen = false;
+  }
+  
   // Estado de la UI
   uiState = {
     isModalOpen: false,       // Modal de filtros (para móvil)
@@ -226,6 +238,14 @@ export class AlumnosListadoComponent implements OnInit, OnDestroy {
     this.translateY = Math.min(Math.max(this.translateY, -this.MAX_DRAG), this.MAX_DRAG);
   }
 
+  openFileExplorerForStudent(usuario: Usuario | null): void {
+    // Opcional: puedes guardar el contexto del estudiante aquí
+    if (this.isOptionsModalOpen) {
+      this.closeOptionsModalWithAnimation();
+    }
+    this.openFileExplorer();
+  }
+  
   onTouchEnd(event: TouchEvent) {
     if (!this.isDragging) return;
     const deltaY = this.currentY - this.startY;
