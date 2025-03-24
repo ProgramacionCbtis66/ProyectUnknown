@@ -147,8 +147,7 @@ export class AlumnosEntregaHorariosComponent {
     this.fileUploadModal.openModal();
   }
 
-  onFileUploaded(file: File) {
-    console.log('Archivo subido:', file);
-    // Aquí puedes manejar la lógica para subir el archivo a un servidor, etc.
-  }
+onFileUploaded(file: File) {
+  console.log('Horario subido:', file);
+}
 }

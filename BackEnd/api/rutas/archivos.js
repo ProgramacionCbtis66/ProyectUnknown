@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import { upload, entregarTarea, getTareaArchivo } from './../controladores/archivosControlador.js';
+import { upload, uploadFile} from '../controladores/archivosControlador.js';
 
 const file = Router();
 
-file.post('/file/entregar-tarea', upload.single('archivo'), entregarTarea);
-file.get('/file/tarea/:id_tarea/:id_alumno', getTareaArchivo);
+// Ruta para subir archivos (tarea, alumno, horario, general)
+file.post('/file/upload', upload.single('archivo'), uploadFile);
 
+// Ruta para obtener archivos de tareas (sin cambios)
 
 export default file;

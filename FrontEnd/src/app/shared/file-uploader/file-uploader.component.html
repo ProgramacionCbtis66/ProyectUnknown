@@ -1,11 +1,41 @@
 <div class="modal-overlay" *ngIf="isOpen">
-    <div class="modal-content">
-      <h2>Subir Archivo</h2>
-      <div class="file-uploader" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
-        <p>Arrastra y suelta un archivo aquí</p>
-        <p>o</p>
-        <input type="file" (change)="onFileSelected($event)" />
-      </div>
-      <button (click)="closeModal()">Cerrar</button>
+  <div class="modal-content">
+    <!-- Botón de cerrar -->
+    <button class="close-btn" (click)="closeModal()">
+      <i class="bx bx-x"></i> <!-- Ícono de "X" de Boxicons -->
+    </button>
+
+    <h2>Subir Archivo</h2>
+
+    <!-- Área de arrastrar y soltar -->
+    <div
+      class="file-uploader"
+      [class.dragging]="isDragging"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      (click)="fileInput.click()"
+    >
+      <p>Arrastra y suelta un archivo aquí</p>
+      <p>o</p>
+      <p>Haz clic para seleccionar un archivo</p>
+      <input
+        #fileInput
+        type="file"
+        (change)="onFileSelected($event)"
+        style="display: none"
+      />
     </div>
+
+    <!-- Tarjeta del archivo seleccionado -->
+    <div class="file-card" *ngIf="selectedFile">
+      <i class="bx bx-file"></i> <!-- Ícono de archivo -->
+      <span class="file-name">{{ selectedFile.name }}</span>
+    </div>
+
+    <!-- Botón de subir -->
+    <button class="upload-btn" (click)="uploadFile()" [disabled]="!selectedFile">
+      Subir Archivo
+    </button>
   </div>
+</div>
