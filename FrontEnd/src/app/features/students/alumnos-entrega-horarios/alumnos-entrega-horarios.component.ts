@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { UsuarioService } from 'src/app/Core/service/usuario.service';
+import { FileUploaderComponent } from 'src/app/shared/file-uploader/file-uploader.component';
 
 interface Usuario {
   id: number;
@@ -22,7 +23,10 @@ interface Usuario {
   templateUrl: './alumnos-entrega-horarios.component.html',
   styleUrls: ['./alumnos-entrega-horarios.component.css']
 })
+
 export class AlumnosEntregaHorariosComponent {
+  @ViewChild(FileUploaderComponent) fileUploadModal!: FileUploaderComponent;
+
   usuarios: Usuario[] = [];
   gruposDisplay: string[] = [];
 
@@ -136,5 +140,15 @@ export class AlumnosEntregaHorariosComponent {
   onEdit(grupo: string): void {
     console.log('Acción de editar para el grupo:', grupo);
     // Implementa la lógica de edición
+  }
+
+
+  openFileUploadModal() {
+    this.fileUploadModal.openModal();
+  }
+
+  onFileUploaded(file: File) {
+    console.log('Archivo subido:', file);
+    // Aquí puedes manejar la lógica para subir el archivo a un servidor, etc.
   }
 }

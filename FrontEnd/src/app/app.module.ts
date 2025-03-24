@@ -29,6 +29,7 @@ import { ImgCropperComponent } from "./shared/imageEditor/img-cropper/img-croppe
 import { EntregarTareaComponent } from "./features/classes/entregar-tarea/entregar-tarea.component";
 import { TrabajosDetallesComponent } from './features/tasks/trabajos-detalles/trabajos-detalles.component';
 import { AlumnosEntregaHorariosComponent } from './features/students/alumnos-entrega-horarios/alumnos-entrega-horarios.component';
+import { FileUploaderComponent } from "./shared/file-uploader/file-uploader.component";
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
   return localStorage.getItem("adae");
@@ -69,7 +70,8 @@ export function tokenGetter() {
     RouterModule,
     ImgCropperComponent,
     EntregarTareaComponent,
-  ],
+    FileUploaderComponent
+],
   providers: [
     provideHttpClient(withInterceptorsFromDi())
   ],
