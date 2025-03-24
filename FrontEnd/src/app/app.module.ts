@@ -30,6 +30,7 @@ import { EntregarTareaComponent } from "./features/classes/entregar-tarea/entreg
 import { TrabajosDetallesComponent } from './features/tasks/trabajos-detalles/trabajos-detalles.component';
 import { AlumnosEntregaHorariosComponent } from './features/students/alumnos-entrega-horarios/alumnos-entrega-horarios.component';
 import { ProfesorListadoComponent } from './features/Teachers/profesor-listado/profesor-listado.component';
+import { FileUploaderComponent } from "./shared/file-uploader/file-uploader.component";
 // Función para obtener el token desde el localStorage
 export function tokenGetter() {
   return localStorage.getItem("adae");
@@ -71,7 +72,8 @@ export function tokenGetter() {
     RouterModule,
     ImgCropperComponent,
     EntregarTareaComponent,
-  ],
+    FileUploaderComponent
+],
   providers: [
     provideHttpClient(withInterceptorsFromDi())
   ],

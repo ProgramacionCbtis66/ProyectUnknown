@@ -1,3 +1,5 @@
+
+<app-file-uploader (fileUploaded)="onFileUploaded($event)"></app-file-uploader>
 <div class="container my-4">
   <h2>Grupos</h2>
   <div class="filters-container">
@@ -69,7 +71,7 @@
           <h3>{{ grupo }}</h3>
         </div>
         <div class="card-actions">
-          <button class="action-btn upload" (click)="onUpload(grupo)">
+          <button class="action-btn upload" (click)="openFileUploadModal()">
             <i class="bx bx-upload"></i>
           </button>
           <button class="action-btn edit" (click)="onEdit(grupo)">
