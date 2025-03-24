@@ -1,32 +1,58 @@
 .file-explorer {
-  padding: 20px;
+  padding: 24px;
   font-family: 'Roboto', sans-serif;
+  background-color: #f5f6fa;
+  min-height: 100vh;
 }
+
 .main-folder {
-  margin-bottom: 40px;
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
+
 .main-folder h2 {
   font-size: 24px;
-  margin-bottom: 10px;
-  color: #333;
+  margin: 0 0 16px 0;
+  color: #2c3e50;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
+
 .subfolder-actions {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
+
 .subfolder-actions button {
-  padding: 5px 10px;
-  background-color: #007bff;
+  padding: 10px 20px;
+  background-color: #3498db;
   border: none;
   color: white;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.subfolder-actions button:hover {
-  background-color: #0056b3;
-}
-.subfolders {
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  align-items: center;
+  gap: 8px;
+}
+
+.subfolder-actions button:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+}
+
+.subfolder-actions button:active {
+  transform: translateY(1px);
+}
+
+.subfolders {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }

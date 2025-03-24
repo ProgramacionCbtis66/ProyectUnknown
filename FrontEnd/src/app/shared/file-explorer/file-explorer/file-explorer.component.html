@@ -5,7 +5,6 @@
       <button (click)="addSubfolder(folder)">Agregar subcarpeta</button>
     </div>
     <div class="subfolders">
-      <!-- Usa el componente Folder para cada subcarpeta -->
       <app-folder
         *ngFor="let sub of folder.subfolders"
         [folder]="sub"
